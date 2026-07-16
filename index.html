@@ -40,6 +40,8 @@
 html{scroll-behavior:auto}
 body{background:var(--void);color:var(--bone);font-family:"Inter",system-ui,-apple-system,sans-serif;
   font-size:17px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+html{overflow-x:hidden}
+img,svg,video{max-width:100%}
 ::selection{background:var(--ember);color:var(--void)}
 a{color:inherit;text-decoration:none}
 .mono{font-family:"JetBrains Mono","SF Mono",Consolas,monospace;font-size:12px;letter-spacing:.06em;
@@ -221,6 +223,9 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:none;
 .dep-live{color:var(--ember);opacity:0;transform:translateX(-8px);text-align:right;
   transition:opacity .24s,transform .35s var(--ease-signal)}
 .dep:hover .dep-live{opacity:1;transform:none}
+.dep .sepline{position:absolute;left:0;bottom:-20px;width:100%;height:40px;overflow:visible;
+  pointer-events:none;z-index:2}
+.dep .sepline path{stroke:rgba(243,239,234,.12);stroke-width:1;fill:none}
 #depCard{position:fixed;top:0;left:0;z-index:150;pointer-events:none;opacity:0;
   background:rgba(18,16,14,.92);backdrop-filter:blur(16px);border:1px solid rgba(241,78,28,.25);
   border-radius:var(--r-2);padding:18px 22px;min-width:230px;box-shadow:var(--glow-md);
@@ -374,10 +379,18 @@ html.reduced #pre,html.reduced #det,html.reduced #cursor,html.reduced #cursorDot
 
 /* ══════════════ responsive ══════════════ */
 @media (max-width:900px){
+  :root{--sp-section:clamp(72px,10vh,112px);--fs-h2:clamp(26px,5.4vw,40px);
+    --fs-h1:clamp(32px,7.5vw,56px);--fs-lead:clamp(17px,2.6vw,21px)}
   #operator .grid{grid-template-columns:1fr;gap:var(--sp-6)}
   .portrait{max-width:420px;order:-1}
-  .tx,.tx.flip{grid-template-columns:1fr;min-height:0;gap:var(--sp-5)}
-  .tx.flip .txmeta{order:0}
+  .tx,.tx.flip{grid-template-columns:1fr;min-height:0;gap:var(--sp-5);padding:var(--sp-6) 0}
+  .tx .txmeta{display:contents}
+  .tx .slug{order:-2;margin-bottom:0}
+  .tx .screenwrap{order:-1}
+  .tx .beat{margin-bottom:0}
+  .tx .metric{margin-top:0}
+  .tx .txlink{margin-top:0;justify-self:start}
+  #work h2,#deploys h2{margin-bottom:var(--sp-6)}
   .screen,.tx.flip .screen{transform:none;-webkit-box-reflect:unset}
   .panelstrip{grid-template-columns:1fr 1fr}
   .readout:nth-child(3){border-left:none;border-top:1px solid rgba(241,78,28,.12)}
@@ -387,7 +400,11 @@ html.reduced #pre,html.reduced #det,html.reduced #cursor,html.reduced #cursorDot
   .panel:first-child{border-top:none}
   #protoline .steps{grid-template-columns:1fr 1fr;gap:var(--sp-4)}
   .voice:nth-child(even){margin-left:0}
+  .voices{gap:var(--sp-6);margin-top:var(--sp-7)}
+  .readout{padding:var(--sp-5) var(--sp-4)}
+  .panel{padding:var(--sp-5) var(--sp-4)}
   #nav .navlink.hidesm{display:none}
+  .dline{word-break:break-word}
   .whygrid{grid-template-columns:1fr}
   .dep{grid-template-columns:40px 1fr auto;grid-template-areas:"idx name live" "idx tags year";
     row-gap:8px}
@@ -395,6 +412,51 @@ html.reduced #pre,html.reduced #det,html.reduced #cursor,html.reduced #cursorDot
   .dep-year{grid-area:year;text-align:right}.dep-live{grid-area:live;opacity:1;transform:none}
   #depCard{display:none}
   .truststrip{justify-content:flex-start}
+}
+@media (max-width:600px){
+  :root{--fs-hero:clamp(30px,10.5vw,44px);--sp-section:clamp(64px,9vh,88px);
+    --fs-h2:clamp(24px,7vw,32px);--fs-h1:clamp(30px,9vw,42px);--fs-lead:18px;
+    --sp-7:40px;--sp-8:56px}
+  body{font-size:16px}
+  .mono{font-size:11px;line-height:1.8}
+  #hero .word{white-space:normal}
+  #hero h1 .l2{margin-left:0}
+  #hero h1{line-height:1.04}
+  .truststrip{flex-direction:column;gap:10px;padding:18px 0}
+  #hero{padding-bottom:140px}
+  #hero .cred{bottom:76px}
+  #hero .cue{left:var(--margin);right:auto;bottom:32px}
+  .panelstrip{grid-template-columns:1fr}
+  .readout{border-left:none;border-top:1px solid rgba(241,78,28,.12)}
+  .readout:first-child{border-top:none}
+  .dep{grid-template-columns:32px 1fr;grid-template-areas:"idx name" "idx tags" "idx year";row-gap:6px;padding:20px 0}
+  .dep-name{font-size:clamp(22px,6.5vw,28px)}
+  .dep-live{display:none}
+  .dep-year{text-align:left}
+  .dep-name{transform:none !important}
+  #protoline .steps{grid-template-columns:1fr;gap:var(--sp-3)}
+  #protoline .steps div span{max-width:none}
+  .metric{font-size:clamp(19px,5.4vw,24px)}
+  .beat p{max-width:none;font-size:15px}
+  .human{font-size:18px;max-width:none}
+  .opnote{font-size:14px}
+  .voice q{font-size:16px;line-height:1.6}
+  .readout .num{font-size:clamp(30px,9vw,40px)}
+  .why{padding:var(--sp-4)}
+  .glass{padding:var(--sp-4)}
+  .dline{font-size:10px;min-height:38px;padding:8px 0}
+  .panel h3{font-size:19px}
+  .dels{gap:5px}
+  .qa button{font-size:15px;padding:20px 0}
+  #humanSec p{font-size:15px}
+  #channel .warm{font-size:17px}
+  .voice q{font-size:17px}
+  .stackgrid{gap:8px}
+  .orbit{flex-direction:column;gap:var(--sp-2);align-items:center}
+  .btn,#cta{height:52px;padding:0 24px;font-size:11px;text-align:center}
+  footer{flex-direction:column;align-items:center;gap:12px;text-align:center}
+  .tool{padding:10px 16px}
+  section{padding-left:20px;padding-right:20px}
 }
 </style>
 </head>
@@ -418,7 +480,7 @@ html.reduced #pre,html.reduced #det,html.reduced #cursor,html.reduced #cursorDot
   <div class="right mono">
     <span class="hidesm navlink" style="cursor:default"><span class="status-dot"></span>ONLINE</span>
     <button class="navlink" id="menuBtn" data-cursor="MENU">MENU</button>
-    <a class="navlink" href="#channel" data-cursor="BOOK">BOOK A CALL</a>
+    <a class="navlink" href="https://cal.com/anowarhdesign/discovery" target="_blank" rel="noopener" data-cursor="BOOK">BOOK A CALL</a>
   </div>
 </nav>
 
@@ -453,7 +515,7 @@ html.reduced #pre,html.reduced #det,html.reduced #cursor,html.reduced #cursorDot
   <div class="inner truststrip mono" data-reveal>
     <span><span class="tick">✓</span>TOP RATED — UPWORK</span>
     <span><b>100%</b> JOB SUCCESS</span>
-    <span><b>116+</b> PROJECTS SHIPPED</span>
+    <span><b>398+</b> PROJECTS SHIPPED</span>
     <span><b>6+</b> YEARS WITH CLIENTS</span>
     <span>US · UK · CANADA · AUSTRALIA · EU</span>
   </div>
@@ -468,7 +530,7 @@ html.reduced #pre,html.reduced #det,html.reduced #cursor,html.reduced #cursorDot
         <div class="glass" id="dossier">
           <div class="dline mono" data-type="OPERATOR — <b>ANOWAR HOSSAIN</b>"></div>
           <div class="dline mono" data-type="DISCIPLINE — <b>UI/UX DESIGN · WEBFLOW · FRAMER</b>"></div>
-          <div class="dline mono" data-type="EXPERIENCE — <b>6+ YEARS · 116+ PROJECTS SHIPPED</b>" data-typo></div>
+          <div class="dline mono" data-type="EXPERIENCE — <b>6+ YEARS · 398+ PROJECTS SHIPPED</b>" data-typo></div>
           <div class="dline mono" data-type="SECTORS — <b>AI · SAAS · HEALTHCARE · FINANCE · WEB3 · EDUCATION</b>"></div>
           <div class="dline mono" data-type="TIMEZONE — <b>GMT+6 · OVERLAPS US MORNINGS &amp; EU AFTERNOONS</b>"></div>
           <div class="dline mono" style="border-bottom:none" data-type="STATUS — <b><span class='status-dot'></span>TAKING PROJECTS FOR Q3</b>"></div>
@@ -504,16 +566,16 @@ html.reduced #pre,html.reduced #det,html.reduced #cursor,html.reduced #cursorDot
     </article>
 
     <article class="tx flip" data-tx>
-      <div class="screenwrap"><div class="screen"><div class="scanline"></div>
-        <img class="shot" src="uploads/image 1.png" alt="Eric Kanigan Photography — editorial print gallery built in Webflow">
-        </div></div>
       <div class="txmeta">
-        <div class="slug mono">CASE 02 — ERIC KANIGAN · FINE ART PHOTOGRAPHY · WEBFLOW</div>
-        <div class="beat b1"><div class="k mono">THE BRIEF</div><p>An immersive portfolio for award-winning wildlife photography — premium, editorial, image-first.</p></div>
-        <div class="beat"><div class="k mono">THE APPROACH</div><p>Designed and built in Webflow: refined interactions, smooth animation, and typography that stays out of the photographs' way.</p></div>
-        <div class="metric">LIVE —<br>DESIGNED &amp; BUILT SOLO</div>
-        <a class="txlink" href="https://www.erickanigan.photography/" target="_blank" rel="noopener" data-cursor="VISIT">VIEW LIVE <span class="arr">↗</span></a>
+        <div class="slug mono">CASE 02 — SALESPEAK AI · B2B SAAS · FRAMER</div>
+        <div class="beat b1"><div class="k mono">THE BRIEF</div><p>Communicate a complex AI-powered sales platform clearly enough to earn enterprise trust.</p></div>
+        <div class="beat"><div class="k mono">THE APPROACH</div><p>High-performance Framer build from the provided design: custom animation, responsive layouts, conversion-focused implementation.</p></div>
+        <div class="metric">ENTERPRISE-READY LAUNCH</div>
+        <a class="txlink" href="https://salespeak.ai" target="_blank" rel="noopener" data-cursor="VISIT">VIEW LIVE <span class="arr">↗</span></a>
       </div>
+      <div class="screenwrap"><div class="screen"><div class="scanline"></div>
+        <img class="shot" src="uploads/Screenshot_1.png" alt="Salespeak AI marketing website — a thousand conversations, one story">
+        </div></div>
     </article>
 
     <article class="tx" data-tx>
@@ -530,16 +592,16 @@ html.reduced #pre,html.reduced #det,html.reduced #cursor,html.reduced #cursorDot
     </article>
 
     <article class="tx flip" data-tx>
-      <div class="txmeta">
-        <div class="slug mono">CASE 04 — SALESPEAK AI · B2B SAAS · FRAMER</div>
-        <div class="beat b1"><div class="k mono">THE BRIEF</div><p>Communicate a complex AI-powered sales platform clearly enough to earn enterprise trust.</p></div>
-        <div class="beat"><div class="k mono">THE APPROACH</div><p>High-performance Framer build from the provided design: custom animation, responsive layouts, conversion-focused implementation.</p></div>
-        <div class="metric">ENTERPRISE-READY LAUNCH</div>
-        <a class="txlink" href="https://salespeak.ai" target="_blank" rel="noopener" data-cursor="VISIT">VIEW LIVE <span class="arr">↗</span></a>
-      </div>
       <div class="screenwrap"><div class="screen"><div class="scanline"></div>
-        <img class="shot" src="uploads/Screenshot_1.png" alt="Salespeak AI marketing website — a thousand conversations, one story">
+        <img class="shot" src="uploads/image 1.png" alt="Eric Kanigan Photography — editorial print gallery built in Webflow">
         </div></div>
+      <div class="txmeta">
+        <div class="slug mono">CASE 04 — ERIC KANIGAN · FINE ART PHOTOGRAPHY · WEBFLOW</div>
+        <div class="beat b1"><div class="k mono">THE BRIEF</div><p>An immersive portfolio for award-winning wildlife photography — premium, editorial, image-first.</p></div>
+        <div class="beat"><div class="k mono">THE APPROACH</div><p>Designed and built in Webflow: refined interactions, smooth animation, and typography that stays out of the photographs' way.</p></div>
+        <div class="metric">LIVE —<br>DESIGNED &amp; BUILT SOLO</div>
+        <a class="txlink" href="https://www.erickanigan.photography/" target="_blank" rel="noopener" data-cursor="VISIT">VIEW LIVE <span class="arr">↗</span></a>
+      </div>
     </article>
   </div>
 </section>
@@ -615,7 +677,7 @@ html.reduced #pre,html.reduced #det,html.reduced #cursor,html.reduced #cursorDot
   <div class="inner">
     <h2 class="display rise"><span>DON'T TAKE THE SITE'S<br>WORD FOR IT.</span></h2>
     <div class="panelstrip" id="strip">
-      <div class="readout"><div class="num" data-count data-val="116" data-suffix="+">0</div><div class="lab mono">PROJECTS DELIVERED</div></div>
+      <div class="readout"><div class="num" data-count data-val="398" data-suffix="+">0</div><div class="lab mono">PROJECTS DELIVERED</div></div>
       <div class="readout"><div class="num" data-count data-val="2200" data-suffix="+">0</div><div class="lab mono">HOURS ON THE CLOCK</div></div>
       <div class="readout"><div class="num" data-count data-val="100" data-suffix="%">0</div><div class="lab mono">JOB SUCCESS — TOP RATED, UPWORK</div></div>
       <div class="readout"><div class="num" data-count data-val="6" data-suffix="+">0</div><div class="lab mono">YEARS WITH CLIENTS WORLDWIDE</div></div>
@@ -656,7 +718,7 @@ html.reduced #pre,html.reduced #det,html.reduced #cursor,html.reduced #cursorDot
 <!-- ═══ scene 5 · services + process ═══ -->
 <section id="protocol" data-screen-label="Services">
   <div class="inner">
-    <div class="kick mono" data-reveal>PROJECT 117 — OPEN SLOT</div>
+    <div class="kick mono" data-reveal>PROJECT 399 — OPEN SLOT</div>
     <h2 class="display rise"><span>THREE WAYS THIS STARTS.</span></h2>
     <div class="triptych">
       <div class="panel" data-cursor="TUNE IN">
@@ -720,7 +782,7 @@ html.reduced #pre,html.reduced #det,html.reduced #cursor,html.reduced #cursorDot
       </div>
     </div>
     <div class="ctarow">
-      <a class="btn btn-primary" href="#channel" data-cursor="BOOK" data-magnet>START WITH THE DISCOVERY CALL →</a>
+      <a class="btn btn-primary" href="https://cal.com/anowarhdesign/discovery" target="_blank" rel="noopener" data-cursor="BOOK" data-magnet>START WITH THE DISCOVERY CALL →</a>
       <span class="mono ash">FIXED QUOTES · NO HOURLY METERS RUNNING</span>
     </div>
   </div>
@@ -1003,6 +1065,34 @@ if(fine && !reduced){
     });
     row.addEventListener("pointerleave",()=>{
       gsap.to(card,{opacity:0,scale:.9,duration:.25,overwrite:"auto"});
+    });
+  });
+}
+
+/* ═══ springy separators — lines flex toward the cursor and snap back ═══ */
+if(fine && !reduced){
+  const NS = "http://www.w3.org/2000/svg";
+  deps.forEach(row=>{
+    row.style.borderBottom = "none";
+    const svg = document.createElementNS(NS,"svg");
+    svg.setAttribute("class","sepline");
+    const path = document.createElementNS(NS,"path");
+    svg.appendChild(path); row.appendChild(svg);
+    const st = {y:0, cx:.5};
+    const draw = ()=>{
+      const W = row.offsetWidth;
+      path.setAttribute("d", `M0,20 Q${st.cx*W},${20+st.y} ${W},20`);
+    };
+    draw(); addEventListener("resize", draw);
+    row.addEventListener("pointermove", e=>{
+      const r = row.getBoundingClientRect();
+      st.cx = (e.clientX - r.left) / r.width;
+      const d = e.clientY - r.bottom;                    // distance above the line
+      const pull = Math.max(-48, Math.min(48, d)) * Math.max(0, 1 - Math.abs(d)/90) * 1.6;
+      gsap.to(st, {y:pull, duration:.25, ease:"power2.out", onUpdate:draw, overwrite:"auto"});
+    });
+    row.addEventListener("pointerleave", ()=>{
+      gsap.to(st, {y:0, duration:1.4, ease:"elastic.out(1.2,0.18)", onUpdate:draw, overwrite:"auto"});
     });
   });
 }
