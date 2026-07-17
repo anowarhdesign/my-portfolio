@@ -879,7 +879,7 @@ html.reduced #pre,html.reduced #det,html.reduced #cursor,html.reduced #cursorDot
 </section>
 
 <footer class="micro">
-  <span>© 2026 ANOWAR HOSSAIN</span>
+  <span>© <span id="cpyear">2026</span> ANOWAR HOSSAIN</span>
   <div class="socials">
     <a href="https://dribbble.com/anowarhdesign" target="_blank" rel="noopener">DRIBBBLE</a>
     <a href="https://www.linkedin.com/in/anowarhdesign/" target="_blank" rel="noopener">LINKEDIN</a>
@@ -1289,6 +1289,8 @@ if(grid && !reduced){
   (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve())
     .then(()=> requestAnimationFrame(layout));
 }
+
+document.getElementById("cpyear").textContent = new Date().getFullYear();
 
 /* ═══ live clock — Asia/Dhaka ═══ */
 const clock = document.getElementById("clock");
