@@ -256,12 +256,9 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:none;
 .sepline path{stroke:rgba(243,239,234,.12);stroke-width:1;fill:none}
 #depCard{position:fixed;top:0;left:0;z-index:150;pointer-events:none;opacity:0;
   background:rgba(18,16,14,.92);backdrop-filter:blur(16px);border:1px solid rgba(241,78,28,.25);
-  border-radius:var(--r-2);padding:18px 22px;min-width:230px;box-shadow:var(--glow-md);
-  will-change:transform}
-#depCard .dcn{font-family:"Archivo",sans-serif;font-weight:600;font-size:18px;letter-spacing:-.01em;
-  margin-bottom:6px}
-#depCard .dct{color:var(--ash);margin-bottom:2px}
-#depCard .dcu{color:var(--ember)}
+  border-radius:var(--r-2);padding:8px;box-shadow:var(--glow-md);will-change:transform}
+#depCard .dcimg{display:block;width:340px;height:212px;object-fit:cover;object-position:top;
+  border-radius:calc(var(--r-2) - 4px);background:#1a1815}
 #deploys .footnote{margin-top:var(--sp-5);color:var(--ash)}
 
 /* ══════════════ scene 4 · record ══════════════ */
@@ -696,9 +693,7 @@ html.reduced #pre,html.reduced #det,html.reduced #cursor,html.reduced #cursorDot
     <p class="footnote mono" data-reveal>EVERY LINK GOES TO A PRODUCTION SITE — INSPECT THE WORK YOURSELF.</p>
   </div>
   <div id="depCard" aria-hidden="true">
-    <div class="dcn"></div>
-    <div class="dct mono"></div>
-    <div class="dcu mono"></div>
+    <img class="dcimg" alt="" width="340" height="212">
   </div>
 </section>
 
@@ -1095,14 +1090,15 @@ if(fine && !reduced){
         cy = gsap.quickTo(card,"y",{duration:.5,ease:"power3"});
   gsap.set(card,{scale:.9,transformOrigin:"left center"});
   addEventListener("pointermove",e=>{
-    const offX = e.clientX + 260 > innerWidth ? -270 : 28;
-    cx(e.clientX + offX); cy(e.clientY - 40);
+    const offX = e.clientX + 390 > innerWidth ? -390 : 28;
+    cx(e.clientX + offX); cy(e.clientY - 114);
   });
+  const shot = u => "https://s0.wp.com/mshots/v1/" + encodeURIComponent(u) + "?w=680";
+  const img = card.querySelector(".dcimg");
+  deps.forEach(row=>{ new Image().src = shot(row.href); });
   deps.forEach(row=>{
     row.addEventListener("pointerenter",()=>{
-      card.querySelector(".dcn").textContent = row.dataset.name;
-      card.querySelector(".dct").textContent = row.dataset.tags;
-      card.querySelector(".dcu").textContent = "↗ " + row.dataset.host;
+      img.src = shot(row.href);
       gsap.to(card,{opacity:1,scale:1,duration:.35,ease:"expo.out",overwrite:"auto"});
     });
     row.addEventListener("pointerleave",()=>{
