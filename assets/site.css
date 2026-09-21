@@ -209,7 +209,7 @@ section{padding-block:clamp(64px,9.5vw,136px);position:relative}
   background:radial-gradient(circle at 50% 50%,rgba(241,78,28,.10),rgba(241,78,28,0) 65%);
   animation:drift 28s ease-in-out infinite alternate-reverse}
 @keyframes drift{0%{transform:translate3d(0,0,0) scale(1)}100%{transform:translate3d(-60px,50px,0) scale(1.12)}}
-.hero-in{position:relative;display:grid;grid-template-columns:minmax(0,1.42fr) minmax(0,.58fr);
+.hero-in{position:relative;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);
   gap:clamp(32px,4vw,64px);align-items:start}
 @media (min-width:1081px){.hero-in{align-items:center}}
 .hero-copy{display:flex;flex-direction:column;gap:clamp(22px,2.4vw,32px)}
@@ -430,8 +430,12 @@ section{padding-block:clamp(64px,9.5vw,136px);position:relative}
   .grain{display:none}
 }
 
-/* ── hero visual: one abstract, page-specific composition, no text/data ── */
-.hero-visual{position:relative;width:100%;aspect-ratio:2/3;border-radius:var(--r-lg);overflow:hidden;
+/* ── hero visual: one abstract, page-specific composition, no text/data ──
+   aspect-ratio (not a fixed height) is what actually guarantees "never
+   narrower than 9:16" — a fixed height:100vh here previously fought the
+   column's own width and produced an accidental, much-narrower strip. */
+.hero-visual{position:relative;width:100%;max-width:640px;aspect-ratio:9/16;
+  border-radius:var(--r-lg);overflow:hidden;
   background:linear-gradient(155deg,var(--paper-2) 0%,var(--card) 100%)}
 .hv-svg{position:absolute;inset:0;width:100%;height:100%}
 .hv-floor{fill:var(--ink);opacity:.1;filter:blur(9px)}
@@ -439,7 +443,6 @@ section{padding-block:clamp(64px,9.5vw,136px);position:relative}
 @keyframes hvbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 .sec-ink .hero-visual{background:linear-gradient(155deg,var(--ink-2) 0%,var(--ink) 100%)}
 .sec-ink .hv-floor{fill:#000;opacity:.35}
-@media (min-width:1081px){.hero-visual{height:100vh;aspect-ratio:auto}}
 
 /* ── responsive ── */
 @media (max-width:1080px){
