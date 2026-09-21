@@ -132,7 +132,7 @@ def band(title, text, cta="Book the discovery call"):
     </div>
     <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start;margin-top:6px">
       <a class="btn btn-primary" data-magnet data-cursor="Book" href="https://cal.com/anowarhdesign/discovery" target="_blank" rel="noopener">{cta} <span class="arw">&#8594;</span></a>
-      <span class="mono">Or write direct &#8212; {email_chip()}</span>
+      <span class="mono" style="text-transform:none;letter-spacing:normal">Or write direct &#8212; {email_chip()}</span>
     </div>
   </div>
   <form class="band-form" data-brief-form novalidate>
