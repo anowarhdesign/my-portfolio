@@ -28,7 +28,16 @@ python3 build/qa.py                      # full QA sweep (needs a server on :812
 | `pages3.py` | Work, pricing, process, about, contact, plus `sitemap.xml` and `llms.txt` |
 | `qa.py` | Crawls every page: titles, descriptions, canonicals, H1 count, schema, broken links, image alt/dimensions, heading order, landmarks, mobile overflow, load metrics |
 
-Assets in `assets/site.css` and `assets/site.js` are hand-written and edited directly.
+Assets in `assets/site.css` and `assets/site.js` are hand-written and edited directly. `page()` in
+`build.py` appends `?v=<md5 of the file>` to both `<link>`/`<script>` tags automatically — **never
+strip that query string or point either tag at a bare `/assets/site.css` / `/assets/site.js`**.
+`vercel.json` used to cache `/assets/(.*)` as `immutable, max-age=31536000`, which is only safe for
+content-hashed filenames; these two files keep the same URL every deploy, so that header made
+Vercel's edge (and browsers) go on serving whatever they'd cached from a *previous* deploy
+indefinitely — confirmed live on 2026-09-21: the aliased domain served CSS from the prior commit
+while every other alias of the same (correct) deployment served the current one. Header is now
+`max-age=0, must-revalidate`; the `?v=` hash is the actual fix — it's a genuinely new URL on every
+content change, so it can't be served stale regardless of any cache's headers.
 
 `uploads/logos/` holds the real client logos used in the home hero's marquee (`LOGOWALL` in
 `build.py`). Every logo — whatever its source colors — is recolored to one flat tone (`#4E4945`,

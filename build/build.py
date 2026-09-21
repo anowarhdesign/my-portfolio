@@ -1,10 +1,22 @@
 #!/usr/bin/env python3
 """Static page builder for anowarhdesign.com — shared shell + per-page content."""
-import json, os, pathlib
+import hashlib, json, os, pathlib
 from avatar import wordmark, AVATAR_CSS
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SITE = "https://anowarhdesign.com"
+
+# assets/site.css and assets/site.js keep the same URL every deploy (they are
+# hand-written, not content-hashed build output), so a cache-busting query
+# string is the only thing that forces browsers/edges to pick up a new
+# version — see vercel.json: even with must-revalidate, anything that already
+# cached the file under the old "immutable" header (a past bug) won't know to
+# recheck without the URL itself changing.
+def _asset_ver(name):
+    return hashlib.md5((ROOT / "assets" / name).read_bytes()).hexdigest()[:10]
+
+CSS_VER = _asset_ver("site.css")
+JS_VER = _asset_ver("site.js")
 
 NAV = [("Services", "/services"), ("Work", "/work"), ("Pricing", "/pricing"),
        ("Process", "/process"), ("About", "/about")]
@@ -210,7 +222,7 @@ def page(path, title, desc, body, schema, current="", trail=None):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/site.css?v={CSS_VER}">
 <script type="application/ld+json">
 {jsonld}
 </script>
@@ -236,7 +248,7 @@ def page(path, title, desc, body, schema, current="", trail=None):
 <script defer src="/_vercel/insights/script.js"></script>
 <script>window.si = window.si || function () {{ (window.siq = window.siq || []).push(arguments); }};</script>
 <script defer src="/_vercel/speed-insights/script.js"></script>
-<script defer src="/assets/site.js"></script>
+<script defer src="/assets/site.js?v={JS_VER}"></script>
 </body>
 </html>
 '''
