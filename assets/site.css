@@ -251,12 +251,13 @@ section{padding-block:clamp(64px,9.5vw,136px);position:relative}
   padding:clamp(24px,3vw,40px) 0;border-bottom:1px solid var(--line);position:relative;isolation:isolate;
   transition:padding-inline .55s var(--ease),color .35s}
 .sec-ink .row{border-color:rgba(244,241,235,.12)}
-.row::before{content:"";position:absolute;inset:0 -24px;z-index:-1;border-radius:18px;background:var(--ink);
+.row::before{content:"";position:absolute;inset:0 -24px;z-index:-1;border-radius:18px;
+  background:rgba(241,78,28,.08);box-shadow:inset 3px 0 0 var(--ember);
   transform:scaleY(0);transform-origin:bottom;transition:transform .55s var(--ease)}
-.sec-ink .row::before{background:var(--ember)}
+.sec-ink .row::before{background:rgba(241,78,28,.14)}
 .row:hover::before{transform:scaleY(1);transform-origin:top}
-.row:hover{padding-inline:24px;color:var(--paper)}
-.sec-ink .row:hover{color:#fff}
+.row:hover{padding-inline:24px;color:var(--ember-deep)}
+.sec-ink .row:hover{color:var(--ember-lift)}
 .row:hover .mono,.row:hover .row-name{color:inherit}
 .row .row-num{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ash-2);transition:color .35s}
 .row .row-name{font-size:clamp(24px,3.2vw,40px);font-weight:600;letter-spacing:-.03em;transition:color .35s}
