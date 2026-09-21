@@ -134,10 +134,15 @@
           if (label) label.textContent = labelled;
         } else if (!small) {
           ring.classList.add("hover");
+        } else {
+          /* the ring stays out of the way here so it never sits over dense nav/footer
+             text, but the dot still gives a small ember pulse instead of doing nothing */
+          dot.classList.add("pulse");
         }
       });
       el.addEventListener("pointerleave", function () {
         ring.classList.remove("hot", "hover");
+        dot.classList.remove("pulse");
         doc.classList.remove("hide-dot");
         if (label) label.textContent = "";
       });
@@ -165,13 +170,16 @@
       });
     }
 
-    /* magnetic buttons */
-    document.querySelectorAll(".btn[data-magnet]").forEach(function (el) {
+    /* magnetic buttons, plus a gentler version on the dock links so that quiet strip
+       of nav isn't the one place on the site the cursor has zero effect on anything */
+    document.querySelectorAll(".btn[data-magnet], .dock a").forEach(function (el) {
+      var isDock = el.closest(".dock") !== null;
+      var pull = isDock ? 0.16 : 0.28, pullY = isDock ? 0.22 : 0.42;
       var raf = null;
       el.addEventListener("pointermove", function (e) {
         var b = el.getBoundingClientRect();
-        var dx = (e.clientX - (b.left + b.width / 2)) * 0.28;
-        var dy = (e.clientY - (b.top + b.height / 2)) * 0.42;
+        var dx = (e.clientX - (b.left + b.width / 2)) * pull;
+        var dy = (e.clientY - (b.top + b.height / 2)) * pullY;
         cancelAnimationFrame(raf);
         raf = requestAnimationFrame(function () {
           el.style.transform = "translate(" + dx + "px," + dy + "px)";
