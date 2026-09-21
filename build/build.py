@@ -17,6 +17,12 @@ def _asset_ver(name):
 
 CSS_VER = _asset_ver("site.css")
 JS_VER = _asset_ver("site.js")
+# same reasoning as the CSS/JS cache-busting above: og-cover.jpg keeps the same
+# URL across deploys, and social platforms (Facebook, Slack, WhatsApp, LinkedIn)
+# cache a scraped link preview independently of our own Cache-Control header —
+# a same-URL replacement can go on serving the old image indefinitely unless
+# the URL itself changes.
+OG_VER = hashlib.md5((ROOT / "uploads" / "og-cover.jpg").read_bytes()).hexdigest()[:10]
 
 NAV = [("Services", "/services"), ("Work", "/work"), ("Pricing", "/pricing"),
        ("Process", "/process"), ("About", "/about")]
@@ -229,7 +235,7 @@ def page(path, title, desc, body, schema, current="", trail=None):
 <meta property="og:description" content="{desc}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="{url}">
-<meta property="og:image" content="{SITE}/uploads/og-cover.jpg">
+<meta property="og:image" content="{SITE}/uploads/og-cover.jpg?v={OG_VER}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Anowar Hossain — UI/UX design and Webflow / Framer development">
@@ -238,7 +244,7 @@ def page(path, title, desc, body, schema, current="", trail=None):
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{title}">
 <meta name="twitter:description" content="{desc}">
-<meta name="twitter:image" content="{SITE}/uploads/og-cover.jpg">
+<meta name="twitter:image" content="{SITE}/uploads/og-cover.jpg?v={OG_VER}">
 <link rel="icon" href="/uploads/favicon.ico" sizes="32x32">
 <link rel="icon" type="image/svg+xml" href="/uploads/mark.svg">
 <link rel="icon" type="image/png" href="/uploads/mark-64.png" sizes="64x64">
