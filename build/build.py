@@ -149,11 +149,11 @@ def band(title, text, cta="Book the discovery call"):
     <div class="bf-budget">
       <span class="bf-label">Project Budget</span>
       <div class="bf-chips" role="group" aria-label="Project budget">
-        <button type="button" data-chip aria-pressed="false">Less than $5K</button>
-        <button type="button" data-chip aria-pressed="false">$5K&#8211;$10K</button>
-        <button type="button" data-chip aria-pressed="false">$10K&#8211;$20K</button>
-        <button type="button" data-chip aria-pressed="false">$20K&#8211;$50K</button>
-        <button type="button" data-chip aria-pressed="false">More than $50K</button>
+        <button type="button" data-chip aria-pressed="false">Less than $1K</button>
+        <button type="button" data-chip aria-pressed="false">$1K&#8211;$2K</button>
+        <button type="button" data-chip aria-pressed="false">$2K&#8211;$4K</button>
+        <button type="button" data-chip aria-pressed="false">$4K&#8211;$10K</button>
+        <button type="button" data-chip aria-pressed="false">More than $10K</button>
       </div>
     </div>
     <label><span>Project Details<i class="bf-req" aria-hidden="true">*</i></span>

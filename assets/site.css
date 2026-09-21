@@ -401,9 +401,18 @@ section{padding-block:clamp(64px,9.5vw,136px);position:relative}
 .bf-chips [data-chip]:hover{border-color:rgba(244,241,235,.5);color:var(--bone)}
 .bf-chips [data-chip][aria-pressed="true"]{background:var(--ember);border-color:var(--ember);color:#fff}
 .band-form .btn{justify-content:center;width:100%;margin-top:2px}
-.bf-note{text-align:center;color:rgba(244,241,235,.4)}
-.bf-note.is-ok{color:var(--ember-lift)}
-.bf-note.is-err{color:#FF8B7A}
+.bf-note{text-align:center;color:rgba(244,241,235,.4);transition:all .2s}
+/* success/error are a real banner, not a quiet caption swap — bold, boxed,
+   and it pops in so a busy visitor doesn't miss whether the send worked */
+.bf-note.is-ok,.bf-note.is-err{display:flex;align-items:center;justify-content:center;gap:8px;
+  font-family:"Archivo",sans-serif;font-size:14.5px;font-weight:700;letter-spacing:normal;
+  text-transform:none;padding:13px 16px;border-radius:12px;animation:bf-pop .3s var(--ease)}
+.bf-note.is-ok::before,.bf-note.is-err::before{font-size:15px;line-height:1}
+.bf-note.is-ok{color:#fff;background:rgba(241,128,85,.16);border:1px solid var(--ember-lift)}
+.bf-note.is-ok::before{content:"\2713"}
+.bf-note.is-err{color:#fff;background:rgba(255,139,122,.14);border:1px solid #FF8B7A}
+.bf-note.is-err::before{content:"\26A0"}
+@keyframes bf-pop{0%{opacity:0;transform:scale(.92) translateY(4px)}100%{opacity:1;transform:scale(1) translateY(0)}}
 .bf-hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;opacity:0;pointer-events:none}
 .band-form .btn[disabled]{opacity:.6;cursor:default;pointer-events:none}
 @media (max-width:1080px){.band{grid-template-columns:1fr}.band-pitch{max-width:none}}
@@ -475,6 +484,9 @@ section{padding-block:clamp(64px,9.5vw,136px);position:relative}
   .row{grid-template-columns:auto minmax(0,1fr) auto;gap:14px}
   .row .row-tag{display:none}
   .cursor,.cursor-dot{display:none}
+  /* short and wide instead of tall on phones — the 9:16 panel that works
+     as a side-by-side hero column just eats the whole screen when stacked */
+  .hero-visual{aspect-ratio:16/9;max-width:none}
 }
 
 /* ── the mark: A + face + NOWAR ── */
