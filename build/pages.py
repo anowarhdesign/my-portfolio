@@ -129,7 +129,8 @@ page("index.html",
        "areaServed": ["US", "GB", "CA", "AU", "DE", "NL"]},
       {"@type": "WebSite", "@id": S + "/#website", "url": S + "/",
        "name": "Anowar Hossain", "publisher": {"@id": S + "/#person"}},
-      faq_schema(home_faq)],
+      faq_schema(home_faq),
+      *review_schema(["webflow", "rigor", "listen"])],
      current="/")
 
 # ─────────────────────────── SERVICES HUB ───────────────────────────

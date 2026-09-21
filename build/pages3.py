@@ -114,7 +114,11 @@ work_body = f'''
 '''
 page("work/index.html", "Work | Webflow &amp; Framer Case Studies | Anowar Hossain",
      "Live Webflow and Framer sites for CADDi, Assistments, Stratus Neuro, SecureCDP, 0xBow and more - enterprise, SaaS, medtech and Web3 clients across the US and Europe.",
-     work_body, [], current="/work", trail=[("Home", "/"), ("Work", "/work")])
+     work_body,
+     [{"@type": "CollectionPage", "@id": S + "/work#page", "name": "Work",
+       "url": S + "/work", "mainEntity": itemlist_schema(CASES)},
+      *review_schema(["teach", "startup", "rigor"])],
+     current="/work", trail=[("Home", "/"), ("Work", "/work")])
 
 # ─────────────────────────── PRICING ───────────────────────────
 BANDS = [
@@ -375,7 +379,9 @@ about_body = f'''
 '''
 page("about/index.html", "About Anowar Hossain | UI/UX Designer &amp; Webflow Developer",
      "Anowar Hossain is a UI/UX designer and Webflow & Framer developer in Dhaka, working with US and European teams. Top Rated on Upwork, 2,237 hours logged.",
-     about_body, [{"@type": "AboutPage", "@id": S + "/about#page", "mainEntity": {"@id": S + "/#person"}}],
+     about_body,
+     [{"@type": "AboutPage", "@id": S + "/about#page", "mainEntity": {"@id": S + "/#person"}},
+      *review_schema(["design"])],
      current="/about", trail=[("Home", "/"), ("About", "/about")])
 
 # ─────────────────────────── CONTACT ───────────────────────────
@@ -440,6 +446,8 @@ page("contact/index.html", "Contact | Book a Discovery Call | Anowar Hossain",
      current="", trail=[("Home", "/"), ("Contact", "/contact")])
 
 # ─────────────────────────── sitemap + llms.txt ───────────────────────────
+import datetime
+BUILD_DATE = datetime.date.today().isoformat()
 URLS = ["/", "/services", "/services/product-design", "/services/webflow-development",
         "/services/framer-development", "/services/ai-product-builds", "/work", "/pricing",
         "/process", "/about", "/contact"]
@@ -447,7 +455,8 @@ sm = ['<?xml version="1.0" encoding="UTF-8"?>',
       '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
 for u in URLS:
     pri = "1.0" if u == "/" else ("0.9" if u.startswith("/services") else "0.7")
-    sm.append(f"  <url><loc>{S}{u}</loc><changefreq>monthly</changefreq><priority>{pri}</priority></url>")
+    sm.append(f"  <url><loc>{S}{u}</loc><lastmod>{BUILD_DATE}</lastmod>"
+              f"<changefreq>monthly</changefreq><priority>{pri}</priority></url>")
 sm.append("</urlset>")
 (ROOT / "sitemap.xml").write_text("\n".join(sm) + "\n", encoding="utf-8")
 

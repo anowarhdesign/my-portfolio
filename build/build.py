@@ -47,6 +47,19 @@ def faq_schema(items):
         {"@type": "Question", "name": q,
          "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in items]}
 
+def review_schema(keys):
+    """Review objects for the QUOTES actually rendered as visible <figure class="quote">
+    on that page — schema must mirror on-page content, not every testimonial site-wide."""
+    return [{"@type": "Review", "reviewBody": QUOTES[k][0],
+             "author": {"@type": "Organization", "name": "Verified Upwork Client"},
+             "itemReviewed": {"@id": SITE + "/#person"}} for k in keys]
+
+def itemlist_schema(cases):
+    return {"@type": "ItemList", "itemListElement": [
+        {"@type": "ListItem", "position": i + 1,
+         "item": {"@type": "CreativeWork", "name": name, "url": "https://" + host}}
+        for i, (name, host, *_rest) in enumerate(cases)]}
+
 def faq_html(items):
     out = ['<div class="faq" data-reveal>']
     for q, a in items:

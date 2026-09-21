@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://anowarhdesign.com/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://anowarhdesign.com/services</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://anowarhdesign.com/services/product-design</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://anowarhdesign.com/services/webflow-development</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://anowarhdesign.com/services/framer-development</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://anowarhdesign.com/services/ai-product-builds</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://anowarhdesign.com/work</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://anowarhdesign.com/pricing</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://anowarhdesign.com/process</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://anowarhdesign.com/about</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://anowarhdesign.com/contact</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://anowarhdesign.com/</loc><lastmod>2026-09-22</lastmod><changefreq>monthly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://anowarhdesign.com/services</loc><lastmod>2026-09-22</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://anowarhdesign.com/services/product-design</loc><lastmod>2026-09-22</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://anowarhdesign.com/services/webflow-development</loc><lastmod>2026-09-22</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://anowarhdesign.com/services/framer-development</loc><lastmod>2026-09-22</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://anowarhdesign.com/services/ai-product-builds</loc><lastmod>2026-09-22</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://anowarhdesign.com/work</loc><lastmod>2026-09-22</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://anowarhdesign.com/pricing</loc><lastmod>2026-09-22</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://anowarhdesign.com/process</loc><lastmod>2026-09-22</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://anowarhdesign.com/about</loc><lastmod>2026-09-22</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://anowarhdesign.com/contact</loc><lastmod>2026-09-22</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>

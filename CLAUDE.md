@@ -108,8 +108,9 @@ only accent. Ember at body size drops to `#BF3A11` for contrast.
 
 Top Rated on Upwork · 100% job success · 2,237 hours logged · 399+ projects completed · 6+ years ·
 clients in US, UK, Canada, Australia, EU. Credentials: Webflow Experts Certification, Google UX
-Design Professional Certificate. Price bands: landing page from $900, marketing site $2,500–$6,000,
-product design $3,000–$7,000, AI product build $1,500–$4,000, care plan $300–$900/mo.
+Design Professional Certificate. Price bands (halved 2026-09-22 from the original figures — verify
+before quoting elsewhere): landing page from $450, marketing site $1,250–$3,000, product design
+$1,500–$3,500, AI product build $750–$2,000, care plan $150–$450/mo.
 
 "399+ projects completed" (2026-09-21, confirmed by Anowar as accurate across all platforms, not
 just the 50 completed Upwork contracts) replaces the old site's unverified "398+ projects" claim,
