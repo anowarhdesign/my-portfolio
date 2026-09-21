@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from build import *   # noqa
 from pages import svc_schema   # noqa
+from graphics import hero_graphic   # noqa
 
 S = SITE
 case_by = {c[0]: c for c in CASES}
@@ -20,7 +21,10 @@ def service_page(slug, nav_title, h1_a, h1_b, answer, fits, not_fits, included, 
       </div>
       {BADGE}
     </div>
-    <aside class="hero-aside">{quote(quote_key)}</aside>
+    <aside class="hero-aside">
+      {hero_graphic(slug)}
+      {quote(quote_key)}
+    </aside>
   </div>
 </section>
 

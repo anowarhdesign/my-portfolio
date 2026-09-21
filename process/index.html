@@ -270,14 +270,37 @@
 </section>
 
 <section style="padding-block:0"><div class="band" data-reveal>
-  <div style="max-width:640px">
-    <h2 style="font-size:clamp(28px,3.6vw,44px)">Step one is a call.</h2>
-    <p class="lead" style="margin-top:14px">Thirty minutes, no pitch. If I am not the right fit for the project, I will tell you on that call.</p>
+  <div class="band-pitch">
+    <h2>Step one is a call.</h2>
+    <p class="lead">Thirty minutes, no pitch. If I am not the right fit for the project, I will tell you on that call.</p>
+    <ul class="band-checks"><li><span class="ck">&#10003;</span>Reply within 24 hours</li><li><span class="ck">&#10003;</span>Fixed quote, no hourly meter</li><li><span class="ck">&#10003;</span>One operator, start to finish</li></ul>
+    <div class="band-who">
+      <img src="/uploads/portrait-380.webp" width="44" height="44" alt="Anowar Hossain" loading="lazy">
+      <div><strong>Anowar Hossain</strong><span>UI/UX Designer &amp; Developer</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start;margin-top:6px">
+      <a class="btn btn-primary" data-magnet data-cursor="Book" href="https://cal.com/anowarhdesign/discovery" target="_blank" rel="noopener">Book the discovery call <span class="arw">&#8594;</span></a>
+      <span class="mono">Or write direct &#8212; hello@anowarhdesign.com</span>
+    </div>
   </div>
-  <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start">
-    <a class="btn btn-primary" data-magnet data-cursor="Book" href="https://cal.com/anowarhdesign/discovery" target="_blank" rel="noopener">Book the discovery call <span class="arw">&#8594;</span></a>
-    <span class="mono">Or write direct &#8212; hello@anowarhdesign.com</span>
-  </div>
+  <form class="band-form" data-brief-form novalidate>
+    <span class="mono">Or send a quick brief</span>
+    <div class="bf-row">
+      <label>Name<input type="text" name="name" autocomplete="name" required></label>
+      <label>Email<input type="email" name="email" autocomplete="email" required></label>
+    </div>
+    <div class="bf-budget">
+      <span class="bf-label">Rough budget</span>
+      <div class="bf-chips" role="group" aria-label="Rough budget">
+        <button type="button" data-chip aria-pressed="false">Under $2k</button>
+        <button type="button" data-chip aria-pressed="false">$2k&#8211;$6k</button>
+        <button type="button" data-chip aria-pressed="false">$6k+</button>
+      </div>
+    </div>
+    <label>What are you building?<textarea name="details" rows="3" required></textarea></label>
+    <button class="btn btn-ink" type="submit">Send the brief <span class="arw">&#8594;</span></button>
+    <span class="mono bf-note">Opens your email app, prefilled &#8212; nothing is sent from here</span>
+  </form>
 </div></section>
 
 </main>

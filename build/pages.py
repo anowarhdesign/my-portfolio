@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from build import *   # noqa
+from graphics import hero_graphic   # noqa
 
 S = SITE
 
@@ -34,10 +35,8 @@ home_body = f'''
       {LOGOWALL}
     </div>
     <aside class="hero-aside">
+      {hero_graphic("home")}
       {quote("framer")}
-      <div class="card" data-reveal>
-        <div class="stat"><div class="n">4&#8211;6</div><div class="l">weeks, brief to launch</div></div>
-      </div>
     </aside>
   </div>
 </section>

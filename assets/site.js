@@ -195,6 +195,32 @@
     });
   }
 
+  /* ─── cta band: budget chips + quick-brief mailto composer ─── */
+  document.querySelectorAll(".bf-chips").forEach(function (group) {
+    var chips = group.querySelectorAll("[data-chip]");
+    chips.forEach(function (chip) {
+      chip.addEventListener("click", function () {
+        chips.forEach(function (c) { c.setAttribute("aria-pressed", "false"); });
+        chip.setAttribute("aria-pressed", "true");
+      });
+    });
+  });
+  document.querySelectorAll("[data-brief-form]").forEach(function (form) {
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var name = (form.querySelector('[name="name"]') || {}).value || "";
+      var email = (form.querySelector('[name="email"]') || {}).value || "";
+      var details = (form.querySelector('[name="details"]') || {}).value || "";
+      var chip = form.querySelector('[data-chip][aria-pressed="true"]');
+      var budget = chip ? chip.textContent.trim() : "Not specified";
+      var subject = "Project enquiry" + (name.trim() ? " from " + name.trim() : "");
+      var body = "Name: " + name + "\nEmail: " + email + "\nRough budget: " + budget +
+        "\n\n" + details;
+      location.href = "mailto:hello@anowarhdesign.com?subject=" + encodeURIComponent(subject) +
+        "&body=" + encodeURIComponent(body);
+    });
+  });
+
   /* ─── mobile nav ─── */
   var toggle = document.querySelector(".navtoggle");
   var links = document.querySelector(".navlinks");
