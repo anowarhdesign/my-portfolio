@@ -1,0 +1,31 @@
+# Anowar Hossain
+
+> UI/UX designer and Webflow & Framer developer based in Dhaka, Bangladesh, working with SaaS, AI,
+> healthcare and enterprise teams across the US, UK, Canada, Australia and Europe. Top Rated on Upwork
+> with 100% job success and 2,237 hours logged. One operator: design and development by the same person,
+> quoted as a fixed price.
+
+## Services
+- Product design (UX + UI in Figma, developer-ready): $3,000-$7,000, 4-8 weeks. https://anowarhdesign.com/services/product-design
+- Webflow development (editor-proof CMS, migration, QA): $2,500-$6,000, 4-6 weeks. https://anowarhdesign.com/services/webflow-development
+- Framer development (landing pages, launch sites, motion): from $900, 1-2 weeks. https://anowarhdesign.com/services/framer-development
+- AI product builds (finishing Lovable / v0 / Claude Code prototypes): $1,500-$4,000, 2-5 weeks. https://anowarhdesign.com/services/ai-product-builds
+
+## Facts
+- Based in Dhaka, Bangladesh (GMT+6); overlaps New York mornings (09:00-13:00 ET) and full European business hours.
+- Replies within 24 hours. Weekly demo calls. Fixed quotes, no hourly billing.
+- Credentials: Webflow Experts Certification; Google UX Design Professional Certificate; Top Rated on Upwork.
+- Clients include CADDi, Assistments, Stratus Neuro, SecureCDP, UberStrategist, Fit3D, 0xBow.
+
+## Pages
+- Home: https://anowarhdesign.com/
+- Services: https://anowarhdesign.com/services
+- Work: https://anowarhdesign.com/work
+- Pricing: https://anowarhdesign.com/pricing
+- Process: https://anowarhdesign.com/process
+- About: https://anowarhdesign.com/about
+- Contact: https://anowarhdesign.com/contact
+
+## Contact
+- Email: hello@anowarhdesign.com
+- Discovery call: https://cal.com/anowarhdesign/discovery

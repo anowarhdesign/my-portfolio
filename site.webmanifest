@@ -1,0 +1,31 @@
+{
+  "name": "Anowar Hossain \u2014 UI/UX Designer & Webflow Developer",
+  "short_name": "Anowar H.",
+  "start_url": "/",
+  "display": "minimal-ui",
+  "background_color": "#F4F1EB",
+  "theme_color": "#F4F1EB",
+  "icons": [
+    {
+      "src": "/uploads/mark-64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "/uploads/mark-180.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/uploads/mark-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/uploads/mark.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
