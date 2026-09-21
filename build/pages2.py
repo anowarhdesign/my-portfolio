@@ -21,10 +21,7 @@ def service_page(slug, nav_title, h1_a, h1_b, answer, fits, not_fits, included, 
       </div>
       {BADGE}
     </div>
-    <aside class="hero-aside">
-      {hero_visual(slug)}
-      {quote(quote_key)}
-    </aside>
+    <aside class="hero-aside">{hero_visual(slug)}</aside>
   </div>
 </section>
 

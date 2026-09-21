@@ -34,10 +34,7 @@ home_body = f'''
       </div>
       {LOGOWALL}
     </div>
-    <aside class="hero-aside">
-      {hero_visual("home")}
-      {quote("framer")}
-    </aside>
+    <aside class="hero-aside">{hero_visual("home")}</aside>
   </div>
 </section>
 

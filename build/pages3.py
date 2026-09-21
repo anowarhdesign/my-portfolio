@@ -40,10 +40,7 @@ work_body = f'''
         <a class="btn btn-ghost" href="/services">See services</a>
       </div>
     </div>
-    <aside class="hero-aside">
-      {hero_visual("work")}
-      {quote("english")}
-    </aside>
+    <aside class="hero-aside">{hero_visual("work")}</aside>
   </div>
 </section>
 
@@ -115,10 +112,7 @@ pricing_body = f'''
       </div>
       {BADGE}
     </div>
-    <aside class="hero-aside">
-      {hero_visual("pricing")}
-      {quote("framer")}
-    </aside>
+    <aside class="hero-aside">{hero_visual("pricing")}</aside>
   </div>
 </section>
 
@@ -204,10 +198,7 @@ process_body = f'''
         <a class="btn btn-ghost" href="/pricing">See pricing</a>
       </div>
     </div>
-    <aside class="hero-aside">
-      {hero_visual("process")}
-      {quote("rigor")}
-    </aside>
+    <aside class="hero-aside">{hero_visual("process")}</aside>
   </div>
 </section>
 
@@ -355,10 +346,7 @@ contact_body = f'''
       </div>
       {BADGE}
     </div>
-    <aside class="hero-aside">
-      {hero_visual("contact")}
-      {quote("english")}
-    </aside>
+    <aside class="hero-aside">{hero_visual("contact")}</aside>
   </div>
 </section>
 

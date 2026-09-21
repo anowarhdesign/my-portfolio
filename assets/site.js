@@ -195,7 +195,7 @@
     });
   }
 
-  /* ─── cta band: budget chips + quick-brief mailto composer ─── */
+  /* ─── cta band: budget chips + quick-brief form (POSTs to /api/contact) ─── */
   document.querySelectorAll(".bf-chips").forEach(function (group) {
     var chips = group.querySelectorAll("[data-chip]");
     chips.forEach(function (chip) {
@@ -206,18 +206,44 @@
     });
   });
   document.querySelectorAll("[data-brief-form]").forEach(function (form) {
+    var note = form.querySelector("[data-bf-note]");
+    var noteDefault = note ? note.textContent : "";
+    var submitBtn = form.querySelector('button[type="submit"]');
+    var submitDefault = submitBtn ? submitBtn.innerHTML : "";
+
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       var name = (form.querySelector('[name="name"]') || {}).value || "";
       var email = (form.querySelector('[name="email"]') || {}).value || "";
       var details = (form.querySelector('[name="details"]') || {}).value || "";
+      var company = (form.querySelector('[name="company"]') || {}).value || "";
       var chip = form.querySelector('[data-chip][aria-pressed="true"]');
-      var budget = chip ? chip.textContent.trim() : "Not specified";
-      var subject = "Project enquiry" + (name.trim() ? " from " + name.trim() : "");
-      var body = "Name: " + name + "\nEmail: " + email + "\nRough budget: " + budget +
-        "\n\n" + details;
-      location.href = "mailto:hello@anowarhdesign.com?subject=" + encodeURIComponent(subject) +
-        "&body=" + encodeURIComponent(body);
+      var budget = chip ? chip.textContent.trim() : "";
+
+      if (!name.trim() || !email.trim() || !details.trim()) return;
+
+      if (submitBtn) { submitBtn.setAttribute("disabled", "disabled"); submitBtn.textContent = "Sending…"; }
+      if (note) { note.textContent = noteDefault; note.classList.remove("is-ok", "is-err"); }
+
+      fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: name, email: email, budget: budget, details: details, company: company })
+      }).then(function (res) {
+        if (!res.ok) throw new Error("bad status");
+        return res.json();
+      }).then(function () {
+        if (note) { note.textContent = "Sent — I’ll reply within 24 hours."; note.classList.add("is-ok"); }
+        form.reset();
+        form.querySelectorAll("[data-chip]").forEach(function (c) { c.setAttribute("aria-pressed", "false"); });
+      }).catch(function () {
+        if (note) {
+          note.textContent = "Couldn’t send — email hello@anowarhdesign.com directly instead.";
+          note.classList.add("is-err");
+        }
+      }).finally(function () {
+        if (submitBtn) { submitBtn.removeAttribute("disabled"); submitBtn.innerHTML = submitDefault; }
+      });
     });
   });
 

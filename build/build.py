@@ -150,8 +150,9 @@ def band(title, text, cta="Book the discovery call"):
       </div>
     </div>
     <label>What are you building?<textarea name="details" rows="3" required></textarea></label>
+    <input type="text" name="company" class="bf-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
     <button class="btn btn-ink" type="submit">Send the brief <span class="arw">&#8594;</span></button>
-    <span class="mono bf-note">Opens your email app, prefilled &#8212; nothing is sent from here</span>
+    <span class="mono bf-note" data-bf-note>Sent straight to my inbox &#8212; I reply within 24 hours</span>
   </form>
 </div>'''
 

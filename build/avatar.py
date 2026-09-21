@@ -72,5 +72,4 @@ AVATAR_CSS = '''
 def wordmark(href="/", extra_class=""):
     return (f'<a class="wordmark {extra_class}" href="{href}" aria-label="Anowar Hossain — home">'
             f'<span>AN</span>{AVATAR_SVG}<span>WAR</span>'
-            f'<span class="reg" aria-hidden="true">&#174;</span>'
             '</a>')

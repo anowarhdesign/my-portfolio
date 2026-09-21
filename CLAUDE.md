@@ -2,6 +2,21 @@
 
 Personal site for Anowar Hossain — UI/UX designer and Webflow / Framer developer, Dhaka (GMT+6),
 working with US, UK and EU clients. Static HTML, no framework, deployed on Vercel from this repo.
+One dynamic piece: `api/contact.js`, a Vercel serverless function (plain Node, zero-config — no
+framework needed for `/api/*.js` to work on Vercel).
+
+## Contact form backend
+
+The quick-brief form in the CTA band (`band()` in `build.py`) POSTs JSON to `/api/contact.js`,
+which emails it via Resend to `anowarhdesign@gmail.com` (reply-to set to the visitor's address).
+**Requires a `RESEND_API_KEY` environment variable in the Vercel project** (Settings -> Environment
+Variables — a free Resend account and API key take a couple of minutes at resend.com). Without it
+the function returns 500 and the form shows "Couldn't send — email hello@anowarhdesign.com
+directly instead"; the form degrades gracefully, it doesn't break. The sender is
+`onboarding@resend.dev` (Resend's shared test sender, works with no domain verification); verifying
+`anowarhdesign.com` with Resend later would let mail go out as `@anowarhdesign.com` instead, purely
+a deliverability/branding upgrade, not required for the form to work. There's a hidden honeypot
+field (`company`) for basic bot filtering.
 
 ## How this site is built
 
