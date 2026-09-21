@@ -294,6 +294,8 @@ LOGOS = [
     ("Spoiler Alert", "spoileralert.svg", False, None),
     ("0xBow", "0xbow.svg", True, None),
     ("Gym Insight", "gyminsight.png", False, (165, 52)),
+    ("Spiritus", "spiritus.svg", False, None),
+    ("Ethereum Community Foundation", "ecf.png", False, (305, 48)),
 ]
 
 def _logo_item(name, filename, with_label, size):
@@ -387,7 +389,8 @@ THUMBS = {"SalesPeak AI": "/uploads/thumbs/salespeak.webp", "0xBow": "/uploads/t
           "Embedded Finance Review": "/uploads/thumbs/embeddedfinance.webp",
           "UberStrategist": "/uploads/thumbs/uberstrategist.webp", "Fit3D": "/uploads/thumbs/fit3d.webp",
           "UserVoice": "/uploads/thumbs/uservoice.webp", "Spiritus": "/uploads/thumbs/spiritus.webp",
-          "Spoiler Alert": "/uploads/thumbs/spoileralert.webp", "Gym Insight": "/uploads/thumbs/gyminsight.webp"}
+          "Spoiler Alert": "/uploads/thumbs/spoileralert.webp", "Gym Insight": "/uploads/thumbs/gyminsight.webp",
+          "Prison Mathematics Project": "/uploads/thumbs/prisonmath.webp"}
 
 def case_card(c):
     name, host, tag, grad, tagcol, blurb = c

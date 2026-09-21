@@ -56,6 +56,7 @@ DEPLOYS = [
  ("CarWebsite", "carwebsite-0270ee.webflow.io/tesla-convertibles", "Webflow &#183; Concept &#183; Automotive", "2026"),
  ("Notion Depot", "notion-depot.webflow.io", "Webflow &#183; Digital Product &#183; Templates", "2026"),
  ("Embedded Finance Review", "www.embeddedfinancereview.com", "Webflow &#183; Media &#183; Fintech", "2026"),
+ ("Prison Mathematics Project", "www.prisonmathproject.org", "Webflow &#183; Nonprofit &#183; Edtech", "2026"),
 ]
 
 # ─────────────────────────── WORK ───────────────────────────
@@ -90,10 +91,14 @@ work_body = f'''
     <div class="sec-head"><div><span class="mono">Case studies</span>
       <h2>Twelve builds,<br><span class="serif ember">in detail.</span></h2></div></div>
     <div class="grid g-3">{"".join(case_card(c) for c in CASES)}</div>
+    <a class="more-cue" href="#deployments" data-reveal>
+      <span class="mono">{len(DEPLOY_ROWS) - len(CASES)} more, shipped &amp; live</span>
+      <span class="more-cue-arrow" aria-hidden="true">&#8595;</span>
+    </a>
   </div>
 </section>
 
-<section class="sec-ink">
+<section class="sec-ink" id="deployments">
   <div class="wrap">
     <div class="sec-head"><div><span class="mono">Latest deployments</span>
       <h2>Every site,<br>shipped &amp; live.</h2></div></div>

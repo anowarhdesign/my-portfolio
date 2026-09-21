@@ -18,7 +18,7 @@
   --shadow-sm:0 18px 36px -24px rgba(14,13,12,.35);
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
 body{background:var(--paper);color:var(--ink);
   font-family:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
   font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
@@ -244,6 +244,15 @@ section{padding-block:clamp(64px,9.5vw,136px);position:relative}
 .logowall-item:hover{opacity:1}
 @keyframes slide{to{transform:translateX(-50%)}}
 
+/* ── scroll-on cue: points from the featured grid down to the full list ── */
+.more-cue{display:flex;flex-direction:column;align-items:center;gap:12px;
+  margin:clamp(40px,5vw,64px) auto 0;width:fit-content;text-decoration:none;color:var(--ash-2);transition:color .3s}
+.more-cue:hover{color:var(--ember-deep)}
+.more-cue-arrow{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;
+  border-radius:50%;border:1px solid var(--line-2);animation:cue-bob 1.8s ease-in-out infinite;transition:border-color .3s}
+.more-cue:hover .more-cue-arrow{border-color:var(--ember)}
+@keyframes cue-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+
 /* ── work rows + elastic cursor preview ── */
 .rows{border-top:1px solid var(--line)}
 .sec-ink .rows{border-color:rgba(244,241,235,.12)}
@@ -252,7 +261,7 @@ section{padding-block:clamp(64px,9.5vw,136px);position:relative}
   transition:padding-inline .55s var(--ease),color .35s}
 .sec-ink .row{border-color:rgba(244,241,235,.12)}
 .row::before{content:"";position:absolute;inset:0 -24px;z-index:-1;border-radius:18px;
-  background:rgba(241,78,28,.08);box-shadow:inset 3px 0 0 var(--ember);
+  background:rgba(241,78,28,.08);
   transform:scaleY(0);transform-origin:bottom;transition:transform .55s var(--ease)}
 .sec-ink .row::before{background:rgba(241,78,28,.14)}
 .row:hover::before{transform:scaleY(1);transform-origin:top}
@@ -442,6 +451,7 @@ section{padding-block:clamp(64px,9.5vw,136px);position:relative}
   [data-reveal]{opacity:1;transform:none}
   .line>span{transform:none}
   .grain{display:none}
+  html{scroll-behavior:auto}
 }
 
 /* ── hero visual: one abstract, page-specific composition, no text/data ──
