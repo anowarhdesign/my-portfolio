@@ -351,6 +351,14 @@ CASES = [
   "#A8C5FF", "Explaining an AI sales platform to enterprise buyers who distrust AI marketing copy."),
  ("WaterH", "www.waterh.com/pages/about-waterh-app", "UI/UX &#183; Healthcare", "linear-gradient(140deg,#0E1618 0%,#123840 100%)",
   "#8FE3F0", "A smart-bottle companion app where usability and accessibility were requirements, not afterthoughts."),
+ ("UserVoice", "uservoice.com", "Webflow &#183; B2B SaaS", "linear-gradient(140deg,#1A140F 0%,#402A12 100%)",
+  "#FFB77A", "Positioning a mature customer-intelligence platform for enterprise buyers &#8212; years of feature depth compressed into one confident narrative."),
+ ("Fit3D", "fit3d.com", "Webflow &#183; Healthtech", "linear-gradient(140deg,#100E0C 0%,#2A1F16 100%)",
+  "#E8B98F", "Ten years and $25M of body-scanning R&amp;D compressed into one clear pitch, credible enough for gyms and clinics to buy on the spot."),
+ ("THE ONE Bespoke", "theonebespoke.com", "Webflow &#183; Fashion / AI", "linear-gradient(140deg,#17130F 0%,#3A2530 100%)",
+  "#E8B4C8", "An AI dress configurator that still feels handcrafted &#8212; the interface stays out of the way of the couture."),
+ ("CFS", "cfsnnn.com", "Webflow &#183; Proptech / AI", "linear-gradient(140deg,#0E161A 0%,#163A44 100%)",
+  "#8FD8E0", "Predictive tenant-risk scoring for retail real estate &#8212; a data-dense product made legible to portfolio managers, not just analysts."),
 ]
 
 THUMBS = {"SalesPeak AI": "/uploads/thumbs/salespeak.webp", "0xBow": "/uploads/thumbs/0xbow.webp",
@@ -376,7 +384,10 @@ THUMBS = {"SalesPeak AI": "/uploads/thumbs/salespeak.webp", "0xBow": "/uploads/t
           "meFuse": "/uploads/thumbs/mefuse.webp", "THE ONE Bespoke": "/uploads/thumbs/theone.webp",
           "FindingFemaleFriends>50": "/uploads/thumbs/fff50.webp", "Tina K": "/uploads/thumbs/tinaks.webp",
           "CarWebsite": "/uploads/thumbs/carwebsite.webp", "Notion Depot": "/uploads/thumbs/notiondepot.webp",
-          "Embedded Finance Review": "/uploads/thumbs/embeddedfinance.webp"}
+          "Embedded Finance Review": "/uploads/thumbs/embeddedfinance.webp",
+          "UberStrategist": "/uploads/thumbs/uberstrategist.webp", "Fit3D": "/uploads/thumbs/fit3d.webp",
+          "UserVoice": "/uploads/thumbs/uservoice.webp", "Spiritus": "/uploads/thumbs/spiritus.webp",
+          "Spoiler Alert": "/uploads/thumbs/spoileralert.webp", "Gym Insight": "/uploads/thumbs/gyminsight.webp"}
 
 def case_card(c):
     name, host, tag, grad, tagcol, blurb = c

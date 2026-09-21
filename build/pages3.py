@@ -88,7 +88,7 @@ work_body = f'''
 <section style="padding-top:0">
   <div class="wrap">
     <div class="sec-head"><div><span class="mono">Case studies</span>
-      <h2>Eight builds,<br><span class="serif ember">in detail.</span></h2></div></div>
+      <h2>Twelve builds,<br><span class="serif ember">in detail.</span></h2></div></div>
     <div class="grid g-3">{"".join(case_card(c) for c in CASES)}</div>
   </div>
 </section>
