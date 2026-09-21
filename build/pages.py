@@ -17,7 +17,7 @@ home_faq = [
  ("Can one person really design and build a whole site?",
   "Yes, and that is the point. A single operator holds the goals from the first call to launch, so nothing is lost between a strategist, a designer and a dev shop. It means faster decisions, one person accountable for the result, and a build where the design intent actually survives."),
  ("What does a project cost?",
-  "A landing page starts at $900, a 6&#8211;12 page marketing site with CMS runs $2,500&#8211;$6,000, and a product design engagement runs $3,000&#8211;$7,000. Every project is a fixed quote agreed after the discovery call &#8212; no hourly meters."),
+  "A landing page starts at $450, a 6&#8211;12 page marketing site with CMS runs $1,250&#8211;$3,000, and a product design engagement runs $1,500&#8211;$3,500. Every project is a fixed quote agreed after the discovery call &#8212; no hourly meters."),
 ]
 
 home_body = f'''
@@ -125,7 +125,7 @@ page("index.html",
      [{"@type": "ProfessionalService", "@id": S + "/#business", "name": "Anowar Hossain",
        "description": "UI/UX design and Webflow & Framer development for SaaS, AI and enterprise teams.",
        "url": S + "/", "founder": {"@id": S + "/#person"},
-       "priceRange": "$900-$12,000",
+       "priceRange": "$450-$6,000",
        "areaServed": ["US", "GB", "CA", "AU", "DE", "NL"]},
       {"@type": "WebSite", "@id": S + "/#website", "url": S + "/",
        "name": "Anowar Hossain", "publisher": {"@id": S + "/#person"}},
@@ -137,7 +137,7 @@ hub_faq = [
  ("Do you design and develop, or only one?",
   "Both, in one engagement. Most projects run design straight into build, which removes the handoff where intent usually gets lost. I also take build-only work from an existing Figma file, and design-only work that another team will implement."),
  ("Which platform should I choose &#8212; Webflow or Framer?",
-  "Framer wins on speed to launch and motion: a marketing site or landing page live in one to two weeks. Webflow wins when a marketing team owns the content, the site grows past twenty pages, or you need structured CMS collections and integrations."),
+  "Framer wins on speed to launch and motion: a marketing site or landing page live in three to seven days. Webflow wins when a marketing team owns the content, the site grows past twenty pages, or you need structured CMS collections and integrations."),
  ("Can you work with my existing team?",
   "Yes. I join at whatever stage needs the hands &#8212; designing against a developer&#8217;s constraints, building from your designer&#8217;s file, or taking a stalled project the rest of the way."),
 ]
@@ -150,7 +150,7 @@ hub_body = f'''
       <h1 data-reveal>Design and build,<span class="serif">under one roof.</span></h1>
       <p class="answer" data-reveal>Four ways to work together: product design in Figma, Webflow development,
         Framer development, and finishing AI-built prototypes. Every engagement is a fixed quote agreed after a
-        discovery call, run by one person from brief to launch, typically in four to six weeks.</p>
+        discovery call, run by one person from brief to launch, typically in two to three weeks.</p>
       <div class="cta-row" data-reveal>
         <a class="btn btn-primary" href="https://cal.com/anowarhdesign/discovery" target="_blank" rel="noopener">Book the discovery call</a>
         <a class="btn btn-ghost" href="/pricing">See pricing</a>
@@ -198,7 +198,7 @@ hub_body = f'''
 
 page("services/index.html",
      "Services | Design &amp; Webflow Development | Anowar Hossain",
-     "Product design, Webflow and Framer development, and AI product builds. One operator, fixed quotes, four to six weeks, for teams in the US and Europe.",
+     "Product design, Webflow and Framer development, and AI product builds. One operator, fixed quotes, two to three weeks, for teams in the US and Europe.",
      hub_body,
      [faq_schema(hub_faq)],
      current="/services",

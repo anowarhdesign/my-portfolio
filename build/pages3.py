@@ -72,11 +72,11 @@ page("work/index.html", "Work | Webflow &amp; Framer Case Studies | Anowar Hossa
 
 # ─────────────────────────── PRICING ───────────────────────────
 BANDS = [
- ("Landing page", "Framer or Webflow", "From $900", "1&#8211;2 weeks"),
- ("Marketing site", "6&#8211;12 pages with CMS", "$2,500&#8211;$6,000", "4&#8211;6 weeks"),
- ("Product design", "UX + UI engagement", "$3,000&#8211;$7,000", "4&#8211;8 weeks"),
- ("AI product build", "Prototype to production", "$1,500&#8211;$4,000", "2&#8211;5 weeks"),
- ("Care plan", "Ongoing edits and support", "$300&#8211;$900/mo", "Rolling"),
+ ("Landing page", "Framer or Webflow", "From $450", "3&#8211;7 days"),
+ ("Marketing site", "6&#8211;12 pages with CMS", "$1,250&#8211;$3,000", "2&#8211;3 weeks"),
+ ("Product design", "UX + UI engagement", "$1,500&#8211;$3,500", "2&#8211;4 weeks"),
+ ("AI product build", "Prototype to production", "$750&#8211;$2,000", "1&#8211;2.5 weeks"),
+ ("Care plan", "Ongoing edits and support", "$150&#8211;$450/mo", "Rolling"),
 ]
 band_rows = "".join(f'''<div class="card" data-reveal style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
   <div style="min-width:220px"><h3>{n}</h3><p style="font-size:14.5px;color:var(--ash);margin-top:4px">{sub}</p></div>
@@ -86,7 +86,7 @@ band_rows = "".join(f'''<div class="card" data-reveal style="display:flex;align-
 
 pricing_faq = [
  ("How much does a Webflow website cost in 2026?",
-  "A 6&#8211;12 page marketing site with a CMS runs $2,500&#8211;$6,000 and takes four to six weeks. A single landing page starts at $900. Page count, CMS complexity, custom animation and content migration are what move the number. Every project is quoted as a fixed price after a discovery call."),
+  "A 6&#8211;12 page marketing site with a CMS runs $1,250&#8211;$3,000 and takes two to three weeks. A single landing page starts at $450. Page count, CMS complexity, custom animation and content migration are what move the number. Every project is quoted as a fixed price after a discovery call."),
  ("Why don&#8217;t you charge hourly?",
   "Because it punishes speed. Six years of practice means a build takes less time, not less skill, and an hourly meter would bill you less for better work. A fixed quote also means you know the number before anything starts."),
  ("What happens if the scope changes?",
@@ -94,7 +94,7 @@ pricing_faq = [
  ("How does payment work for US and European clients?",
   "Fixed projects run on milestones, typically 50% to start and 50% at launch, with larger projects split into three. Invoices are in USD; EUR and GBP can be arranged. I can sign your standard contract and provide a W-8BEN for US companies."),
  ("Do you offer ongoing support after launch?",
-  "Post-launch support is included in every project, and I stay reachable after that. If you want a standing arrangement for edits, new pages and small features, the care plan runs $300&#8211;$900 a month depending on volume."),
+  "Post-launch support is included in every project, and I stay reachable after that. If you want a standing arrangement for edits, new pages and small features, the care plan runs $150&#8211;$450 a month depending on volume."),
 ]
 
 pricing_body = f'''
@@ -103,8 +103,8 @@ pricing_body = f'''
     <div class="hero-copy">
       <span class="eyebrow" data-reveal>Pricing</span>
       <h1 data-reveal>Fixed quotes.<span class="serif">No hourly meters.</span></h1>
-      <p class="answer" data-reveal>A landing page starts at $900. A 6&#8211;12 page marketing site with a CMS runs
-        $2,500&#8211;$6,000 over four to six weeks. A product design engagement runs $3,000&#8211;$7,000. Every
+      <p class="answer" data-reveal>A landing page starts at $450. A 6&#8211;12 page marketing site with a CMS runs
+        $1,250&#8211;$3,000 over two to three weeks. A product design engagement runs $1,500&#8211;$3,500. Every
         project is quoted as a fixed price after a 30-minute discovery call, and revisions inside that scope are
         included.</p>
       <div class="cta-row" data-reveal>
@@ -159,7 +159,7 @@ pricing_body = f'''
 <section style="padding-block:0">{band("Get the number before you commit.", "Thirty minutes on a call is enough for a fixed quote and an honest view of the timeline.", cta="Get a fixed quote")}</section>
 '''
 page("pricing/index.html", "Pricing | What a Webflow or Framer Site Costs | Anowar Hossain",
-     "Webflow and Framer pricing: landing pages from $900, marketing sites $2,500-$6,000, product design $3,000-$7,000. Fixed quotes, no hourly meters.",
+     "Webflow and Framer pricing: landing pages from $450, marketing sites $1,250-$3,000, product design $1,500-$3,500. Fixed quotes, no hourly meters.",
      pricing_body, [faq_schema(pricing_faq)], current="/pricing",
      trail=[("Home", "/"), ("Pricing", "/pricing")])
 
@@ -176,7 +176,7 @@ STEPS8 = [
 ]
 process_faq = [
  ("How long does a website project take?",
-  "Four to six weeks for a typical marketing site, one to two weeks for a landing page, and four to eight weeks for a product design engagement. The timeline is agreed in the quote. In practice content readiness moves dates more often than build time does."),
+  "Two to three weeks for a typical marketing site, three to seven days for a landing page, and two to four weeks for a product design engagement. The timeline is agreed in the quote. In practice content readiness moves dates more often than build time does."),
  ("How does working across time zones actually run?",
   "I am in Dhaka, GMT+6. That overlaps European business hours almost entirely and US East Coast mornings from about 09:00 to 13:00 ET. Messages get a reply within 24 hours, always the same day for European clients, and there is a demo call every week at a time that suits you, not me."),
  ("What do you need from me during a project?",
@@ -411,10 +411,10 @@ sm.append("</urlset>")
 > quoted as a fixed price.
 
 ## Services
-- Product design (UX + UI in Figma, developer-ready): $3,000-$7,000, 4-8 weeks. {S}/services/product-design
-- Webflow development (editor-proof CMS, migration, QA): $2,500-$6,000, 4-6 weeks. {S}/services/webflow-development
-- Framer development (landing pages, launch sites, motion): from $900, 1-2 weeks. {S}/services/framer-development
-- AI product builds (finishing Lovable / v0 / Claude Code prototypes): $1,500-$4,000, 2-5 weeks. {S}/services/ai-product-builds
+- Product design (UX + UI in Figma, developer-ready): $1,500-$3,500, 2-4 weeks. {S}/services/product-design
+- Webflow development (editor-proof CMS, migration, QA): $1,250-$3,000, 2-3 weeks. {S}/services/webflow-development
+- Framer development (landing pages, launch sites, motion): from $450, 3-7 days. {S}/services/framer-development
+- AI product builds (finishing Lovable / v0 / Claude Code prototypes): $750-$2,000, 1-2.5 weeks. {S}/services/ai-product-builds
 
 ## Facts
 - Based in Dhaka, Bangladesh (GMT+6); overlaps New York mornings (09:00-13:00 ET) and full European business hours.

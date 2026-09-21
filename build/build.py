@@ -391,16 +391,16 @@ def work_rows(items):
 SERVICES = [
  ("Product design", "/services/product-design", "01",
   "UX and interface design for SaaS and mobile products, delivered developer-ready in Figma.",
-  "$3,000&#8211;$7,000", ["UX audit", "User flows", "High-fidelity UI", "Design system", "Prototype", "Handoff"]),
+  "$1,500&#8211;$3,500", ["UX audit", "User flows", "High-fidelity UI", "Design system", "Prototype", "Handoff"]),
  ("Webflow development", "/services/webflow-development", "02",
   "Production Webflow builds with an editor-proof CMS your marketing team can run alone.",
-  "$2,500&#8211;$6,000", ["Pixel-perfect build", "CMS setup", "Interactions", "Migration", "SEO basics", "Launch support"]),
+  "$1,250&#8211;$3,000", ["Pixel-perfect build", "CMS setup", "Interactions", "Migration", "SEO basics", "Launch support"]),
  ("Framer development", "/services/framer-development", "03",
   "Launch-speed Framer sites for fundraises, announcements and product drops.",
-  "From $900", ["Landing pages", "Custom components", "CMS", "GSAP", "Performance", "Launch support"]),
+  "From $450", ["Landing pages", "Custom components", "CMS", "GSAP", "Performance", "Launch support"]),
  ("AI product builds", "/services/ai-product-builds", "04",
   "Lovable, v0 and Claude Code prototypes taken the last 30% to something you can ship.",
-  "$1,500&#8211;$4,000", ["Design pass", "Component system", "Responsive", "Accessibility", "Handover docs"]),
+  "$750&#8211;$2,000", ["Design pass", "Component system", "Responsive", "Accessibility", "Handover docs"]),
 ]
 
 def service_card(s, ember=False):
