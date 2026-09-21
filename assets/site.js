@@ -210,6 +210,9 @@
     var noteDefault = note ? note.textContent : "";
     var submitBtn = form.querySelector('button[type="submit"]');
     var submitDefault = submitBtn ? submitBtn.innerHTML : "";
+    // when the form became interactive — the server rejects submissions that
+    // arrive implausibly soon after this, a cheap but effective bot filter
+    var loadedAt = Date.now();
 
     form.addEventListener("submit", function (e) {
       e.preventDefault();
@@ -228,7 +231,10 @@
       fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: name, email: email, budget: budget, details: details, company: company })
+        body: JSON.stringify({
+          name: name, email: email, budget: budget, details: details,
+          company: company, loadedAt: loadedAt
+        })
       }).then(function (res) {
         if (!res.ok) throw new Error("bad status");
         return res.json();

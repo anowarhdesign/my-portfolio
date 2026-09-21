@@ -15,8 +15,25 @@ the function returns 500 and the form shows "Couldn't send — email hello@anowa
 directly instead"; the form degrades gracefully, it doesn't break. The sender is
 `onboarding@resend.dev` (Resend's shared test sender, works with no domain verification); verifying
 `anowarhdesign.com` with Resend later would let mail go out as `@anowarhdesign.com` instead, purely
-a deliverability/branding upgrade, not required for the form to work. There's a hidden honeypot
-field (`company`) for basic bot filtering.
+a deliverability/branding upgrade, not required for the form to work.
+
+**Spam defenses** (`api/contact.js`), layered instead of a CAPTCHA — confirmed live 2026-09-22,
+`npm`-free unit tests for the logic live at conversation-scratchpad time only (not committed; the
+handler is plain enough to re-test the same way if it's ever touched: mock `req`/`res`, stub
+`global.fetch`, assert `res.statusCode`):
+1. Honeypot field (`company`, hidden via CSS in `.bf-hp`) — bots fill it, humans never see it.
+2. Time-trap — `site.js` records `loadedAt` when the form becomes interactive; the server silently
+   pretends success (200, no email sent) for anything submitted in under ~2.5s or missing
+   `loadedAt` outright (i.e. not submitted through the real JS path).
+3. Origin/Referer must match `anowarhdesign.com` / `www.anowarhdesign.com` if present (403 if not).
+4. Link-count heuristic on `name`/`details` — more than 3 URLs silently drops it.
+5. Best-effort per-IP rate limit (5 / 15 min), in-memory. Resets on cold start, not shared across
+   concurrent instances — stops naive burst scripts, not a hard guarantee. A durable limit needs
+   Vercel KV or similar; not worth the extra infrastructure unless this proves insufficient.
+
+Real bot/human failures (missing required fields, bad email format) still return 400 with an error
+message — only the "this looks automated" cases pretend success, deliberately, so a scripted client
+doesn't get useful signal to adapt its timing.
 
 ## How this site is built
 
