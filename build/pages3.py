@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from build import *   # noqa
+from graphics import hero_graphic   # noqa
 
 S = SITE
 
@@ -39,7 +40,10 @@ work_body = f'''
         <a class="btn btn-ghost" href="/services">See services</a>
       </div>
     </div>
-    <aside class="hero-aside">{quote("english")}</aside>
+    <aside class="hero-aside">
+      {hero_graphic("work")}
+      {quote("english")}
+    </aside>
   </div>
 </section>
 
@@ -111,7 +115,10 @@ pricing_body = f'''
       </div>
       {BADGE}
     </div>
-    <aside class="hero-aside">{quote("framer")}</aside>
+    <aside class="hero-aside">
+      {hero_graphic("pricing")}
+      {quote("framer")}
+    </aside>
   </div>
 </section>
 
@@ -197,7 +204,10 @@ process_body = f'''
         <a class="btn btn-ghost" href="/pricing">See pricing</a>
       </div>
     </div>
-    <aside class="hero-aside">{quote("rigor")}</aside>
+    <aside class="hero-aside">
+      {hero_graphic("process")}
+      {quote("rigor")}
+    </aside>
   </div>
 </section>
 
@@ -292,6 +302,7 @@ about_body = f'''
   <div class="wrap">
     <div class="sec-head"><div><span class="mono">The record</span><h2>Six years, on the record.</h2></div></div>
     <div class="stats" data-reveal>
+      <div class="stat"><div class="n">399+</div><div class="l">Projects completed</div></div>
       <div class="stat"><div class="n">100%</div><div class="l">Job success, Top Rated on Upwork</div></div>
       <div class="stat"><div class="n">2,237</div><div class="l">Hours logged with clients</div></div>
       <div class="stat"><div class="n">6+</div><div class="l">Years designing and building</div></div>
@@ -321,7 +332,6 @@ about_body = f'''
   </div>
 </section>
 
-{TZ}
 <section style="padding-block:0">{band("Let&#8217;s talk about your project.", "Thirty minutes, no pitch, and a straight answer about whether I am the right person for it.")}</section>
 '''
 page("about/index.html", "About Anowar Hossain | UI/UX Designer &amp; Webflow Developer",
@@ -345,7 +355,10 @@ contact_body = f'''
       </div>
       {BADGE}
     </div>
-    <aside class="hero-aside">{quote("english")}</aside>
+    <aside class="hero-aside">
+      {hero_graphic("contact")}
+      {quote("english")}
+    </aside>
   </div>
 </section>
 

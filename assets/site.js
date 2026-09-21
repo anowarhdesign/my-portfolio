@@ -221,6 +221,34 @@
     });
   });
 
+  /* ─── copy email button ─── */
+  document.querySelectorAll(".copy-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var text = btn.dataset.copy;
+      var done = function () {
+        btn.classList.add("copied");
+        btn.setAttribute("aria-label", "Copied");
+        clearTimeout(btn._t);
+        btn._t = setTimeout(function () {
+          btn.classList.remove("copied");
+          btn.setAttribute("aria-label", "Copy email address");
+        }, 1600);
+      };
+      var legacyCopy = function () {
+        var ta = document.createElement("textarea");
+        ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+        document.body.appendChild(ta); ta.select();
+        try { if (document.execCommand("copy")) done(); } catch (e) {}
+        document.body.removeChild(ta);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, legacyCopy);
+      } else {
+        legacyCopy();
+      }
+    });
+  });
+
   /* ─── mobile nav ─── */
   var toggle = document.querySelector(".navtoggle");
   var links = document.querySelector(".navlinks");

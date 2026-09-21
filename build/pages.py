@@ -75,6 +75,7 @@ home_body = f'''
       <h2>Don&#8217;t take the site&#8217;s<br>word for it.</h2>
     </div></div>
     <div class="stats" data-reveal>
+      <div class="stat"><div class="n">399+</div><div class="l">Projects completed</div></div>
       <div class="stat"><div class="n">100%</div><div class="l">Job success, Top Rated on Upwork</div></div>
       <div class="stat"><div class="n">2,237</div><div class="l">Hours logged with clients</div></div>
       <div class="stat"><div class="n">6+</div><div class="l">Years doing this work</div></div>
@@ -117,7 +118,6 @@ home_body = f'''
   </div>
 </section>
 
-{TZ}
 <section style="padding-block:0">{band("Ready when you are.", "One call. Your goals, your constraints, and an honest answer about whether I am the right fit. No pitch, no obligation.")}</section>
 '''
 
@@ -159,6 +159,7 @@ hub_body = f'''
         <a class="btn btn-ghost" href="/pricing">See pricing</a>
       </div>
     </div>
+    <aside class="hero-aside">{hero_graphic("services")}</aside>
   </div>
 </section>
 

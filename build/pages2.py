@@ -94,7 +94,6 @@ def service_page(slug, nav_title, h1_a, h1_b, answer, fits, not_fits, included, 
   </div>
 </section>
 
-{TZ}
 <section style="padding-block:0">{band("Tell me what you&#8217;re building.", "A 30-minute call, a fixed quote, and an honest answer about whether this is the right service for the problem.")}</section>
 '''
     page(f"services/{slug}/index.html", title, desc, body,

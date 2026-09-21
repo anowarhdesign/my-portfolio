@@ -57,6 +57,18 @@ def nav(current):
   </div>
 </header>'''
 
+EMAIL = "hello@anowarhdesign.com"
+
+def email_chip():
+    return (f'<span class="email-chip"><a href="mailto:{EMAIL}">{EMAIL}</a>'
+            f'<button type="button" class="copy-btn" data-copy="{EMAIL}" aria-label="Copy email address">'
+            f'<svg class="ic-copy" viewBox="0 0 16 16" aria-hidden="true">'
+            f'<rect x="5.5" y="5.5" width="8" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/>'
+            f'<path d="M3.5 10.5v-6a1 1 0 0 1 1-1h6" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>'
+            f'<svg class="ic-check" viewBox="0 0 16 16" aria-hidden="true">'
+            f'<path d="M3.5 8.5l3 3 6-6.5" fill="none" stroke="currentColor" stroke-width="1.6" '
+            f'stroke-linecap="round" stroke-linejoin="round"/></svg></button></span>')
+
 FOOT_TPL = '''<footer class="foot">
   <div class="wrap">
     <div class="foot-grid">
@@ -82,7 +94,7 @@ FOOT_TPL = '''<footer class="foot">
         <li><a href="https://www.linkedin.com/in/anowarhdesign/" rel="noopener" target="_blank">LinkedIn</a></li>
         <li><a href="https://dribbble.com/anowarhdesign" rel="noopener" target="_blank">Dribbble</a></li>
         <li><a href="https://x.com/anowarhdesign" rel="noopener" target="_blank">X</a></li>
-        <li><a href="mailto:hello@anowarhdesign.com">hello@anowarhdesign.com</a></li>
+        <li class="foot-email">__EMAILCHIP__</li>
       </ul></div>
     </div>
     <div class="foot-base mono">
@@ -91,7 +103,7 @@ FOOT_TPL = '''<footer class="foot">
     </div>
   </div>
 </footer>'''
-FOOT = FOOT_TPL.replace('__FOOTMARK__', wordmark())
+FOOT = FOOT_TPL.replace('__FOOTMARK__', wordmark()).replace('__EMAILCHIP__', email_chip())
 
 BAND_CHECKS = ["Reply within 24 hours", "Fixed quote, no hourly meter", "One operator, start to finish"]
 
@@ -108,7 +120,7 @@ def band(title, text, cta="Book the discovery call"):
     </div>
     <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start;margin-top:6px">
       <a class="btn btn-primary" data-magnet data-cursor="Book" href="https://cal.com/anowarhdesign/discovery" target="_blank" rel="noopener">{cta} <span class="arw">&#8594;</span></a>
-      <span class="mono">Or write direct &#8212; hello@anowarhdesign.com</span>
+      <span class="mono">Or write direct &#8212; {email_chip()}</span>
     </div>
   </div>
   <form class="band-form" data-brief-form novalidate>
@@ -236,16 +248,43 @@ def page(path, title, desc, body, schema, current="", trail=None):
 # ─────────────────────────── shared blocks ───────────────────────────
 
 BADGE = '''<div class="badge" data-reveal>
-  <span class="uw" aria-hidden="true">U</span>
+  <img class="uw" src="/uploads/upwork-mark.png" width="22" height="22" alt="" aria-hidden="true">
   <span style="font-weight:500">Top Rated on Upwork</span>
   <span class="div" aria-hidden="true"></span>
-  <span style="color:var(--ash)">100% job success &#183; 2,237 hours</span>
+  <span style="color:var(--ash)">100% job success &#183; 2,237 hours &#183; 399+ projects</span>
 </div>'''
 
-NAMES = ["CADDi", "Assistments", "Stratus Neuro", "SecureCDP", "UberStrategist", "Fit3D",
-         "UserVoice", "Spoiler Alert", "0xBow", "Gym Insight"]
-_run = "".join(f"<span>{n}</span>" for n in NAMES)
-LOGOWALL = f'''<div style="display:flex;flex-direction:column;gap:6px" data-reveal>
+# ── client logo wall: real logos, recolored to one flat brand-neutral tone
+# (ash, #4E4945) so every source site's original colors read as one cohesive
+# set — SVGs are inlined so `currentColor` picks up that tone, PNGs already
+# have it baked in via an alpha-channel recolor pass. Icon-only marks are
+# paired with a text label.
+LOGO_DIR = ROOT / "uploads" / "logos"
+# (name, filename, pair with a text label, intrinsic px size for PNGs — avoids CLS)
+LOGOS = [
+    ("CADDi", "caddi.svg", False, None),
+    ("Assistments", "assistments.png", False, (1109, 160)),
+    ("Stratus Neuro", "stratusneuro.png", False, (144, 48)),
+    ("SecureCDP", "securecdp.png", True, (245, 160)),
+    ("UberStrategist", "uberstrategist.png", False, (310, 53)),
+    ("Fit3D", "fit3d.png", False, (266, 62)),
+    ("UserVoice", "uservoice.svg", False, None),
+    ("Spoiler Alert", "spoileralert.svg", False, None),
+    ("0xBow", "0xbow.svg", True, None),
+    ("Gym Insight", "gyminsight.png", False, (165, 52)),
+]
+
+def _logo_item(name, filename, with_label, size):
+    if filename.endswith(".svg"):
+        mark = (LOGO_DIR / filename).read_text(encoding="utf-8")
+    else:
+        w, h = size
+        mark = f'<img src="/uploads/logos/{filename}" width="{w}" height="{h}" alt="" loading="lazy">'
+    label = f'<span class="lw-name">{name}</span>' if with_label else ""
+    return f'<span class="logowall-item" title="{name}">{mark}{label}</span>'
+
+_run = "".join(_logo_item(*l) for l in LOGOS)
+LOGOWALL = f'''<div style="display:flex;flex-direction:column;gap:10px" data-reveal>
   <span class="mono">Shipped for teams at</span>
   <div class="marquee"><div class="marquee-track">{_run}{_run}</div></div>
 </div>'''
@@ -272,11 +311,6 @@ QUOTES = {
 def quote(key, extra=""):
     q, att = QUOTES[key]
     return f'<figure class="quote" data-reveal{extra}><q>{q}</q><figcaption class="att">{att}</figcaption></figure>'
-
-TZ = '''<div class="wrap"><div class="tzbar mono">
-  <span>Dhaka &#183; GMT+6 &#8212; overlaps New York mornings &amp; London afternoons</span>
-  <span style="color:var(--ink)">Replies within 24 hours</span>
-</div></div>'''
 
 CASES = [
  ("CADDi", "us.caddi.com", "Webflow &#183; Enterprise", "linear-gradient(140deg,#16150F 0%,#3A1D10 100%)",

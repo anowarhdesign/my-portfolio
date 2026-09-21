@@ -30,6 +30,14 @@ python3 build/qa.py                      # full QA sweep (needs a server on :812
 
 Assets in `assets/site.css` and `assets/site.js` are hand-written and edited directly.
 
+`uploads/logos/` holds the real client logos used in the home hero's marquee (`LOGOWALL` in
+`build.py`). Every logo — whatever its source colors — is recolored to one flat tone (`#4E4945`,
+matching `--ash`) so the wall reads as one cohesive set: SVGs use `fill="currentColor"` and are
+inlined into the page (an `<img src="*.svg">` would NOT pick up `currentColor` — it needs its own
+document context); PNGs have the color already baked in via an alpha-channel recolor pass. Icon-only
+marks are paired with a text label in `LOGOS` (`build.py`). To add a client, save their logo the same
+way and add a row to `LOGOS`.
+
 ## Design system — Signal DS v3
 
 Paper base (`#F4F1EB`) with ink sections (`#0E0D0C`) alternating for rhythm; ember (`#F14E1C`) is the
@@ -57,13 +65,15 @@ only accent. Ember at body size drops to `#BF3A11` for contrast.
 
 ### Facts, as verified
 
-Top Rated on Upwork · 100% job success · 2,237 hours logged · 6+ years · clients in US, UK, Canada,
-Australia, EU. Credentials: Webflow Experts Certification, Google UX Design Professional Certificate.
-Price bands: landing page from $900, marketing site $2,500–$6,000, product design $3,000–$7,000,
-AI product build $1,500–$4,000, care plan $300–$900/mo.
+Top Rated on Upwork · 100% job success · 2,237 hours logged · 399+ projects completed · 6+ years ·
+clients in US, UK, Canada, Australia, EU. Credentials: Webflow Experts Certification, Google UX
+Design Professional Certificate. Price bands: landing page from $900, marketing site $2,500–$6,000,
+product design $3,000–$7,000, AI product build $1,500–$4,000, care plan $300–$900/mo.
 
-The old site's "398+ projects" claim is **not** used — the public profile shows 50 completed contracts,
-and an unverifiable number is worth less than a checkable one.
+"399+ projects completed" (2026-09-21, confirmed by Anowar as accurate across all platforms, not
+just the 50 completed Upwork contracts) replaces the old site's unverified "398+ projects" claim,
+which had been deliberately dropped for lacking that confirmation. Don't revert this without a
+fresh confirmation — the number is only as good as the last person who checked it.
 
 ## State
 
@@ -76,9 +86,9 @@ QA passes with zero failures. FCP 320–410ms locally, 1KB JS per page.
    (Framer vs Webflow, what a Webflow site costs, how to hire a Webflow developer) matter most.
 2. **Case study pages** — `/work/<slug>/`. Currently the work page links out to client sites, so
    visitors leave. Six were planned; each needs pages, timeline and role from Anowar.
-3. **Project thumbnails** — only four exist (`uploads/thumbs/`: SalesPeak AI, 0xBow, Eric Kanigan,
-   WaterH), recovered from the old build. The rest fall back to a name-on-gradient card. Drop new
-   screenshots into `uploads/thumbs/<slug>.webp` at 900×600 and add them to `THUMBS` in `build.py`.
+3. **Project thumbnails** — six exist (`uploads/thumbs/`: SalesPeak AI, 0xBow, Eric Kanigan, WaterH,
+   CADDi, Assistments). The rest fall back to a name-on-gradient card. Drop new screenshots into
+   `uploads/thumbs/<slug>.webp` at 900×600 and add them to `THUMBS` in `build.py`.
 4. **Upwork profile URL** — the testimonials need a link so buyers can verify them.
 5. **Search Console + Bing Webmaster Tools** — not verified yet, so there's no query data.
 
