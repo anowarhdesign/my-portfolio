@@ -355,7 +355,28 @@ CASES = [
 
 THUMBS = {"SalesPeak AI": "/uploads/thumbs/salespeak.webp", "0xBow": "/uploads/thumbs/0xbow.webp",
           "Eric Kanigan": "/uploads/thumbs/erickanigan.webp", "WaterH": "/uploads/thumbs/waterh.webp",
-          "CADDi": "/uploads/thumbs/caddi.webp", "Assistments": "/uploads/thumbs/assistments.webp"}
+          "CADDi": "/uploads/thumbs/caddi.webp", "Assistments": "/uploads/thumbs/assistments.webp",
+          "Stratus Neuro": "/uploads/thumbs/stratusneuro.webp", "SecureCDP": "/uploads/thumbs/securecdp.webp",
+          "Accord": "/uploads/thumbs/accord.webp", "Ethereum Community Foundation": "/uploads/thumbs/ecf.webp",
+          "CivilGrid": "/uploads/thumbs/civilgrid.webp", "Alex Minkin Design": "/uploads/thumbs/alexminkin.webp",
+          "Genta": "/uploads/thumbs/genta.webp", "Golf Cart Maps": "/uploads/thumbs/golfcartmaps.webp",
+          "Brellium": "/uploads/thumbs/brellium.webp", "Delphyr": "/uploads/thumbs/delphyr.webp",
+          "Sitegrow": "/uploads/thumbs/sitegrow.webp", "AIVA+": "/uploads/thumbs/aiva.webp",
+          "Level Exam": "/uploads/thumbs/levelexam.webp", "APEX": "/uploads/thumbs/apex.webp",
+          "SHF Smarter Homes": "/uploads/thumbs/shf.webp", "Allen Shine Power Washing": "/uploads/thumbs/allenshine.webp",
+          "ClearThink Marketing": "/uploads/thumbs/clearthink.webp", "Protect the Nest Movers": "/uploads/thumbs/ptnmovers.webp",
+          "Trust Fund Baddies Academy": "/uploads/thumbs/tfba.webp", "LKI Consulting": "/uploads/thumbs/lki.webp",
+          "SuperX": "/uploads/thumbs/superx.webp", "Willow Creek Cottage": "/uploads/thumbs/willowcreek.webp",
+          "Hecker Homeservice": "/uploads/thumbs/heckerhome.webp", "Nonfiction": "/uploads/thumbs/nonfiction.webp",
+          "USCO": "/uploads/thumbs/usco.webp", "RentKeep": "/uploads/thumbs/rentkeep.webp",
+          "Nawafith": "/uploads/thumbs/nawafith.webp", "Shila Rahman": "/uploads/thumbs/shilarahman.webp",
+          "Instautomation": "/uploads/thumbs/instautomation.webp", "Email Ethos": "/uploads/thumbs/emailethos.webp",
+          "MacWell": "/uploads/thumbs/macwell.webp", "CFS": "/uploads/thumbs/cfs.webp",
+          "Gustorx": "/uploads/thumbs/gustorx.webp", "Faceless Education": "/uploads/thumbs/facelesseducation.webp",
+          "meFuse": "/uploads/thumbs/mefuse.webp", "THE ONE Bespoke": "/uploads/thumbs/theone.webp",
+          "FindingFemaleFriends>50": "/uploads/thumbs/fff50.webp", "Tina K": "/uploads/thumbs/tinaks.webp",
+          "CarWebsite": "/uploads/thumbs/carwebsite.webp", "Notion Depot": "/uploads/thumbs/notiondepot.webp",
+          "Embedded Finance Review": "/uploads/thumbs/embeddedfinance.webp"}
 
 def case_card(c):
     name, host, tag, grad, tagcol, blurb = c
