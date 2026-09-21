@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from build import *   # noqa
-from graphics import hero_graphic   # noqa
+from graphics import hero_visual   # noqa
 
 S = SITE
 
@@ -41,7 +41,7 @@ work_body = f'''
       </div>
     </div>
     <aside class="hero-aside">
-      {hero_graphic("work")}
+      {hero_visual("work")}
       {quote("english")}
     </aside>
   </div>
@@ -116,7 +116,7 @@ pricing_body = f'''
       {BADGE}
     </div>
     <aside class="hero-aside">
-      {hero_graphic("pricing")}
+      {hero_visual("pricing")}
       {quote("framer")}
     </aside>
   </div>
@@ -205,7 +205,7 @@ process_body = f'''
       </div>
     </div>
     <aside class="hero-aside">
-      {hero_graphic("process")}
+      {hero_visual("process")}
       {quote("rigor")}
     </aside>
   </div>
@@ -356,7 +356,7 @@ contact_body = f'''
       {BADGE}
     </div>
     <aside class="hero-aside">
-      {hero_graphic("contact")}
+      {hero_visual("contact")}
       {quote("english")}
     </aside>
   </div>

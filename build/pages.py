@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from build import *   # noqa
-from graphics import hero_graphic   # noqa
+from graphics import hero_visual   # noqa
 
 S = SITE
 
@@ -35,7 +35,7 @@ home_body = f'''
       {LOGOWALL}
     </div>
     <aside class="hero-aside">
-      {hero_graphic("home")}
+      {hero_visual("home")}
       {quote("framer")}
     </aside>
   </div>
@@ -159,7 +159,7 @@ hub_body = f'''
         <a class="btn btn-ghost" href="/pricing">See pricing</a>
       </div>
     </div>
-    <aside class="hero-aside">{hero_graphic("services")}</aside>
+    <aside class="hero-aside">{hero_visual("services")}</aside>
   </div>
 </section>
 

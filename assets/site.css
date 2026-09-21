@@ -425,46 +425,20 @@ section{padding-block:clamp(64px,9.5vw,136px);position:relative}
   .grain{display:none}
 }
 
-/* ── hero graphic: diagram card (monogram core, curved connectors, feature nodes) ── */
-.hg-wrap{display:flex;flex-direction:column;gap:14px;min-width:0}
-.hero-graphic{position:relative;width:100%;aspect-ratio:5/4;border-radius:var(--r-card);
-  border:1px solid var(--line);background:var(--card);overflow:hidden}
-.hero-graphic::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.6;
-  background-image:radial-gradient(var(--line-2) 1px,transparent 1px);background-size:20px 20px;
-  mask-image:radial-gradient(ellipse 75% 75% at 50% 50%,#000 40%,transparent 85%)}
-.hg-corner{position:absolute;width:9px;height:9px;opacity:.45}
-.hg-corner::before,.hg-corner::after{content:"";position:absolute;background:var(--ash-2)}
-.hg-corner::before{left:4px;top:0;width:1px;height:9px}
-.hg-corner::after{left:0;top:4px;width:9px;height:1px}
-.hg-corner-tl{left:10px;top:10px}
-.hg-corner-tr{right:10px;top:10px}
-.hg-corner-bl{left:10px;bottom:10px}
-.hg-corner-br{right:10px;bottom:10px}
-.hg-svg{position:absolute;inset:0;width:100%;height:100%}
-.hg-connector{fill:none;stroke:var(--line-2);stroke-width:1.5;stroke-dasharray:3 5}
-@keyframes hgflow{to{stroke-dashoffset:-160}}
-.hg-connector{animation:hgflow 12s linear infinite}
-.hg-node{position:absolute;transform:translate(-50%,-50%);display:inline-flex;align-items:center;gap:7px;
-  padding:7px 12px;border-radius:var(--r-pill);background:var(--card);border:1px solid var(--line);
-  box-shadow:var(--shadow-sm);white-space:nowrap;font-family:"JetBrains Mono",monospace;
-  font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--ash)}
-.hg-node-dot{width:5px;height:5px;border-radius:50%;background:var(--ember);flex:0 0 auto}
-.hg-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;
-  width:52px;height:52px;border-radius:16px;background:var(--ember);display:grid;place-items:center;
-  box-shadow:0 0 0 8px rgba(241,78,28,.12),0 18px 30px -10px rgba(241,78,28,.55)}
-.hg-center span{color:#fff;font-family:"JetBrains Mono",monospace;font-weight:500;
-  font-size:15px;letter-spacing:.02em}
-.hg-center::after{content:"";position:absolute;top:-3px;right:-3px;width:10px;height:10px;border-radius:50%;
-  background:var(--ember-lift);border:2px solid var(--card);animation:pulse 2.4s infinite}
-.hg-caption{text-align:center;color:var(--ash-2)}
-.sec-ink .hero-graphic{background:var(--ink-2);border-color:rgba(244,241,235,.09)}
-.sec-ink .hg-connector{stroke:rgba(244,241,235,.16)}
-.sec-ink .hg-corner::before,.sec-ink .hg-corner::after{background:rgba(244,241,235,.4)}
-.sec-ink .hg-node{background:var(--ink-2);border-color:rgba(244,241,235,.14);color:var(--bone-2)}
-.sec-ink .hg-center::after{border-color:var(--ink-2)}
-.sec-ink .hg-caption{color:var(--ash-2)}
-@media (max-width:420px){.hg-node{font-size:12px;padding:6px 9px;gap:5px}.hg-center{width:44px;height:44px}
-  .hg-center span{font-size:13px}}
+/* ── hero visual: abstract floating glass objects, no text/data ── */
+.hero-visual{position:relative;width:100%;aspect-ratio:6/5;border-radius:var(--r-lg);overflow:hidden;
+  background:linear-gradient(155deg,var(--paper-2) 0%,var(--card) 100%)}
+.hv-svg{position:absolute;inset:0;width:100%;height:100%}
+.hv-floor{fill:var(--ink);opacity:.1;filter:blur(9px)}
+.hv-float{animation:hvbob 7s ease-in-out infinite}
+.hv-dot{opacity:.65}
+.hv-dot-1{animation:hvbob 5s ease-in-out infinite}
+.hv-dot-2{animation:hvbob 6.4s ease-in-out infinite .35s}
+.hv-dot-3{animation:hvbob 5.8s ease-in-out infinite .7s}
+@keyframes hvbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.sec-ink .hero-visual{background:linear-gradient(155deg,var(--ink-2) 0%,var(--ink) 100%)}
+.sec-ink .hv-floor{fill:#000;opacity:.35}
+.sec-ink .hv-capsule{stroke:rgba(244,241,235,.16)}
 
 /* ── responsive ── */
 @media (max-width:1080px){
@@ -497,6 +471,7 @@ section{padding-block:clamp(64px,9.5vw,136px);position:relative}
 /* ── the mark: A + face + NOWAR ── */
 .wordmark{gap:0;font-family:"JetBrains Mono",monospace;font-size:18px;font-weight:500;letter-spacing:.06em;
   display:inline-flex;align-items:center}
+@media (min-width:761px){.nav .wordmark{font-size:28px}}
 .wordmark .memo{width:1.72em;height:1.72em;margin:0 .04em;border-radius:50%;flex:0 0 auto;
   transition:transform .55s var(--ease-back)}
 .wordmark:hover .memo{transform:rotate(-9deg) scale(1.12) translateY(-1px)}

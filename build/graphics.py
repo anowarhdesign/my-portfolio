@@ -1,79 +1,89 @@
-"""Animated hero graphics — a bordered 'diagram card' (dot-grid background,
-corner tick marks, curved connectors from a monogram core to labelled feature
-nodes) in the style of a SaaS product diagram. CSS/SVG only (no JS), the
-page's own real feature words, and the same ember/ink/paper palette as the
-rest of Signal DS (ember is the site's only accent). Frozen automatically by
-the global prefers-reduced-motion rule in site.css."""
+"""Hero visuals — abstract floating glass-like objects (ring, sphere, capsule,
+hexagon, ribbon arc), no text or data of any kind. Pure decoration, in the
+site's own ember/ink/paper palette so it reads as one brand rather than a
+random stock-illustration style. CSS/SVG only, frozen automatically by the
+global prefers-reduced-motion rule in site.css."""
 
-CENTER = {
-    "home": "AH",
-    "product-design": "UX",
-    "webflow-development": "WF",
-    "framer-development": "FR",
-    "ai-product-builds": "AI",
-    "services": "04",
-    "work": "WK",
-    "pricing": "$",
-    "process": "08",
-    "contact": "@",
+# each page gets a different rotation/shape-swap so the composition varies
+# without needing a bespoke illustration per page.
+SEEDS = {
+    "home": 0,
+    "services": 1,
+    "product-design": 2,
+    "webflow-development": 3,
+    "framer-development": 4,
+    "ai-product-builds": 0,
+    "work": 1,
+    "pricing": 2,
+    "process": 3,
+    "contact": 4,
 }
 
-TAGS = {
-    "home": ["Product design", "Webflow", "Framer", "AI builds"],
-    "product-design": ["User flows", "Wireframes", "Design system", "Handoff"],
-    "webflow-development": ["CMS setup", "Interactions", "QA & testing", "Launch"],
-    "framer-development": ["Landing pages", "Animation", "Framer CMS", "Performance"],
-    "ai-product-builds": ["Redesign", "Component system", "Accessibility", "Ship"],
-    "services": ["Product design", "Webflow", "Framer", "AI builds"],
-    "work": ["Enterprise", "Edtech", "Medtech", "Cybersecurity"],
-    "pricing": ["Landing page", "Marketing site", "Product design", "AI build"],
-    "process": ["Discovery", "UX planning", "Development", "Launch"],
-    "contact": ["24h reply", "New York", "London", "Berlin"],
-}
+# five fixed compositions (not random — deterministic per seed so a rebuild
+# always looks the same): rotation of the whole cluster, and which shape
+# variant (of two) fills the "capsule" and "hex" slots.
+_COMPOSITIONS = [
+    {"tilt": -4, "capsule": "a", "hex": "a"},
+    {"tilt": 6, "capsule": "b", "hex": "a"},
+    {"tilt": -8, "capsule": "a", "hex": "b"},
+    {"tilt": 10, "capsule": "b", "hex": "b"},
+    {"tilt": -6, "capsule": "a", "hex": "a"},
+]
 
-CAPTION = {
-    "home": "One operator &#183; 4&#8211;6 weeks",
-    "product-design": "Figma &#8594; developer handoff",
-    "webflow-development": "A CMS your team can run",
-    "framer-development": "Live in 1&#8211;2 weeks",
-    "ai-product-builds": "Prototype &#8594; production",
-    "services": "Four ways to work together",
-    "work": "Eight builds, shipped live",
-    "pricing": "Fixed quotes, no hourly meters",
-    "process": "Same eight steps, every project",
-    "contact": "Replies within 24 hours",
-}
+def hero_visual(key):
+    seed = SEEDS.get(key, 0)
+    c = _COMPOSITIONS[seed % len(_COMPOSITIONS)]
+    tilt = c["tilt"]
+    capsule_rot = -18 if c["capsule"] == "a" else 14
+    hex_rot = 12 if c["hex"] == "a" else -20
+    uid = f"hv{seed}"
 
-# node positions as % of the card, and the matching SVG points (0-320 x 0-256)
-# for the connector curves drawn between each node and the center.
-NODES = [("tl", 14, 20), ("tr", 86, 20), ("bl", 14, 80), ("br", 86, 80)]
-CENTER_PT = (160, 128)
-SVG_PT = {"tl": (46, 51), "tr": (274, 51), "bl": (46, 205), "br": (274, 205)}
+    return f'''<div class="hero-visual" aria-hidden="true" data-reveal>
+  <svg viewBox="0 0 400 340" class="hv-svg">
+    <defs>
+      <linearGradient id="{uid}-ring" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="var(--ember-lift)"/>
+        <stop offset="1" stop-color="var(--ember-deep)"/>
+      </linearGradient>
+      <radialGradient id="{uid}-sphere" cx="35%" cy="30%" r="75%">
+        <stop offset="0" stop-color="#FFF6EE"/>
+        <stop offset=".45" stop-color="var(--ember-lift)"/>
+        <stop offset="1" stop-color="var(--ember-deep)"/>
+      </radialGradient>
+      <linearGradient id="{uid}-capsule" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="var(--card)"/>
+        <stop offset=".5" stop-color="var(--paper-2)"/>
+        <stop offset="1" stop-color="var(--card)"/>
+      </linearGradient>
+      <linearGradient id="{uid}-hex" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="var(--ember-soft)"/>
+        <stop offset="1" stop-color="rgba(241,78,28,.22)"/>
+      </linearGradient>
+      <filter id="{uid}-shadow" x="-60%" y="-60%" width="220%" height="220%">
+        <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#0E0D0C" flood-opacity=".18"/>
+      </filter>
+    </defs>
 
-def _connector(key, i):
-    x, y = SVG_PT[key]
-    cx, cy = CENTER_PT
-    midy = (y + cy) / 2
-    path_id = f"hgpath-{i}"
-    return (f'<path id="{path_id}" d="M{x} {y} C {x} {midy}, {cx} {midy}, {cx} {cy}" '
-            f'class="hg-connector"/>')
+    <ellipse class="hv-floor" cx="204" cy="294" rx="132" ry="16"/>
 
-def hero_graphic(key):
-    corners = "".join(f'<span class="hg-corner hg-corner-{c}"></span>' for c in
-                       ("tl", "tr", "bl", "br"))
-    svg_paths = "".join(_connector(pos, i) for i, (pos, *_r) in enumerate(NODES))
-    nodes = "".join(
-        f'''<div class="hg-node" style="left:{x}%;top:{y}%">
-      <span class="hg-node-dot" aria-hidden="true"></span><span class="hg-node-label">{t}</span>
-    </div>'''
-        for (pos, x, y), t in zip(NODES, TAGS[key])
-    )
-    return f'''<div class="hg-wrap" aria-hidden="true" data-reveal>
-  <div class="hero-graphic">
-    {corners}
-    <svg class="hg-svg" viewBox="0 0 320 256" preserveAspectRatio="none" aria-hidden="true">{svg_paths}</svg>
-    {nodes}
-    <div class="hg-center"><span>{CENTER[key]}</span></div>
-  </div>
-  <div class="hg-caption mono">{CAPTION[key]}</div>
+    <g transform="rotate({tilt} 200 170)">
+      <g class="hv-float">
+        <g filter="url(#{uid}-shadow)">
+          <circle class="hv-ring" cx="138" cy="146" r="52" fill="none" stroke="url(#{uid}-ring)" stroke-width="21"/>
+          <circle class="hv-sphere" cx="272" cy="118" r="44" fill="url(#{uid}-sphere)"/>
+          <rect class="hv-capsule" x="197" y="150" width="40" height="118" rx="20"
+            fill="url(#{uid}-capsule)" stroke="var(--line-2)" stroke-width="1"
+            transform="rotate({capsule_rot} 217 209)"/>
+          <polygon class="hv-hex" fill="url(#{uid}-hex)" stroke="var(--ember)" stroke-width="1.2"
+            transform="translate(96 244) rotate({hex_rot})"
+            points="30,0 56,15 56,45 30,60 4,45 4,15"/>
+          <path class="hv-arc" d="M 300 230 A 42 42 0 1 1 296 272" fill="none"
+            stroke="var(--ember-deep)" stroke-width="12" stroke-linecap="round"/>
+        </g>
+        <circle class="hv-dot hv-dot-1" cx="80" cy="90" r="4" fill="var(--ember)"/>
+        <circle class="hv-dot hv-dot-2" cx="330" cy="70" r="3" fill="var(--ember)"/>
+        <circle class="hv-dot hv-dot-3" cx="350" cy="200" r="5" fill="var(--ember)"/>
+      </g>
+    </g>
+  </svg>
 </div>'''

@@ -31,7 +31,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="/assets/site.css?v=76ef673454">
+<link rel="stylesheet" href="/assets/site.css?v=28d0b80895">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -273,22 +273,54 @@
 </div>
     </div>
     <aside class="hero-aside">
-      <div class="hg-wrap" aria-hidden="true" data-reveal>
-  <div class="hero-graphic">
-    <span class="hg-corner hg-corner-tl"></span><span class="hg-corner hg-corner-tr"></span><span class="hg-corner hg-corner-bl"></span><span class="hg-corner hg-corner-br"></span>
-    <svg class="hg-svg" viewBox="0 0 320 256" preserveAspectRatio="none" aria-hidden="true"><path id="hgpath-0" d="M46 51 C 46 89.5, 160 89.5, 160 128" class="hg-connector"/><path id="hgpath-1" d="M274 51 C 274 89.5, 160 89.5, 160 128" class="hg-connector"/><path id="hgpath-2" d="M46 205 C 46 166.5, 160 166.5, 160 128" class="hg-connector"/><path id="hgpath-3" d="M274 205 C 274 166.5, 160 166.5, 160 128" class="hg-connector"/></svg>
-    <div class="hg-node" style="left:14%;top:20%">
-      <span class="hg-node-dot" aria-hidden="true"></span><span class="hg-node-label">Redesign</span>
-    </div><div class="hg-node" style="left:86%;top:20%">
-      <span class="hg-node-dot" aria-hidden="true"></span><span class="hg-node-label">Component system</span>
-    </div><div class="hg-node" style="left:14%;top:80%">
-      <span class="hg-node-dot" aria-hidden="true"></span><span class="hg-node-label">Accessibility</span>
-    </div><div class="hg-node" style="left:86%;top:80%">
-      <span class="hg-node-dot" aria-hidden="true"></span><span class="hg-node-label">Ship</span>
-    </div>
-    <div class="hg-center"><span>AI</span></div>
-  </div>
-  <div class="hg-caption mono">Prototype &#8594; production</div>
+      <div class="hero-visual" aria-hidden="true" data-reveal>
+  <svg viewBox="0 0 400 340" class="hv-svg">
+    <defs>
+      <linearGradient id="hv0-ring" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="var(--ember-lift)"/>
+        <stop offset="1" stop-color="var(--ember-deep)"/>
+      </linearGradient>
+      <radialGradient id="hv0-sphere" cx="35%" cy="30%" r="75%">
+        <stop offset="0" stop-color="#FFF6EE"/>
+        <stop offset=".45" stop-color="var(--ember-lift)"/>
+        <stop offset="1" stop-color="var(--ember-deep)"/>
+      </radialGradient>
+      <linearGradient id="hv0-capsule" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="var(--card)"/>
+        <stop offset=".5" stop-color="var(--paper-2)"/>
+        <stop offset="1" stop-color="var(--card)"/>
+      </linearGradient>
+      <linearGradient id="hv0-hex" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="var(--ember-soft)"/>
+        <stop offset="1" stop-color="rgba(241,78,28,.22)"/>
+      </linearGradient>
+      <filter id="hv0-shadow" x="-60%" y="-60%" width="220%" height="220%">
+        <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#0E0D0C" flood-opacity=".18"/>
+      </filter>
+    </defs>
+
+    <ellipse class="hv-floor" cx="204" cy="294" rx="132" ry="16"/>
+
+    <g transform="rotate(-4 200 170)">
+      <g class="hv-float">
+        <g filter="url(#hv0-shadow)">
+          <circle class="hv-ring" cx="138" cy="146" r="52" fill="none" stroke="url(#hv0-ring)" stroke-width="21"/>
+          <circle class="hv-sphere" cx="272" cy="118" r="44" fill="url(#hv0-sphere)"/>
+          <rect class="hv-capsule" x="197" y="150" width="40" height="118" rx="20"
+            fill="url(#hv0-capsule)" stroke="var(--line-2)" stroke-width="1"
+            transform="rotate(-18 217 209)"/>
+          <polygon class="hv-hex" fill="url(#hv0-hex)" stroke="var(--ember)" stroke-width="1.2"
+            transform="translate(96 244) rotate(12)"
+            points="30,0 56,15 56,45 30,60 4,45 4,15"/>
+          <path class="hv-arc" d="M 300 230 A 42 42 0 1 1 296 272" fill="none"
+            stroke="var(--ember-deep)" stroke-width="12" stroke-linecap="round"/>
+        </g>
+        <circle class="hv-dot hv-dot-1" cx="80" cy="90" r="4" fill="var(--ember)"/>
+        <circle class="hv-dot hv-dot-2" cx="330" cy="70" r="3" fill="var(--ember)"/>
+        <circle class="hv-dot hv-dot-3" cx="350" cy="200" r="5" fill="var(--ember)"/>
+      </g>
+    </g>
+  </svg>
 </div>
       <figure class="quote" data-reveal><q>He gave good insight and feedback from a user perspective which is valuable for a product. He is a great fit to work in a startup environment.</q><figcaption class="att">Upwork review &#183; Framer website design &amp; support</figcaption></figure>
     </aside>
