@@ -34,7 +34,8 @@ PERSON = {
     "knowsAbout": ["UI/UX Design", "Webflow Development", "Framer Development", "Figma",
                    "Design Systems", "Landing Page Design", "AI product design"],
     "sameAs": ["https://www.linkedin.com/in/anowarhdesign/", "https://dribbble.com/anowarhdesign",
-               "https://x.com/anowarhdesign"],
+               "https://x.com/anowarhdesign",
+               "https://upwork.com/freelancers/webflowframeruiuxfigmadesign"],
 }
 
 def breadcrumbs(trail):
@@ -116,6 +117,7 @@ FOOT_TPL = '''<footer class="foot">
         <li><a href="/contact">Contact</a></li>
       </ul></div>
       <div><h3>Elsewhere</h3><ul>
+        <li><a href="https://upwork.com/freelancers/webflowframeruiuxfigmadesign" rel="noopener" target="_blank">Upwork</a></li>
         <li><a href="https://www.linkedin.com/in/anowarhdesign/" rel="noopener" target="_blank">LinkedIn</a></li>
         <li><a href="https://dribbble.com/anowarhdesign" rel="noopener" target="_blank">Dribbble</a></li>
         <li><a href="https://x.com/anowarhdesign" rel="noopener" target="_blank">X</a></li>
@@ -282,12 +284,13 @@ def page(path, title, desc, body, schema, current="", trail=None):
 
 # ─────────────────────────── shared blocks ───────────────────────────
 
-BADGE = '''<div class="badge" data-reveal>
+BADGE = '''<a class="badge" href="https://upwork.com/freelancers/webflowframeruiuxfigmadesign"
+  target="_blank" rel="noopener" data-reveal data-cursor="Verify">
   <img class="uw" src="/uploads/upwork-mark.png" width="22" height="22" alt="" aria-hidden="true">
   <span style="font-weight:500">Top Rated on Upwork</span>
   <span class="div" aria-hidden="true"></span>
   <span style="color:var(--ash)">100% job success &#183; 2,237 hours &#183; 399+ projects</span>
-</div>'''
+</a>'''
 
 # ── client logo wall: real logos, recolored to one flat brand-neutral tone
 # (ash, #4E4945) so every source site's original colors read as one cohesive
