@@ -90,6 +90,7 @@ export default async function handler(req, res) {
   const body = req.body || {};
   const name = String(body.name || "").trim();
   const email = String(body.email || "").trim();
+  const whatsapp = String(body.whatsapp || "").trim();
   const budget = String(body.budget || "Not specified").trim();
   const details = String(body.details || "").trim();
   const company = String(body.company || "").trim(); // honeypot
@@ -106,13 +107,13 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: true });
   }
 
-  if (!name || !email || !details) {
+  if (!email || !details) {
     return res.status(400).json({ error: "Missing required fields" });
   }
   if (!EMAIL_RE.test(email)) {
     return res.status(400).json({ error: "Invalid email address" });
   }
-  if (name.length > 200 || email.length > 200 || budget.length > 100 || details.length > 5000) {
+  if (name.length > 200 || email.length > 200 || whatsapp.length > 50 || budget.length > 100 || details.length > 5000) {
     return res.status(400).json({ error: "Field too long" });
   }
   if (looksLikeLinkSpam(name) || looksLikeLinkSpam(details)) {
@@ -138,11 +139,14 @@ export default async function handler(req, res) {
         from: FROM_EMAIL,
         to: [TO_EMAIL],
         reply_to: email,
-        subject: `Project enquiry from ${name}`,
-        text: `Name: ${name}\nEmail: ${email}\nRough budget: ${budget}\n\n${details}`,
+        subject: name ? `Project enquiry from ${name}` : "Project enquiry",
+        text: `Name: ${name || "Not provided"}\nEmail: ${email}\n` +
+          (whatsapp ? `WhatsApp: ${whatsapp}\n` : "") +
+          `Rough budget: ${budget}\n\n${details}`,
         html:
-          `<p><strong>Name:</strong> ${esc(name)}</p>` +
+          `<p><strong>Name:</strong> ${esc(name || "Not provided")}</p>` +
           `<p><strong>Email:</strong> ${esc(email)}</p>` +
+          (whatsapp ? `<p><strong>WhatsApp:</strong> ${esc(whatsapp)}</p>` : "") +
           `<p><strong>Rough budget:</strong> ${esc(budget)}</p>` +
           `<p><strong>What they're building:</strong></p><p>${esc(details).replace(/\n/g, "<br>")}</p>`,
       }),

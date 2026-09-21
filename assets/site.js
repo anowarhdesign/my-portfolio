@@ -218,12 +218,13 @@
       e.preventDefault();
       var name = (form.querySelector('[name="name"]') || {}).value || "";
       var email = (form.querySelector('[name="email"]') || {}).value || "";
+      var whatsapp = (form.querySelector('[name="whatsapp"]') || {}).value || "";
       var details = (form.querySelector('[name="details"]') || {}).value || "";
       var company = (form.querySelector('[name="company"]') || {}).value || "";
       var chip = form.querySelector('[data-chip][aria-pressed="true"]');
       var budget = chip ? chip.textContent.trim() : "";
 
-      if (!name.trim() || !email.trim() || !details.trim()) return;
+      if (!email.trim() || !details.trim()) return;
 
       if (submitBtn) { submitBtn.setAttribute("disabled", "disabled"); submitBtn.textContent = "Sending…"; }
       if (note) { note.textContent = noteDefault; note.classList.remove("is-ok", "is-err"); }
@@ -232,7 +233,7 @@
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: name, email: email, budget: budget, details: details,
+          name: name, email: email, whatsapp: whatsapp, budget: budget, details: details,
           company: company, loadedAt: loadedAt
         })
       }).then(function (res) {

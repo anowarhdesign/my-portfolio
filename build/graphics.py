@@ -54,7 +54,7 @@ def _home(uid):
           stroke="var(--line-2)" transform="rotate(-18 226 303)"/>
         <polygon fill="url(#{uid}-soft)" stroke="var(--ember)" stroke-width="1.2"
           transform="translate(100 360) rotate(10)" points="32,0 60,16 60,48 32,64 4,48 4,16"/>
-        <path d="M 300 370 A 44 44 0 1 1 296 414" fill="none" stroke="var(--ember-deep)"
+        <path d="M 260 370 A 44 44 0 1 1 256 414" fill="none" stroke="var(--ember-deep)"
           stroke-width="13" stroke-linecap="round"/>
       </g>
       <circle cx="90" cy="120" r="4" fill="var(--ember)"/>

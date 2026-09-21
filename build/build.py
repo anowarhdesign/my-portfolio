@@ -64,7 +64,7 @@ def nav(current):
     <nav class="navlinks" aria-label="Primary">{links}</nav>
     <div style="display:flex;gap:10px;align-items:center">
       <button class="navtoggle" type="button" aria-expanded="false" aria-label="Open menu">Menu</button>
-      <a class="btn btn-ink btn-sm" href="/contact">Book a call</a>
+      <a class="btn btn-ink btn-sm" href="https://cal.com/anowarhdesign/discovery" target="_blank" rel="noopener">Book a call</a>
     </div>
   </div>
 </header>'''
@@ -138,20 +138,29 @@ def band(title, text, cta="Book the discovery call"):
   <form class="band-form" data-brief-form novalidate>
     <span class="mono">Or send a quick brief</span>
     <div class="bf-row">
-      <label>Name<input type="text" name="name" autocomplete="name" required></label>
-      <label>Email<input type="email" name="email" autocomplete="email" required></label>
+      <label><span>Full Name</span>
+        <input type="text" name="name" autocomplete="name" placeholder="John Doe"></label>
+      <label><span>Your Email<i class="bf-req" aria-hidden="true">*</i></span>
+        <input type="email" name="email" autocomplete="email" placeholder="yourmail@gmail.com" required
+          aria-required="true"></label>
     </div>
+    <label><span>WhatsApp Number</span>
+      <input type="tel" name="whatsapp" autocomplete="tel" placeholder="123 456 7890"></label>
     <div class="bf-budget">
-      <span class="bf-label">Rough budget</span>
-      <div class="bf-chips" role="group" aria-label="Rough budget">
-        <button type="button" data-chip aria-pressed="false">Under $2k</button>
-        <button type="button" data-chip aria-pressed="false">$2k&#8211;$6k</button>
-        <button type="button" data-chip aria-pressed="false">$6k+</button>
+      <span class="bf-label">Project Budget</span>
+      <div class="bf-chips" role="group" aria-label="Project budget">
+        <button type="button" data-chip aria-pressed="false">Less than $5K</button>
+        <button type="button" data-chip aria-pressed="false">$5K&#8211;$10K</button>
+        <button type="button" data-chip aria-pressed="false">$10K&#8211;$20K</button>
+        <button type="button" data-chip aria-pressed="false">$20K&#8211;$50K</button>
+        <button type="button" data-chip aria-pressed="false">More than $50K</button>
       </div>
     </div>
-    <label>What are you building?<textarea name="details" rows="3" required></textarea></label>
+    <label><span>Project Details<i class="bf-req" aria-hidden="true">*</i></span>
+      <textarea name="details" rows="3" placeholder="I want to redesign my website.." required
+        aria-required="true"></textarea></label>
     <input type="text" name="company" class="bf-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-    <button class="btn btn-ink" type="submit">Send the brief <span class="arw">&#8594;</span></button>
+    <button class="btn btn-ink" type="submit">Send Inquiry <span class="arw">&#8594;</span></button>
     <span class="mono bf-note" data-bf-note>Sent straight to my inbox &#8212; I reply within 24 hours</span>
   </form>
 </div>'''

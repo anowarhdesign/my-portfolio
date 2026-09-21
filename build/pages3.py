@@ -384,7 +384,7 @@ contact_body = f'''
   </div>
 </section>
 
-<section style="padding-block:0">{band("Book the call.", "If I am not the right fit for what you are building, I will say so &#8212; and point you at who is.")}</section>
+<section style="padding-top:clamp(48px,6vw,88px);padding-bottom:0">{band("Book the call.", "If I am not the right fit for what you are building, I will say so &#8212; and point you at who is.")}</section>
 '''
 page("contact/index.html", "Contact | Book a Discovery Call | Anowar Hossain",
      "Book a 30-minute discovery call or email a brief. Replies within 24 hours, overlap hours with New York, London and Berlin, and a fixed quote within two working days.",
