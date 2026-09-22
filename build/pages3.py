@@ -257,7 +257,7 @@ process_body = f'''
   <div class="wrap">
     <div class="sec-head"><div><span class="mono">The eight stages</span>
       <h2>How a project runs.</h2></div></div>
-    <div class="steps" style="grid-template-columns:repeat(4,minmax(0,1fr))">
+    <div class="steps">
     {"".join(f'<div class="step" data-reveal><span class="k">{i+1:02d}</span><h3>{t}</h3><p>{d}</p></div>' for i, (t, d) in enumerate(STEPS8))}
   </div></div>
 </section>
