@@ -279,6 +279,18 @@
       });
     });
   });
+  // messages a visitor can actually act on, keyed by what api/contact.js
+  // sends back as {error}; anything not listed here (rate limits, a missing
+  // Resend key, Resend itself failing) isn't something the visitor can fix
+  // by editing the form, so those fall through to the generic "email me
+  // directly" note instead of a misleading "try again"
+  var BF_FIELD_ERRORS = {
+    "Missing required fields": "Please add your email and a few details about the project.",
+    "Invalid email address": "That email address doesn’t look right — please double-check it.",
+    "Field too long": "One of the fields is too long — please shorten it and try again."
+  };
+  var BF_EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   document.querySelectorAll("[data-brief-form]").forEach(function (form) {
     var note = form.querySelector("[data-bf-note]");
     var noteDefault = note ? note.textContent : "";
@@ -287,6 +299,13 @@
     // when the form became interactive — the server rejects submissions that
     // arrive implausibly soon after this, a cheap but effective bot filter
     var loadedAt = Date.now();
+
+    function showNote(text, isErr) {
+      if (!note) return;
+      note.textContent = text;
+      note.classList.toggle("is-err", !!isErr);
+      note.classList.toggle("is-ok", !isErr && text !== noteDefault);
+    }
 
     form.addEventListener("submit", function (e) {
       e.preventDefault();
@@ -298,10 +317,17 @@
       var chip = form.querySelector('[data-chip][aria-pressed="true"]');
       var budget = chip ? chip.textContent.trim() : "";
 
-      if (!email.trim() || !details.trim()) return;
+      if (!email.trim() || !details.trim()) {
+        showNote("Please add your email and a few details about the project.", true);
+        return;
+      }
+      if (!BF_EMAIL_RE.test(email.trim())) {
+        showNote(BF_FIELD_ERRORS["Invalid email address"], true);
+        return;
+      }
 
       if (submitBtn) { submitBtn.setAttribute("disabled", "disabled"); submitBtn.textContent = "Sending…"; }
-      if (note) { note.textContent = noteDefault; note.classList.remove("is-ok", "is-err"); }
+      showNote(noteDefault, false);
 
       fetch("/api/contact", {
         method: "POST",
@@ -311,17 +337,21 @@
           company: company, loadedAt: loadedAt
         })
       }).then(function (res) {
-        if (!res.ok) throw new Error("bad status");
-        return res.json();
-      }).then(function () {
-        if (note) { note.textContent = "Sent — I’ll reply within 24 hours."; note.classList.add("is-ok"); }
+        return res.json().catch(function () { return {}; }).then(function (data) {
+          return { ok: res.ok, status: res.status, data: data };
+        });
+      }).then(function (result) {
+        if (!result.ok) {
+          var serverMsg = result.data && result.data.error;
+          var friendly = result.status === 400 && BF_FIELD_ERRORS[serverMsg];
+          showNote(friendly || "Couldn’t send — email hello@anowarhdesign.com directly instead.", true);
+          return;
+        }
+        showNote("Sent — I’ll reply within 24 hours.", false);
         form.reset();
         form.querySelectorAll("[data-chip]").forEach(function (c) { c.setAttribute("aria-pressed", "false"); });
       }).catch(function () {
-        if (note) {
-          note.textContent = "Couldn’t send — email hello@anowarhdesign.com directly instead.";
-          note.classList.add("is-err");
-        }
+        showNote("Couldn’t send — email hello@anowarhdesign.com directly instead.", true);
       }).finally(function () {
         if (submitBtn) { submitBtn.removeAttribute("disabled"); submitBtn.innerHTML = submitDefault; }
       });
