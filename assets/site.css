@@ -550,9 +550,12 @@ section{padding-block:clamp(64px,9.5vw,136px);position:relative}
   .cursor,.cursor-dot{display:none}
   .nav-in{gap:14px}
   .nav .wordmark{font-size:22px}
-  /* short and wide instead of tall on phones — the 9:16 panel that works
-     as a side-by-side hero column just eats the whole screen when stacked */
-  .hero-visual{aspect-ratio:16/9;max-width:none}
+  /* shorter than the 9:16 desktop panel so it doesn't eat the whole screen
+     when stacked full-width on phones — but still portrait, not landscape:
+     the artwork is composed on a tall 400x600 canvas and preserveAspectRatio
+     "slice" crops whatever the container doesn't match, so flipping to a
+     wide/short ratio (the old 16:9 here) sliced off most of every shape */
+  .hero-visual{aspect-ratio:5/7;max-width:none}
   /* footer: one full-width column instead of two cramped ones — about
      blurb first (already first in the markup), then each link list */
   .foot-grid{grid-template-columns:1fr;gap:36px}
