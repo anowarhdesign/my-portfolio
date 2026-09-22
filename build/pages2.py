@@ -19,7 +19,6 @@ def service_page(slug, nav_title, h1_a, h1_b, answer, fits, not_fits, included, 
         <a class="btn btn-primary" href="https://cal.com/anowarhdesign/discovery" target="_blank" rel="noopener">Book the discovery call</a>
         <a class="btn btn-ghost" href="mailto:hello@anowarhdesign.com?subject=Project%20enquiry">Email a brief</a>
       </div>
-      {BADGE}
     </div>
     <aside class="hero-aside">{hero_visual(slug)}</aside>
   </div>

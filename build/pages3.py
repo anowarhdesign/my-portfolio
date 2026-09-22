@@ -162,7 +162,6 @@ pricing_body = f'''
       <div class="cta-row" data-reveal>
         <a class="btn btn-primary" href="https://cal.com/anowarhdesign/discovery" target="_blank" rel="noopener">Get a fixed quote</a>
       </div>
-      {BADGE}
     </div>
     <aside class="hero-aside">{hero_visual("pricing")}</aside>
   </div>
@@ -400,7 +399,6 @@ contact_body = f'''
         <a class="btn btn-primary" href="https://cal.com/anowarhdesign/discovery" target="_blank" rel="noopener">Book the discovery call</a>
         <a class="btn btn-ghost" href="mailto:hello@anowarhdesign.com?subject=Project%20enquiry">hello@anowarhdesign.com</a>
       </div>
-      {BADGE}
     </div>
     <aside class="hero-aside">{hero_visual("contact")}</aside>
   </div>
