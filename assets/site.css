@@ -517,6 +517,7 @@ section{padding-block:clamp(64px,9.5vw,136px);position:relative}
 .hv-piece:nth-child(6){transition-delay:.47s}
 .hv-piece:nth-child(7){transition-delay:.56s}
 .hv-piece:nth-child(8){transition-delay:.65s}
+.hv-piece:nth-child(9){transition-delay:.74s}
 /* idle sway: on a separate inner <g> (see _piece() in graphics.py) so it
    never fights the entrance transition above. Each piece keeps swaying
    on its own after landing — no shared parent-level motion, so nothing
@@ -541,6 +542,7 @@ section{padding-block:clamp(64px,9.5vw,136px);position:relative}
 .hv-piece:nth-child(6) .hv-idle{animation-delay:-1.15s}
 .hv-piece:nth-child(7) .hv-idle{animation-delay:-1.35s}
 .hv-piece:nth-child(8) .hv-idle{animation-delay:-1.55s}
+.hv-piece:nth-child(9) .hv-idle{animation-delay:-1.75s}
 .sec-ink .hero-visual{background:linear-gradient(155deg,var(--ink-2) 0%,var(--ink) 100%)}
 .sec-ink .hv-floor{fill:#000;opacity:.35}
 
