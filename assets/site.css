@@ -488,8 +488,6 @@ section{padding-block:clamp(64px,9.5vw,136px);position:relative}
   background:linear-gradient(155deg,var(--paper-2) 0%,var(--card) 100%)}
 .hv-svg{position:absolute;inset:0;width:100%;height:100%}
 .hv-floor{fill:var(--ink);opacity:.1;filter:blur(9px)}
-.hv-float{animation:hvbob 7s ease-in-out infinite}
-@keyframes hvbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 /* each shape in the hero graphic lands on its own, staggered, the first
    time the panel scrolls into view — every piece is its own wrapping <g>
    so this transform never lands on an element that already carries its
@@ -519,6 +517,30 @@ section{padding-block:clamp(64px,9.5vw,136px);position:relative}
 .hv-piece:nth-child(6){transition-delay:.47s}
 .hv-piece:nth-child(7){transition-delay:.56s}
 .hv-piece:nth-child(8){transition-delay:.65s}
+/* idle sway: on a separate inner <g> (see _piece() in graphics.py) so it
+   never fights the entrance transition above. Each piece keeps swaying
+   on its own after landing — no shared parent-level motion, so nothing
+   moves in lockstep with anything else. Same weight logic as the
+   entrance: heavier pieces sway less and slower (more inertia), lighter
+   ones swing further and quicker (closer to weightless). Durations
+   cluster near ~1s per tier rather than one identical number, so same-
+   tier siblings phase apart from each other too (helped by the negative
+   nth-child delays, which start each loop mid-cycle instead of in sync). */
+.hv-idle{transform-box:fill-box;transform-origin:center}
+.hv-w-heavy .hv-idle{animation:hvIdleHeavy 1.3s ease-in-out infinite}
+.hv-w-medium .hv-idle{animation:hvIdleMedium 1.05s ease-in-out infinite}
+.hv-w-light .hv-idle{animation:hvIdleLight .85s ease-in-out infinite}
+@keyframes hvIdleHeavy{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-4px) rotate(-1deg)}}
+@keyframes hvIdleMedium{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-7px) rotate(2deg)}}
+@keyframes hvIdleLight{0%,100%{transform:translateY(0) rotate(0deg) scale(1)}50%{transform:translateY(-10px) rotate(5deg) scale(1.04)}}
+.hv-piece:nth-child(1) .hv-idle{animation-delay:-.15s}
+.hv-piece:nth-child(2) .hv-idle{animation-delay:-.35s}
+.hv-piece:nth-child(3) .hv-idle{animation-delay:-.55s}
+.hv-piece:nth-child(4) .hv-idle{animation-delay:-.75s}
+.hv-piece:nth-child(5) .hv-idle{animation-delay:-.95s}
+.hv-piece:nth-child(6) .hv-idle{animation-delay:-1.15s}
+.hv-piece:nth-child(7) .hv-idle{animation-delay:-1.35s}
+.hv-piece:nth-child(8) .hv-idle{animation-delay:-1.55s}
 .sec-ink .hero-visual{background:linear-gradient(155deg,var(--ink-2) 0%,var(--ink) 100%)}
 .sec-ink .hv-floor{fill:#000;opacity:.35}
 
