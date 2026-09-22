@@ -92,7 +92,7 @@ work_body = f'''
       <h2>Twelve builds,<br><span class="serif ember">in detail.</span></h2></div></div>
     <div class="grid g-3">{"".join(case_card(c) for c in CASES)}</div>
     <a class="more-cue" href="#deployments" data-reveal>
-      <span class="mono">{len(DEPLOY_ROWS) - len(CASES)} more, shipped &amp; live</span>
+      <span class="mono">{len(DEPLOY_ROWS) - len(CASES)} more</span>
       <span class="more-cue-arrow" aria-hidden="true">&#8595;</span>
     </a>
   </div>
@@ -128,10 +128,12 @@ BANDS = [
  ("AI product build", "Prototype to production", "$750&#8211;$2,000", "1&#8211;2.5 weeks"),
  ("Care plan", "Ongoing edits and support", "$150&#8211;$450/mo", "Rolling"),
 ]
-band_rows = "".join(f'''<div class="card" data-reveal style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
+band_rows = "".join(f'''<div class="card price-row" data-reveal>
   <div style="min-width:220px"><h3>{n}</h3><p style="font-size:14.5px;color:var(--ash);margin-top:4px">{sub}</p></div>
-  <div style="font-size:24px;font-weight:600;letter-spacing:-.02em;color:var(--ember-deep)">{price}</div>
-  <div class="mono" style="min-width:110px;text-align:right">{dur}</div>
+  <div style="text-align:right">
+    <div style="font-size:24px;font-weight:600;letter-spacing:-.02em;color:var(--ember-deep)">{price}</div>
+    <p style="font-size:14.5px;color:var(--ash);margin-top:4px">{dur}</p>
+  </div>
 </div>''' for n, sub, price, dur in BANDS)
 
 pricing_faq = [
