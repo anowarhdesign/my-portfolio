@@ -44,6 +44,19 @@
     nums.forEach(function (n) { cio.observe(n); });
   }
 
+  /* ─── wordmark wink: a reusable trigger, since three separate things
+     now ask the logo to wink (scroll-into-mini, first-visit peek, idle) ─── */
+  function wink(el, ms) {
+    if (!el || reduced) return;
+    el.classList.add("wink");
+    clearTimeout(el._winkT);
+    el._winkT = setTimeout(function () { el.classList.remove("wink"); }, ms || 650);
+  }
+  function currentWordmark() {
+    if (nav && nav.classList.contains("hide") && navMiniMark) return navMiniMark;
+    return nav ? nav.querySelector(".wordmark") : null;
+  }
+
   /* ─── nav: hide on scroll down, dock reveal, progress ─── */
   var nav = document.querySelector(".nav");
   var navMini = document.querySelector(".nav-mini");
@@ -62,10 +75,7 @@
         // the full nav slides away in its place, so the mini pill is most
         // visitors' only chance to see the logo's face at all — wink it
         // once, the instant it appears, rather than leaving it static
-        if (hidden && !wasHidden && navMiniMark) {
-          navMiniMark.classList.add("wink");
-          setTimeout(function () { navMiniMark.classList.remove("wink"); }, 650);
-        }
+        if (hidden && !wasHidden) wink(navMiniMark);
       }
       wasHidden = hidden;
     }
@@ -78,6 +88,67 @@
   }
   addEventListener("scroll", onScroll, { passive: true });
   onScroll();
+
+  /* ─── logo, three more ways to see it wink without hovering ─── */
+  if (!reduced) {
+    // 1. first-visit peek — most visitors never scroll far enough to
+    // trigger the mini-pill wink, and touch devices never hover at all,
+    // so give everyone one unprompted look shortly after landing
+    setTimeout(function () { wink(currentWordmark(), 700); }, 2200);
+
+    // 2. idle wink — a small "still here" beat after a stretch of no
+    // activity at all; pauses while the tab isn't in focus and resets
+    // on any real interaction so it never fires mid-read or mid-scroll
+    var idleT;
+    function scheduleIdleWink() {
+      clearTimeout(idleT);
+      idleT = setTimeout(function () {
+        if (!document.hidden) wink(currentWordmark(), 700);
+        scheduleIdleWink();
+      }, 26000);
+    }
+    ["mousemove", "touchstart", "keydown", "scroll", "click"].forEach(function (evt) {
+      addEventListener(evt, scheduleIdleWink, { passive: true });
+    });
+    scheduleIdleWink();
+
+    // 3. click-burst easter egg — five clicks on any logo within ~1s of
+    // each other steals just that one click (no navigation) for a small
+    // ember burst instead; a normal single click still goes home as usual
+    var wmClicks = [];
+    document.querySelectorAll(".wordmark").forEach(function (wm) {
+      wm.addEventListener("click", function (e) {
+        var now = Date.now();
+        wmClicks = wmClicks.filter(function (t) { return now - t < 900; });
+        wmClicks.push(now);
+        if (wmClicks.length >= 5) {
+          e.preventDefault();
+          wmClicks = [];
+          wink(wm, 700);
+          emberBurst(wm);
+        }
+      });
+    });
+    function emberBurst(el) {
+      var r = el.querySelector(".memo") || el;
+      var b = r.getBoundingClientRect();
+      var cx = b.left + b.width / 2, cy = b.top + b.height / 2;
+      var tones = ["var(--ember)", "var(--ember-lift)", "var(--ember-deep)"];
+      for (var i = 0; i < 14; i++) {
+        var p = document.createElement("span");
+        p.className = "wm-particle";
+        var angle = (Math.PI * 2 * i) / 14 + Math.random() * 0.4;
+        var dist = 44 + Math.random() * 36;
+        p.style.left = cx + "px";
+        p.style.top = cy + "px";
+        p.style.background = tones[i % 3];
+        p.style.setProperty("--dx", (Math.cos(angle) * dist) + "px");
+        p.style.setProperty("--dy", (Math.sin(angle) * dist) + "px");
+        document.body.appendChild(p);
+        p.addEventListener("animationend", function () { this.remove(); });
+      }
+    }
+  }
 
   /* ─── section theme awareness for the cursor ─── */
   if (!reduced && "IntersectionObserver" in window) {
