@@ -117,39 +117,18 @@
     });
     scheduleIdleWink();
 
-    // 3. click-burst — every click on any logo fires a small ember burst
-    // and a wink, then still lands on the homepage — just held for one
-    // short beat first so the burst actually gets seen before the page
-    // unloads, instead of firing into a page that's already gone.
-    var NAV_DELAY = 450;
+    // 3. click-wink — every click on any logo winks it once, held for one
+    // short beat before navigating so the wink actually gets seen instead
+    // of firing into a page that's already gone.
+    var NAV_DELAY = 320;
     document.querySelectorAll(".wordmark").forEach(function (wm) {
       wm.addEventListener("click", function (e) {
         e.preventDefault();
         wink(wm, 700);
-        emberBurst(wm);
         var href = wm.getAttribute("href");
         setTimeout(function () { location.href = href; }, NAV_DELAY);
       });
     });
-    function emberBurst(el) {
-      var r = el.querySelector(".memo") || el;
-      var b = r.getBoundingClientRect();
-      var cx = b.left + b.width / 2, cy = b.top + b.height / 2;
-      var tones = ["var(--ember)", "var(--ember-lift)", "var(--ember-deep)"];
-      for (var i = 0; i < 14; i++) {
-        var p = document.createElement("span");
-        p.className = "wm-particle";
-        var angle = (Math.PI * 2 * i) / 14 + Math.random() * 0.4;
-        var dist = 44 + Math.random() * 36;
-        p.style.left = cx + "px";
-        p.style.top = cy + "px";
-        p.style.background = tones[i % 3];
-        p.style.setProperty("--dx", (Math.cos(angle) * dist) + "px");
-        p.style.setProperty("--dy", (Math.sin(angle) * dist) + "px");
-        document.body.appendChild(p);
-        p.addEventListener("animationend", function () { this.remove(); });
-      }
-    }
   }
 
   /* ─── section theme awareness for the cursor ─── */
