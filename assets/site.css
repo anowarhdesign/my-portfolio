@@ -225,6 +225,11 @@ section{padding-block:clamp(64px,9.5vw,136px);position:relative}
 /* line-mask reveal */
 .lines{display:block}
 .line{display:block;overflow:hidden}
+/* Instrument Serif italic's descenders (the tails on j/y/g/p) sit lower than
+   the reveal mask's tight box expects and were getting clipped — this is
+   always the last line in a headline (see build.py), so extra bottom room
+   here never pushes into a line that comes after it */
+.line-serif{padding-bottom:.14em;margin-bottom:-.14em}
 .line>span{display:block;transform:translateY(105%);transition:transform 1.05s var(--ease)}
 .in .line>span,.line.in>span{transform:translateY(0)}
 .line:nth-child(2)>span{transition-delay:.09s}

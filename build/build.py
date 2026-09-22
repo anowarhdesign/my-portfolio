@@ -202,7 +202,10 @@ def polish(body):
             for piece in chunk.split('<br>'):
                 piece = piece.strip()
                 if piece:
-                    parts.append(f'<span class="line"><span>{piece}</span></span>')
+                    # italic serif descenders (j, y, g...) sit lower than the reveal
+                    # mask's overflow:hidden box expects — give that line extra room
+                    cls = "line line-serif" if 'class="serif"' in piece else "line"
+                    parts.append(f'<span class="{cls}"><span>{piece}</span></span>')
         return f'<h1 class="lines"{attrs}>' + "".join(parts) + '</h1>'
     body = _re.sub(r'<h1([^>]*)>(.*?)</h1>', _lines, body, flags=_re.S)
     # stat numbers animate up
