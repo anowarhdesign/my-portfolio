@@ -87,7 +87,8 @@ def nav(current):
       <a class="btn btn-ink btn-sm" href="https://cal.com/anowarhdesign/discovery" target="_blank" rel="noopener">Book a call</a>
     </div>
   </div>
-</header>'''
+</header>
+<div class="nav-mini" aria-hidden="true">{wordmark()}</div>'''
 
 EMAIL = "hello@anowarhdesign.com"
 

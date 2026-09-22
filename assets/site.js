@@ -46,14 +46,28 @@
 
   /* ─── nav: hide on scroll down, dock reveal, progress ─── */
   var nav = document.querySelector(".nav");
+  var navMini = document.querySelector(".nav-mini");
+  var navMiniMark = navMini && navMini.querySelector(".wordmark");
   var dock = document.querySelector(".dock");
   var bar = document.querySelector(".progress i");
-  var last = 0;
+  var last = 0, wasHidden = false;
   function onScroll() {
     var y = scrollY;
     if (nav) {
       nav.classList.toggle("stuck", y > 20);
-      nav.classList.toggle("hide", y > 420 && y > last);
+      var hidden = y > 420 && y > last;
+      nav.classList.toggle("hide", hidden);
+      if (navMini) {
+        navMini.classList.toggle("show", hidden);
+        // the full nav slides away in its place, so the mini pill is most
+        // visitors' only chance to see the logo's face at all — wink it
+        // once, the instant it appears, rather than leaving it static
+        if (hidden && !wasHidden && navMiniMark) {
+          navMiniMark.classList.add("wink");
+          setTimeout(function () { navMiniMark.classList.remove("wink"); }, 650);
+        }
+      }
+      wasHidden = hidden;
     }
     if (dock) dock.classList.toggle("up", y > 640);
     if (bar) {

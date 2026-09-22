@@ -111,6 +111,18 @@ section{padding-block:clamp(64px,9.5vw,136px);position:relative}
   border-bottom:1px solid transparent}
 .nav.stuck{background:rgba(244,241,235,.72);backdrop-filter:blur(16px) saturate(140%);border-bottom-color:var(--line)}
 .nav.hide{transform:translateY(-110%)}
+/* the full nav slides away scrolling down (above), but this small centered
+   pill takes its place instead of leaving nothing — most visitors never
+   hover the logo, so this is also the one guaranteed chance to show its
+   wink off to everyone, not just mouse users (see .wordmark.wink) */
+.nav-mini{position:fixed;top:14px;left:50%;z-index:91;
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r-pill);
+  box-shadow:var(--shadow-sm);padding:8px 20px 8px 14px;
+  opacity:0;pointer-events:none;
+  transform:translate(-50%,-18px) scale(.92);
+  transition:opacity .4s var(--ease),transform .45s var(--ease)}
+.nav-mini.show{opacity:1;pointer-events:auto;transform:translate(-50%,0) scale(1)}
+.nav-mini .wordmark{font-size:20px}
 .nav-in{display:flex;align-items:center;justify-content:space-between;gap:24px;
   padding-block:18px;width:100%;max-width:var(--maxw);margin:0 auto;padding-inline:var(--gutter);position:relative}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.8)}}
@@ -553,12 +565,12 @@ section{padding-block:clamp(64px,9.5vw,136px);position:relative}
 @media (min-width:761px){.nav .wordmark{font-size:28px}}
 .wordmark .memo{width:1.72em;height:1.72em;margin:0 .04em;border-radius:50%;flex:0 0 auto;
   transition:transform .55s var(--ease-back)}
-.wordmark:hover .memo{transform:rotate(-9deg) scale(1.12) translateY(-1px)}
-.wordmark:hover .eye-l{opacity:0}
-.wordmark:hover .eye-wink{opacity:1}
-.wordmark:hover .mouth-grin{opacity:0}
-.wordmark:hover .mouth-whoa{opacity:1}
-.wordmark:hover .brow-l{transform:translateY(-2px) rotate(-6deg)}
+.wordmark:hover .memo,.wordmark.wink .memo{transform:rotate(-9deg) scale(1.12) translateY(-1px)}
+.wordmark:hover .eye-l,.wordmark.wink .eye-l{opacity:0}
+.wordmark:hover .eye-wink,.wordmark.wink .eye-wink{opacity:1}
+.wordmark:hover .mouth-grin,.wordmark.wink .mouth-grin{opacity:0}
+.wordmark:hover .mouth-whoa,.wordmark.wink .mouth-whoa{opacity:1}
+.wordmark:hover .brow-l,.wordmark.wink .brow-l{transform:translateY(-2px) rotate(-6deg)}
 .memo .eye-l,.memo .eye-wink,.memo .mouth-grin,.memo .mouth-whoa{transition:opacity .22s}
 .memo .brow-l{transition:transform .35s var(--ease-back);transform-origin:37px 40px}
 .wordmark .reg{font-size:.62em;transform:translateY(-.55em);color:var(--ember);letter-spacing:0}
