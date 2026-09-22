@@ -15,11 +15,14 @@ static SVG transform= attribute (that combination silently breaks matrix
 interpolation; every piece here gets a fresh wrapping <g> instead, so the
 hand-set rotate/translate on the shape inside is never touched)."""
 
-def _piece(inner):
-    return f'<g class="hv-piece">{inner}</g>'
+def _piece(inner, weight="medium"):
+    return f'<g class="hv-piece hv-w-{weight}">{inner}</g>'
 
-def _assemble(*chunks):
-    return "".join(_piece(c) for c in chunks)
+def _assemble(*pieces):
+    """pieces: (html, weight) tuples — weight is 'heavy' | 'medium' | 'light',
+    a rough stand-in for the shape's visual mass that site.css uses to decide
+    how it drops into place (see the .hv-w-* rules)."""
+    return "".join(_piece(html, weight) for html, weight in pieces)
 
 def _defs(uid, extra=""):
     return f'''<defs>
@@ -72,7 +75,9 @@ def _home(uid):
     dot1 = '<circle cx="90" cy="120" r="4" fill="var(--ember)"/>'
     dot2 = '<circle cx="335" cy="100" r="3" fill="var(--ember)"/>'
     dot3 = '<circle cx="350" cy="300" r="5" fill="var(--ember)"/>'
-    return _wrap(uid, defs, _assemble(floor, cluster, dot1, dot2, dot3))
+    return _wrap(uid, defs, _assemble(
+        (floor, "heavy"), (cluster, "heavy"),
+        (dot1, "light"), (dot2, "light"), (dot3, "light")))
 
 # ───────────────────── services: four disciplines, stacked ─────────────────────
 def _services(uid):
@@ -90,7 +95,8 @@ def _services(uid):
       </g>'''
     dot1 = '<circle cx="100" cy="150" r="3" fill="var(--ember)"/>'
     dot2 = '<circle cx="310" cy="440" r="4" fill="var(--ember)"/>'
-    return _wrap(uid, defs, _assemble(floor, stack, dot1, dot2))
+    return _wrap(uid, defs, _assemble(
+        (floor, "heavy"), (stack, "heavy"), (dot1, "light"), (dot2, "light")))
 
 # ───────────────── product design: canvas, layout blocks, cursor ─────────────────
 def _product_design(uid):
@@ -114,7 +120,9 @@ def _product_design(uid):
       </g>'''
     dot1 = '<circle cx="336" cy="150" r="4" fill="var(--ember)"/>'
     dot2 = '<circle cx="80" cy="440" r="3" fill="var(--ember)"/>'
-    return _wrap(uid, defs, _assemble(floor, canvas, cursor, dot1, dot2))
+    return _wrap(uid, defs, _assemble(
+        (floor, "heavy"), (canvas, "heavy"), (cursor, "medium"),
+        (dot1, "light"), (dot2, "light")))
 
 # ───────────────── webflow: browser chrome + structured CMS rows ─────────────────
 def _webflow(uid):
@@ -134,7 +142,9 @@ def _webflow(uid):
     cms_ball = f'<circle cx="330" cy="440" r="30" fill="url(#{uid}-sphere)" filter="url(#{uid}-shadow)"/>'
     dot1 = '<circle cx="60" cy="200" r="4" fill="var(--ember)"/>'
     dot2 = '<circle cx="340" cy="150" r="3" fill="var(--ember)"/>'
-    return _wrap(uid, defs, _assemble(floor, browser, cms_ball, dot1, dot2))
+    return _wrap(uid, defs, _assemble(
+        (floor, "heavy"), (browser, "heavy"), (cms_ball, "medium"),
+        (dot1, "light"), (dot2, "light")))
 
 # ───────────────── framer: motion streaks + launch chevron ─────────────────
 def _framer(uid):
@@ -152,7 +162,9 @@ def _framer(uid):
     dot1 = '<circle cx="90" cy="150" r="4" fill="var(--ember)"/>'
     dot2 = '<circle cx="330" cy="440" r="3" fill="var(--ember)"/>'
     dot3 = '<circle cx="310" cy="120" r="5" fill="var(--ember-lift)"/>'
-    return _wrap(uid, defs, _assemble(floor, streaks, chevron, dot1, dot2, dot3))
+    return _wrap(uid, defs, _assemble(
+        (floor, "heavy"), (streaks, "heavy"), (chevron, "medium"),
+        (dot1, "light"), (dot2, "light"), (dot3, "light")))
 
 # ───────────────── ai product builds: rough shape → clean shape ─────────────────
 def _ai_builds(uid):
@@ -178,7 +190,9 @@ def _ai_builds(uid):
     spark1 = '<path d="M110 130 l6 16 16 6 -16 6 -6 16 -6 -16 -16 -6 16 -6 Z" fill="var(--ember-lift)"/>'
     spark2 = '<path d="M330 460 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4 Z" fill="var(--ember)"/>'
     dot = '<circle cx="80" cy="440" r="3" fill="var(--ember)"/>'
-    return _wrap(uid, defs, _assemble(floor, rough, clean, spark1, spark2, dot))
+    return _wrap(uid, defs, _assemble(
+        (floor, "heavy"), (rough, "medium"), (clean, "heavy"),
+        (spark1, "light"), (spark2, "light"), (dot, "light")))
 
 # ───────────────── work: fanned stack of project cards ─────────────────
 def _work(uid):
@@ -204,7 +218,9 @@ def _work(uid):
     dot1 = '<circle cx="90" cy="140" r="4" fill="var(--ember)"/>'
     dot2 = '<circle cx="330" cy="440" r="3" fill="var(--ember)"/>'
     dot3 = '<circle cx="70" cy="440" r="3" fill="var(--ember-lift)"/>'
-    return _wrap(uid, defs, _assemble(floor, card_back, card_mid, card_front, dot1, dot2, dot3))
+    return _wrap(uid, defs, _assemble(
+        (floor, "heavy"), (card_back, "heavy"), (card_mid, "heavy"), (card_front, "heavy"),
+        (dot1, "light"), (dot2, "light"), (dot3, "light")))
 
 # ───────────────── pricing: price tag + stacked coins ─────────────────
 def _pricing(uid):
@@ -221,7 +237,9 @@ def _pricing(uid):
       </g>'''
     dot1 = '<circle cx="90" cy="150" r="4" fill="var(--ember)"/>'
     dot2 = '<circle cx="330" cy="180" r="3" fill="var(--ember)"/>'
-    return _wrap(uid, defs, _assemble(floor, tag, coins, dot1, dot2))
+    return _wrap(uid, defs, _assemble(
+        (floor, "heavy"), (tag, "heavy"), (coins, "medium"),
+        (dot1, "light"), (dot2, "light")))
 
 # ───────────────── process: a winding path of steps ─────────────────
 def _process(uid):
@@ -237,7 +255,10 @@ def _process(uid):
     step4 = f'<g filter="url(#{uid}-shadow)"><circle cx="260" cy="140" r="30" fill="url(#{uid}-sphere)"/></g>'
     dot1 = '<circle cx="90" cy="440" r="3" fill="var(--ember)"/>'
     dot2 = '<circle cx="320" cy="240" r="4" fill="var(--ember)"/>'
-    return _wrap(uid, defs, _assemble(floor, path, step1, step2, step3, step4, dot1, dot2))
+    return _wrap(uid, defs, _assemble(
+        (floor, "heavy"), (path, "medium"),
+        (step1, "medium"), (step2, "medium"), (step3, "medium"), (step4, "heavy"),
+        (dot1, "light"), (dot2, "light")))
 
 # ───────────────── contact: speech bubble + broadcast rings ─────────────────
 def _contact(uid):
@@ -259,7 +280,9 @@ def _contact(uid):
       </g>'''
     dot1 = '<circle cx="330" cy="440" r="4" fill="var(--ember)"/>'
     dot2 = '<circle cx="70" cy="150" r="3" fill="var(--ember)"/>'
-    return _wrap(uid, defs, _assemble(floor, ring1, ring2, bubble, arrow, dot1, dot2))
+    return _wrap(uid, defs, _assemble(
+        (floor, "heavy"), (ring1, "light"), (ring2, "light"),
+        (bubble, "heavy"), (arrow, "medium"), (dot1, "light"), (dot2, "light")))
 
 _BUILDERS = {
     "home": _home,
