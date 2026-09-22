@@ -290,13 +290,12 @@ def page(path, title, desc, body, schema, current="", trail=None):
 
 # ─────────────────────────── shared blocks ───────────────────────────
 
-BADGE = '''<a class="badge" href="https://upwork.com/freelancers/webflowframeruiuxfigmadesign"
-  target="_blank" rel="noopener" data-reveal data-cursor="Verify">
+BADGE = '''<div class="badge" data-reveal>
   <img class="uw" src="/uploads/upwork-mark.png" width="22" height="22" alt="" aria-hidden="true">
   <span style="font-weight:500">Top Rated on Upwork</span>
   <span class="div" aria-hidden="true"></span>
   <span style="color:var(--ash)">100% job success &#183; 2,237 hours &#183; 399+ projects</span>
-</a>'''
+</div>'''
 
 # ── client logo wall: real logos, recolored to one flat brand-neutral tone
 # (ash, #4E4945) so every source site's original colors read as one cohesive
