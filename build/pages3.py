@@ -468,10 +468,19 @@ sm.append("</urlset>")
 > quoted as a fixed price.
 
 ## Services
-- Product design (UX + UI in Figma, developer-ready): $1,500-$3,500, 2-4 weeks. {S}/services/product-design
-- Webflow development (editor-proof CMS, migration, QA): $1,250-$3,000, 2-3 weeks. {S}/services/webflow-development
-- Framer development (landing pages, launch sites, motion): from $450, 3-7 days. {S}/services/framer-development
-- AI product builds (finishing Lovable / v0 / Claude Code prototypes): $750-$2,000, 1-2.5 weeks. {S}/services/ai-product-builds
+- [Product design]({S}/services/product-design): UX + UI in Figma, developer-ready. $1,500-$3,500, 2-4 weeks.
+- [Webflow development]({S}/services/webflow-development): Editor-proof CMS, migration, QA. $1,250-$3,000, 2-3 weeks.
+- [Framer development]({S}/services/framer-development): Landing pages, launch sites, motion. From $450, 3-7 days.
+- [AI product builds]({S}/services/ai-product-builds): Finishing Lovable / v0 / Claude Code prototypes. $750-$2,000, 1-2.5 weeks.
+
+## Pages
+- [Home]({S}/)
+- [Services]({S}/services)
+- [Work]({S}/work)
+- [Pricing]({S}/pricing)
+- [Process]({S}/process)
+- [About]({S}/about)
+- [Contact]({S}/contact)
 
 ## Facts
 - Based in Dhaka, Bangladesh (GMT+6); overlaps New York mornings (09:00-13:00 ET) and full European business hours.
@@ -479,18 +488,9 @@ sm.append("</urlset>")
 - Credentials: Webflow Experts Certification; Google UX Design Professional Certificate; Top Rated on Upwork.
 - Clients include CADDi, Assistments, Stratus Neuro, SecureCDP, UberStrategist, Fit3D, 0xBow.
 
-## Pages
-- Home: {S}/
-- Services: {S}/services
-- Work: {S}/work
-- Pricing: {S}/pricing
-- Process: {S}/process
-- About: {S}/about
-- Contact: {S}/contact
-
 ## Contact
 - Email: hello@anowarhdesign.com
-- Discovery call: https://cal.com/anowarhdesign/discovery
+- [Book a discovery call](https://cal.com/anowarhdesign/discovery)
 """, encoding="utf-8")
 
 print("work, pricing, process, about, contact, sitemap, llms.txt built")

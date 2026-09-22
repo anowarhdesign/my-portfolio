@@ -88,7 +88,7 @@ def nav(current):
     </div>
   </div>
 </header>
-<div class="nav-mini" aria-hidden="true">{wordmark()}</div>'''
+<div class="nav-mini" aria-hidden="true">{wordmark(inert=True)}</div>'''
 
 EMAIL = "hello@anowarhdesign.com"
 

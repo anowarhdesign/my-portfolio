@@ -69,7 +69,13 @@ AVATAR_CSS = '''
 .foot .wordmark{font-size:16px}
 '''
 
-def wordmark(href="/", extra_class=""):
-    return (f'<a class="wordmark {extra_class}" href="{href}" aria-label="Anowar Hossain — home">'
+def wordmark(href="/", extra_class="", inert=False):
+    # inert=True is for a copy sitting inside an aria-hidden wrapper (the
+    # scroll-triggered mini nav pill) — an aria-hidden element must not
+    # contain anything focusable, so that copy is tabindex="-1": still
+    # clickable with a mouse, never reachable by keyboard or a screen reader,
+    # since the real, focusable link is always the main nav's wordmark.
+    tabindex = ' tabindex="-1"' if inert else ""
+    return (f'<a class="wordmark {extra_class}" href="{href}" aria-label="Anowar Hossain — home"{tabindex}>'
             f'<span>AN</span>{AVATAR_SVG}<span>WAR</span>'
             '</a>')
