@@ -496,6 +496,7 @@ section{padding-block:clamp(64px,9.5vw,136px);position:relative}
   .row{grid-template-columns:auto minmax(0,1fr) auto;gap:14px}
   .row .row-tag{display:none}
   .cursor,.cursor-dot{display:none}
+  .nav .wordmark{font-size:21px}
   /* short and wide instead of tall on phones — the 9:16 panel that works
      as a side-by-side hero column just eats the whole screen when stacked */
   .hero-visual{aspect-ratio:16/9;max-width:none}
