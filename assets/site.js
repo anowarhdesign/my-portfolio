@@ -79,7 +79,12 @@
       }
       wasHidden = hidden;
     }
-    if (dock) dock.classList.toggle("up", y > 640);
+    // tied to the same "hidden" state as the nav, not a separate scroll
+    // threshold — otherwise the dock and the full nav can both be on
+    // screen at once (e.g. scroll down past 640, then back up a little:
+    // the full nav returns immediately, but the old y > 640 check kept
+    // the dock up regardless of direction)
+    if (dock) dock.classList.toggle("up", nav ? nav.classList.contains("hide") : y > 640);
     if (bar) {
       var h = document.body.scrollHeight - innerHeight;
       bar.style.width = (h > 0 ? (y / h) * 100 : 0) + "%";
