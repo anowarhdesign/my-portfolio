@@ -112,21 +112,42 @@
     });
     scheduleIdleWink();
 
-    // 3. click-burst easter egg — five clicks on any logo within ~1s of
-    // each other steals just that one click (no navigation) for a small
-    // ember burst instead; a normal single click still goes home as usual
-    var wmClicks = [];
+    // 3. click-burst easter egg — five clicks on any logo fires a small
+    // ember burst instead of navigating. This is a static multi-page
+    // site, so a click that isn't stopped is a full page load — the
+    // *first* click, not just the fifth, has to be intercepted, or the
+    // page navigates away before a second click could ever land and the
+    // counter could never reach 5.
+    //
+    // Two different windows, deliberately not the same number:
+    // - NAV_DELAY (short): how long to wait after the *last* click before
+    //   actually navigating. Keeps a normal single click feeling close to
+    //   instant, and — because it resets on every click — is the thing
+    //   that determines whether the page survives long enough for the
+    //   next click in a real rapid-click attempt to land at all.
+    // - COMBO_WINDOW (longer, several NAV_DELAYs): how far back a click
+    //   still counts toward the combo. If this were equal to NAV_DELAY,
+    //   the 1st click would already have aged out of the count by the
+    //   time the 5th arrived even with every gap well under NAV_DELAY —
+    //   which is exactly the bug this replaced (four realistic ~90ms
+    //   gaps add up to 360ms, longer than a 300ms single window).
+    var NAV_DELAY = 320, COMBO_WINDOW = 1400;
+    var wmClicks = [], wmNavTimer = null;
     document.querySelectorAll(".wordmark").forEach(function (wm) {
       wm.addEventListener("click", function (e) {
+        e.preventDefault();
         var now = Date.now();
-        wmClicks = wmClicks.filter(function (t) { return now - t < 900; });
+        wmClicks = wmClicks.filter(function (t) { return now - t < COMBO_WINDOW; });
         wmClicks.push(now);
+        clearTimeout(wmNavTimer);
         if (wmClicks.length >= 5) {
-          e.preventDefault();
           wmClicks = [];
           wink(wm, 700);
           emberBurst(wm);
+          return;
         }
+        var href = wm.getAttribute("href");
+        wmNavTimer = setTimeout(function () { location.href = href; }, NAV_DELAY);
       });
     });
     function emberBurst(el) {
