@@ -16,14 +16,9 @@ interpolation; every piece here gets a fresh wrapping <g> instead, so the
 hand-set rotate/translate on the shape inside is never touched)."""
 
 def _piece(inner, weight="medium"):
-    # two nested wrappers, not one: the outer handles the one-time entrance
-    # (a CSS *transition* on transform, triggered by .hero-visual.in), the
-    # inner handles the perpetual idle sway (a CSS *animation* on transform).
-    # An animation always wins over a transition targeting the same
-    # property on the same element, so putting both on .hv-piece would
-    # just kill the entrance — same reasoning as never animating a shape
-    # that already carries its own static SVG transform=.
-    return f'<g class="hv-piece hv-w-{weight}"><g class="hv-idle">{inner}</g></g>'
+    # one-time entrance only: a CSS *transition* on transform, triggered by
+    # .hero-visual.in, staggered per piece. Pieces hold still once landed.
+    return f'<g class="hv-piece hv-w-{weight}">{inner}</g>'
 
 def _assemble(*pieces):
     """pieces: (html, weight) tuples — weight is 'heavy' | 'medium' | 'light',
