@@ -504,20 +504,20 @@ section{padding-block:clamp(64px,9.5vw,136px);position:relative}
 .hv-piece{opacity:0;transform-box:fill-box;transform-origin:center}
 .hero-visual.in .hv-piece{opacity:1;transform:none}
 .hv-piece.hv-w-heavy{transform:scale(.4) translateY(46px) rotate(-3deg);
-  transition:opacity .5s var(--ease),transform .8s cubic-bezier(.16,1,.3,1)}
+  transition:opacity .8s var(--ease),transform 1.3s cubic-bezier(.16,1,.3,1)}
 .hv-piece.hv-w-medium{transform:scale(.32) translateY(32px) rotate(8deg);
-  transition:opacity .42s var(--ease),transform .6s cubic-bezier(.34,1.56,.64,1)}
+  transition:opacity .68s var(--ease),transform 1s cubic-bezier(.34,1.56,.64,1)}
 .hv-piece.hv-w-light{transform:scale(.16) translateY(22px) rotate(20deg);
-  transition:opacity .36s var(--ease),transform .48s cubic-bezier(.34,2.2,.64,1)}
-.hv-piece:nth-child(1){transition-delay:.02s}
-.hv-piece:nth-child(2){transition-delay:.11s}
-.hv-piece:nth-child(3){transition-delay:.2s}
-.hv-piece:nth-child(4){transition-delay:.29s}
-.hv-piece:nth-child(5){transition-delay:.38s}
-.hv-piece:nth-child(6){transition-delay:.47s}
-.hv-piece:nth-child(7){transition-delay:.56s}
-.hv-piece:nth-child(8){transition-delay:.65s}
-.hv-piece:nth-child(9){transition-delay:.74s}
+  transition:opacity .58s var(--ease),transform .8s cubic-bezier(.34,2.2,.64,1)}
+.hv-piece:nth-child(1){transition-delay:.03s}
+.hv-piece:nth-child(2){transition-delay:.18s}
+.hv-piece:nth-child(3){transition-delay:.32s}
+.hv-piece:nth-child(4){transition-delay:.47s}
+.hv-piece:nth-child(5){transition-delay:.62s}
+.hv-piece:nth-child(6){transition-delay:.76s}
+.hv-piece:nth-child(7){transition-delay:.91s}
+.hv-piece:nth-child(8){transition-delay:1.05s}
+.hv-piece:nth-child(9){transition-delay:1.2s}
 .sec-ink .hero-visual{background:linear-gradient(155deg,var(--ink-2) 0%,var(--ink) 100%)}
 .sec-ink .hv-floor{fill:#000;opacity:.35}
 
