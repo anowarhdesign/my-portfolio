@@ -309,6 +309,8 @@ BADGE = '''<div class="badge" data-reveal>
 LOGO_DIR = ROOT / "uploads" / "logos"
 # (name, filename, pair with a text label, intrinsic px size for PNGs — avoids CLS)
 LOGOS = [
+    ("Blockstak", "blockstak.svg", False, None),
+    ("Optiify", "optiify.svg", False, None),
     ("CADDi", "caddi.svg", False, None),
     ("Assistments", "assistments.png", False, (1109, 160)),
     ("Stratus Neuro", "stratusneuro.png", False, (144, 48)),
@@ -362,6 +364,10 @@ def quote(key, extra=""):
     return f'<figure class="quote" data-reveal{extra}><q>{q}</q><figcaption class="att">{att}</figcaption></figure>'
 
 CASES = [
+ ("Blockstak", "blockstak.ai", "UI/UX &#183; EdTech / AI", "linear-gradient(140deg,#0C1802 0%,#1B3D0C 100%)",
+  "#B8F2A0", "Full UI/UX for a GenAI learning platform &#8212; course system, contests and mentor booking designed as one product."),
+ ("Optiify", "optiify.ai", "UI/UX &#183; PropTech / AI", "linear-gradient(140deg,#050B1F 0%,#152B6B 100%)",
+  "#A8C9FF", "UI/UX for an AI copilot that runs building HVAC operations &#8212; dense operational data made legible in plain language."),
  ("CADDi", "us.caddi.com", "Webflow &#183; Enterprise", "linear-gradient(140deg,#16150F 0%,#3A1D10 100%)",
   "#FFB48F", "US market entry for a manufacturing intelligence platform &#8212; dense technical content made legible."),
  ("Assistments", "assistments.org", "Webflow &#183; Edtech", "linear-gradient(140deg,#10161A 0%,#12303A 100%)",
@@ -388,7 +394,8 @@ CASES = [
   "#8FD8E0", "Predictive tenant-risk scoring for retail real estate &#8212; a data-dense product made legible to portfolio managers, not just analysts."),
 ]
 
-THUMBS = {"SalesPeak AI": "/uploads/thumbs/salespeak.webp", "0xBow": "/uploads/thumbs/0xbow.webp",
+THUMBS = {"Blockstak": "/uploads/thumbs/blockstak.webp", "Optiify": "/uploads/thumbs/optiify.webp",
+          "SalesPeak AI": "/uploads/thumbs/salespeak.webp", "0xBow": "/uploads/thumbs/0xbow.webp",
           "Eric Kanigan": "/uploads/thumbs/erickanigan.webp", "WaterH": "/uploads/thumbs/waterh.webp",
           "CADDi": "/uploads/thumbs/caddi.webp", "Assistments": "/uploads/thumbs/assistments.webp",
           "Stratus Neuro": "/uploads/thumbs/stratusneuro.webp", "SecureCDP": "/uploads/thumbs/securecdp.webp",
