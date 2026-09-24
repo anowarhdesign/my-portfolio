@@ -459,23 +459,36 @@ LOCK_SVG = '''<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000
   <path d="M32 43.5V48" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
 </svg>'''
 
-def case_study_body(c):
+def case_study_body(c, deploy_rows=None):
     name, host, tag, grad, tagcol, blurb = c
     shot = THUMBS.get(name)
     thumb = (f'<div class="cs-shot" style="background:{grad}">'
              f'<img src="{shot}" alt="{name} website" width="900" height="600" loading="lazy"></div>') if shot else (
              f'<div class="cs-shot" style="background:{grad}"><span class="ghost" aria-hidden="true">{name}</span></div>')
+    # tagcol is a light, dark-background-only accent (used in the card thumb's
+    # gradient overlay) — reused directly on the paper background here it'd be
+    # near-illegible, so this line always uses the same on-paper ember tone
+    # the rest of the site uses for accents at body size.
+    others = [r for r in (deploy_rows or []) if r[0] != name]
+    other_work = f'''
+<section class="sec-ink">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="mono">Keep looking</span>
+      <h2>More work,<br>shipped &amp; live.</h2></div></div>
+    {work_rows(others)}
+  </div>
+</section>''' if others else ""
     return f'''
 <section class="hero">
   <div class="wrap hero-in">
     <div class="hero-copy">
+      <a class="cs-back" href="/work" data-reveal>&#8592; Back to work</a>
       <span class="eyebrow" data-reveal>Case study</span>
       <h1 data-reveal>{name}</h1>
-      <p class="mono" data-reveal style="color:{tagcol};margin-top:4px">{tag}</p>
+      <p class="mono" data-reveal style="color:var(--ember-deep);margin-top:4px">{tag}</p>
       <p class="answer" data-reveal>{blurb}</p>
       <div class="cta-row" data-reveal>
         <a class="btn btn-primary" href="https://{host}" target="_blank" rel="noopener" data-cursor="Visit">Visit live site <span class="arw">&#8599;</span></a>
-        <a class="btn btn-ghost" href="/work">&#8592; Back to work</a>
       </div>
     </div>
     <aside class="hero-aside">{thumb}</aside>
@@ -485,18 +498,18 @@ def case_study_body(c):
 <section style="padding-top:0">
   <div class="wrap">
     <div class="cs-nda" data-reveal>
-      <div class="cs-lock">{LOCK_SVG}</div>
-      <h2>This project is under NDA.</h2>
-      <p>Screens, process notes and specifics from this engagement are covered by a client confidentiality
-        agreement, so they don&#8217;t go on a public page &#8212; but I am glad to walk you through the actual
-        work, decisions and outcome on a call.</p>
-      <div class="cs-nda-actions">
-        <a class="btn btn-primary" data-magnet href="https://cal.com/anowarhdesign/discovery" target="_blank" rel="noopener">Book a walkthrough call <span class="arw">&#8594;</span></a>
+      <div class="cs-nda-icon">{LOCK_SVG}</div>
+      <div class="cs-nda-copy">
+        <h2>This project is under NDA.</h2>
+        <p>Screens, process notes and specifics from this engagement are covered by a client confidentiality
+          agreement, so they don&#8217;t go on a public page &#8212; but I am glad to walk you through the actual
+          work, decisions and outcome on a call.</p>
       </div>
+      <a class="btn btn-primary" data-magnet href="https://cal.com/anowarhdesign/discovery" target="_blank" rel="noopener">Book a walkthrough call <span class="arw">&#8594;</span></a>
     </div>
   </div>
 </section>
-
+{other_work}
 <section style="padding-block:0">{band("Want something like this?", "Bring the brief. You will get a fixed quote, a timeline, and a straight answer about what is realistic.")}</section>
 '''
 

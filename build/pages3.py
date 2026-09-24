@@ -126,7 +126,7 @@ for _c in CASES:
     _name, _host, _tag, _grad, _tagcol, _blurb = _c
     _slug = slugify(_name)
     page(f"work/{_slug}/index.html", f"{_name} | Case Study | Anowar Hossain", _blurb,
-         case_study_body(_c),
+         case_study_body(_c, DEPLOY_ROWS),
          [{"@type": "CreativeWork", "@id": S + f"/work/{_slug}#project", "name": _name,
            "url": "https://" + _host, "creator": {"@id": S + "/#person"}}],
          current="/work", trail=[("Home", "/"), ("Work", "/work"), (_name, f"/work/{_slug}")])
