@@ -483,7 +483,6 @@ def case_study_body(c, deploy_rows=None):
   <div class="wrap hero-in">
     <div class="hero-copy">
       <a class="cs-back" href="/work" data-reveal>&#8592; Back to work</a>
-      <span class="eyebrow" data-reveal>Case study</span>
       <h1 data-reveal>{name}</h1>
       <p class="mono" data-reveal style="color:var(--ember-deep);margin-top:4px">{tag}</p>
       <p class="answer" data-reveal>{blurb}</p>
@@ -510,7 +509,7 @@ def case_study_body(c, deploy_rows=None):
   </div>
 </section>
 {other_work}
-<section style="padding-block:0">{band("Want something like this?", "Bring the brief. You will get a fixed quote, a timeline, and a straight answer about what is realistic.")}</section>
+<section style="padding-top:clamp(48px,6vw,88px);padding-bottom:0">{band("Want something like this?", "Bring the brief. You will get a fixed quote, a timeline, and a straight answer about what is realistic.")}</section>
 '''
 
 def work_rows(items):

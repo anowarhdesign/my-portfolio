@@ -92,7 +92,7 @@ work_body = f'''
       <h2>Twelve builds,<br><span class="serif ember">in detail.</span></h2></div></div>
     <div class="grid g-3">{"".join(case_card(c) for c in CASES)}</div>
     <a class="more-cue" href="#deployments" data-reveal>
-      <span class="mono">{len(DEPLOY_ROWS) - len(CASES)} more</span>
+      <span class="mono">More</span>
       <span class="more-cue-arrow" aria-hidden="true">&#8595;</span>
     </a>
   </div>
