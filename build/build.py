@@ -398,9 +398,12 @@ CASES = [
   "#8FD8E0", "Predictive tenant-risk scoring for retail real estate &#8212; a data-dense product made legible to portfolio managers, not just analysts."),
  ("Accord", "black-potential-500630.framer.app", "Framer &#183; AI &#183; Ecommerce", "linear-gradient(140deg,#15130A 0%,#3D3315 100%)",
   "#E0C468", "An AI voice agent that calls abandoned-cart shoppers on a brand&#8217;s behalf &#8212; conversational recovery flows designed to feel personal, not automated."),
+ ("EAX Media", "eaxmedia.com", "UI/UX &#183; Marketing agency", "linear-gradient(140deg,#0A0F1F 0%,#12224D 100%)",
+  "#9FC2E0", "A fractional-CMO marketing site built to make ROI legible &#8212; lead-gen positioning and performance data given equal weight to the pitch."),
 ]
 
 THUMBS = {"Blockstak": "/uploads/thumbs/blockstak.webp", "Optiify": "/uploads/thumbs/optiify.webp",
+          "EAX Media": "/uploads/thumbs/eaxmedia.webp",
           "SalesPeak AI": "/uploads/thumbs/salespeak.webp", "0xBow": "/uploads/thumbs/0xbow.webp",
           "Eric Kanigan": "/uploads/thumbs/erickanigan.webp", "WaterH": "/uploads/thumbs/waterh.webp",
           "CADDi": "/uploads/thumbs/caddi.webp", "Assistments": "/uploads/thumbs/assistments.webp",
