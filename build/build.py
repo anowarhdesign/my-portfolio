@@ -315,6 +315,7 @@ LOGO_DIR = ROOT / "uploads" / "logos"
 LOGOS = [
     ("Blockstak", "blockstak.svg", False, None),
     ("Optiify", "optiify.svg", False, None),
+    ("EAX Media", "eaxmedia.png", False, (350, 166)),
     ("CADDi", "caddi.svg", False, None),
     ("Assistments", "assistments.png", False, (1109, 160)),
     ("Stratus Neuro", "stratusneuro.png", False, (144, 48)),
