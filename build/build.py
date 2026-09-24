@@ -372,8 +372,6 @@ CASES = [
   "#B8F2A0", "Full UI/UX for a GenAI learning platform &#8212; course system, contests and mentor booking designed as one product."),
  ("Optiify", "optiify.ai", "UI/UX &#183; PropTech / AI", "linear-gradient(140deg,#050B1F 0%,#152B6B 100%)",
   "#A8C9FF", "UI/UX for an AI copilot that runs building HVAC operations &#8212; dense operational data made legible in plain language."),
- ("CADDi", "us.caddi.com", "Webflow &#183; Enterprise", "linear-gradient(140deg,#16150F 0%,#3A1D10 100%)",
-  "#FFB48F", "US market entry for a manufacturing intelligence platform &#8212; dense technical content made legible."),
  ("Assistments", "assistments.org", "Webflow &#183; Edtech", "linear-gradient(140deg,#10161A 0%,#12303A 100%)",
   "#8FD8E8", "Nonprofit edtech with many audiences and a small team &#8212; a CMS the staff run without a developer."),
  ("0xBow", "0xbow.io", "Framer &#183; Web3", "linear-gradient(140deg,#14101A 0%,#2E1A46 100%)",

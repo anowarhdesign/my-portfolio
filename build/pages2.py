@@ -151,7 +151,7 @@ service_page(
   ("Build", "Pixel-perfect development with clean classes, reusable components and real interactions."),
   ("Test", "Every breakpoint, browser and interaction, plus a page-speed pass before launch."),
   ("Hand over", "Editor training, documentation, and support after you go live.")],
- "webflow", ["CADDi", "Assistments"],
+ "webflow", ["Stratus Neuro", "Assistments"],
  "$1,250&#8211;$3,000",
  ["Page count and template variety", "CMS collections and their relationships",
   "Custom animation and interaction work", "Content migration volume", "Integrations &#8212; Memberstack, Zapier, analytics"],
