@@ -44,6 +44,10 @@ PERSON = {
                "https://upwork.com/freelancers/webflowframeruiuxfigmadesign"],
 }
 
+def slugify(name):
+    import re
+    return re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
+
 def breadcrumbs(trail):
     return {"@type": "BreadcrumbList", "itemListElement": [
         {"@type": "ListItem", "position": i + 1, "name": name, "item": SITE + url}
@@ -392,6 +396,8 @@ CASES = [
   "#E8B4C8", "An AI dress configurator that still feels handcrafted &#8212; the interface stays out of the way of the couture."),
  ("CFS", "cfsnnn.com", "Webflow &#183; Proptech / AI", "linear-gradient(140deg,#0E161A 0%,#163A44 100%)",
   "#8FD8E0", "Predictive tenant-risk scoring for retail real estate &#8212; a data-dense product made legible to portfolio managers, not just analysts."),
+ ("Accord", "black-potential-500630.framer.app", "Framer &#183; AI &#183; Ecommerce", "linear-gradient(140deg,#15130A 0%,#3D3315 100%)",
+  "#E0C468", "An AI voice agent that calls abandoned-cart shoppers on a brand&#8217;s behalf &#8212; conversational recovery flows designed to feel personal, not automated."),
 ]
 
 THUMBS = {"Blockstak": "/uploads/thumbs/blockstak.webp", "Optiify": "/uploads/thumbs/optiify.webp",
@@ -426,6 +432,7 @@ THUMBS = {"Blockstak": "/uploads/thumbs/blockstak.webp", "Optiify": "/uploads/th
 
 def case_card(c):
     name, host, tag, grad, tagcol, blurb = c
+    slug = slugify(name)
     shot = THUMBS.get(name)
     thumb = (f'<div class="thumb has-shot" style="background:{grad}">'
              f'<img src="{shot}" alt="{name} website" loading="lazy" width="900" height="600">'
@@ -433,12 +440,65 @@ def case_card(c):
              f'<div class="thumb" style="background:{grad}">'
              f'<span class="ghost" aria-hidden="true">{name}</span>'
              f'<span class="mono" style="color:{tagcol}">{tag}</span></div>')
-    return f'''<a class="card card-hover case" href="https://{host}" target="_blank" rel="noopener"
-  data-reveal data-cursor="Visit">
+    return f'''<a class="card card-hover case" href="/work/{slug}"
+  data-reveal data-cursor="View">
   {thumb}
   <div class="body"><h3>{name}</h3><p style="font-size:14.5px;color:var(--ash)">{blurb}</p>
-    <span class="go">Visit live site <span class="arw">&#8594;</span></span></div>
+    <span class="go">See the case study <span class="arw">&#8594;</span></span></div>
 </a>'''
+
+# ── individual case study pages: most client work here is under NDA, so
+# these never claim process detail or metrics that were never cleared to
+# publish — they show the same public-facing blurb as the card, a big
+# thumbnail, a link to the still-visitable live site, and a straight
+# explanation that the rest is a conversation, not a page.
+LOCK_SVG = '''<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <rect x="14" y="28" width="36" height="28" rx="8" stroke="currentColor" stroke-width="4"/>
+  <path d="M22 28V20a10 10 0 0 1 20 0v8" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="32" cy="40" r="3.5" fill="currentColor"/>
+  <path d="M32 43.5V48" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+</svg>'''
+
+def case_study_body(c):
+    name, host, tag, grad, tagcol, blurb = c
+    shot = THUMBS.get(name)
+    thumb = (f'<div class="cs-shot" style="background:{grad}">'
+             f'<img src="{shot}" alt="{name} website" width="900" height="600" loading="lazy"></div>') if shot else (
+             f'<div class="cs-shot" style="background:{grad}"><span class="ghost" aria-hidden="true">{name}</span></div>')
+    return f'''
+<section class="hero">
+  <div class="wrap hero-in">
+    <div class="hero-copy">
+      <span class="eyebrow" data-reveal>Case study</span>
+      <h1 data-reveal>{name}</h1>
+      <p class="mono" data-reveal style="color:{tagcol};margin-top:4px">{tag}</p>
+      <p class="answer" data-reveal>{blurb}</p>
+      <div class="cta-row" data-reveal>
+        <a class="btn btn-primary" href="https://{host}" target="_blank" rel="noopener" data-cursor="Visit">Visit live site <span class="arw">&#8599;</span></a>
+        <a class="btn btn-ghost" href="/work">&#8592; Back to work</a>
+      </div>
+    </div>
+    <aside class="hero-aside">{thumb}</aside>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="cs-nda" data-reveal>
+      <div class="cs-lock">{LOCK_SVG}</div>
+      <h2>This project is under NDA.</h2>
+      <p>Screens, process notes and specifics from this engagement are covered by a client confidentiality
+        agreement, so they don&#8217;t go on a public page &#8212; but I am glad to walk you through the actual
+        work, decisions and outcome on a call.</p>
+      <div class="cs-nda-actions">
+        <a class="btn btn-primary" data-magnet href="https://cal.com/anowarhdesign/discovery" target="_blank" rel="noopener">Book a walkthrough call <span class="arw">&#8594;</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-block:0">{band("Want something like this?", "Bring the brief. You will get a fixed quote, a timeline, and a straight answer about what is realistic.")}</section>
+'''
 
 def work_rows(items):
     out = ['<div class="rows">']

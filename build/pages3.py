@@ -120,6 +120,17 @@ page("work/index.html", "Work | Webflow &amp; Framer Case Studies | Anowar Hossa
       *review_schema(["teach", "startup", "rigor"])],
      current="/work", trail=[("Home", "/"), ("Work", "/work")])
 
+# ── case study detail pages, one per featured card — see case_study_body()
+# in build.py for why these stay deliberately light on specifics (NDA)
+for _c in CASES:
+    _name, _host, _tag, _grad, _tagcol, _blurb = _c
+    _slug = slugify(_name)
+    page(f"work/{_slug}/index.html", f"{_name} | Case Study | Anowar Hossain", _blurb,
+         case_study_body(_c),
+         [{"@type": "CreativeWork", "@id": S + f"/work/{_slug}#project", "name": _name,
+           "url": "https://" + _host, "creator": {"@id": S + "/#person"}}],
+         current="/work", trail=[("Home", "/"), ("Work", "/work"), (_name, f"/work/{_slug}")])
+
 # ─────────────────────────── PRICING ───────────────────────────
 BANDS = [
  ("Landing page", "Framer or Webflow", "From $450", "3&#8211;7 days"),
@@ -451,12 +462,16 @@ BUILD_DATE = datetime.date.today().isoformat()
 URLS = ["/", "/services", "/services/product-design", "/services/webflow-development",
         "/services/framer-development", "/services/ai-product-builds", "/work", "/pricing",
         "/process", "/about", "/contact"]
+CASE_URLS = [f"/work/{slugify(c[0])}" for c in CASES]
 sm = ['<?xml version="1.0" encoding="UTF-8"?>',
       '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
 for u in URLS:
     pri = "1.0" if u == "/" else ("0.9" if u.startswith("/services") else "0.7")
     sm.append(f"  <url><loc>{S}{u}</loc><lastmod>{BUILD_DATE}</lastmod>"
               f"<changefreq>monthly</changefreq><priority>{pri}</priority></url>")
+for u in CASE_URLS:
+    sm.append(f"  <url><loc>{S}{u}</loc><lastmod>{BUILD_DATE}</lastmod>"
+              f"<changefreq>monthly</changefreq><priority>0.6</priority></url>")
 sm.append("</urlset>")
 (ROOT / "sitemap.xml").write_text("\n".join(sm) + "\n", encoding="utf-8")
 
