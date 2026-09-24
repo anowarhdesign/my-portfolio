@@ -387,8 +387,6 @@ CASES = [
   "#A8C5FF", "Explaining an AI sales platform to enterprise buyers who distrust AI marketing copy."),
  ("WaterH", "www.waterh.com/pages/about-waterh-app", "UI/UX &#183; Healthcare", "linear-gradient(140deg,#0E1618 0%,#123840 100%)",
   "#8FE3F0", "A smart-bottle companion app where usability and accessibility were requirements, not afterthoughts."),
- ("UserVoice", "uservoice.com", "Webflow &#183; B2B SaaS", "linear-gradient(140deg,#1A140F 0%,#402A12 100%)",
-  "#FFB77A", "Positioning a mature customer-intelligence platform for enterprise buyers &#8212; years of feature depth compressed into one confident narrative."),
  ("Fit3D", "fit3d.com", "Webflow &#183; Healthtech", "linear-gradient(140deg,#100E0C 0%,#2A1F16 100%)",
   "#E8B98F", "Ten years and $25M of body-scanning R&amp;D compressed into one clear pitch, credible enough for gyms and clinics to buy on the spot."),
  ("THE ONE Bespoke", "theonebespoke.com", "Webflow &#183; Fashion / AI", "linear-gradient(140deg,#17130F 0%,#3A2530 100%)",
@@ -399,10 +397,13 @@ CASES = [
   "#E0C468", "An AI voice agent that calls abandoned-cart shoppers on a brand&#8217;s behalf &#8212; conversational recovery flows designed to feel personal, not automated."),
  ("EAX Media", "eaxmedia.com", "UI/UX &#183; Marketing agency", "linear-gradient(140deg,#0A0F1F 0%,#12224D 100%)",
   "#9FC2E0", "A fractional-CMO marketing site built to make ROI legible &#8212; lead-gen positioning and performance data given equal weight to the pitch."),
+ ("Astate Concierge", "astateconcierge.com", "UI/UX &#183; Webflow &#183; Home services", "linear-gradient(140deg,#14150F 0%,#33301C 100%)",
+  "#B8C49A", "A concierge home-services brand built to feel like a trusted advisor, not a task app &#8212; warm, editorial design for a high-touch membership service."),
 ]
 
 THUMBS = {"Blockstak": "/uploads/thumbs/blockstak.webp", "Optiify": "/uploads/thumbs/optiify.webp",
           "EAX Media": "/uploads/thumbs/eaxmedia.webp",
+          "Astate Concierge": "/uploads/thumbs/astateconcierge.webp",
           "SalesPeak AI": "/uploads/thumbs/salespeak.webp", "0xBow": "/uploads/thumbs/0xbow.webp",
           "Eric Kanigan": "/uploads/thumbs/erickanigan.webp", "WaterH": "/uploads/thumbs/waterh.webp",
           "CADDi": "/uploads/thumbs/caddi.webp", "Assistments": "/uploads/thumbs/assistments.webp",
