@@ -132,7 +132,6 @@ FOOT_TPL = '''<footer class="foot">
         <li><a href="https://www.linkedin.com/in/anowarhdesign/" rel="noopener" target="_blank">LinkedIn</a></li>
         <li><a href="https://dribbble.com/anowarhdesign" rel="noopener" target="_blank">Dribbble</a></li>
         <li><a href="https://x.com/anowarhdesign" rel="noopener" target="_blank">X</a></li>
-        <li><a href="https://www.designrush.com/agency/ui-ux-design" rel="noopener sponsored nofollow" target="_blank">DesignRush</a></li>
         <li class="foot-email">__EMAILCHIP__</li>
       </ul></div>
     </div>
