@@ -60,10 +60,15 @@ def faq_schema(items):
 
 def review_schema(keys):
     """Review objects for the QUOTES actually rendered as visible <figure class="quote">
-    on that page — schema must mirror on-page content, not every testimonial site-wide."""
+    on that page — schema must mirror on-page content, not every testimonial site-wide.
+    itemReviewed must be a type Google's review-snippet spec actually supports (Product,
+    LocalBusiness, Organization, etc.) — a bare Person is explicitly unsupported, which is
+    what Search Console flagged as "Invalid object type for field 'itemReviewed'"."""
     return [{"@type": "Review", "reviewBody": QUOTES[k][0],
              "author": {"@type": "Organization", "name": "Verified Upwork Client"},
-             "itemReviewed": {"@id": SITE + "/#person"}} for k in keys]
+             "itemReviewed": {"@type": "ProfessionalService",
+                               "name": "Anowar Hossain — UI/UX Design & Webflow/Framer Development",
+                               "url": SITE + "/"}} for k in keys]
 
 def itemlist_schema(cases):
     return {"@type": "ItemList", "itemListElement": [
