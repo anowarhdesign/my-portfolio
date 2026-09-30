@@ -49,7 +49,7 @@ home_body = f'''
       then production development in Webflow or Framer. You brief one person, that person designs the interface,
       builds it, and answers for the result &#8212; which is why founders come to me instead of an agency.</p>
     <div class="grid g-4" style="margin-top:36px">
-      {"".join(service_card(s, ember=(s[2] == "04")) for s in SERVICES)}
+      {"".join(service_card(s, ember=(s[2] == "05")) for s in SERVICES)}
     </div>
   </div>
 </section>
@@ -149,9 +149,9 @@ hub_body = f'''
     <div class="hero-copy">
       <span class="eyebrow" data-reveal>Services</span>
       <h1 data-reveal>Design and build,<span class="serif">under one roof.</span></h1>
-      <p class="answer" data-reveal>Four ways to work together: product design in Figma, Webflow development,
-        Framer development, and finishing AI-built prototypes. Every engagement is a fixed quote agreed after a
-        discovery call, run by one person from brief to launch, typically in two to three weeks.</p>
+      <p class="answer" data-reveal>Five ways to work together: product design in Figma, Webflow development,
+        Framer development, finishing AI-built prototypes, and AI automation. Every engagement is a fixed quote
+        agreed after a discovery call, run by one person from brief to launch, typically in two to three weeks.</p>
       <div class="cta-row" data-reveal>
         <a class="btn btn-primary" href="https://cal.com/anowarhdesign/discovery" target="_blank" rel="noopener">Book the discovery call</a>
         <a class="btn btn-ghost" href="/pricing">See pricing</a>
@@ -163,9 +163,9 @@ hub_body = f'''
 
 <section style="padding-top:0">
   <div class="wrap">
-    <div class="sec-head"><div><span class="mono">The four</span>
+    <div class="sec-head"><div><span class="mono">The five</span>
       <h2>What I&#8217;m hired for.</h2></div></div>
-    <div class="grid g-2">{"".join(service_card(s, ember=(s[2] == "04")) for s in SERVICES)}</div>
+    <div class="grid g-2">{"".join(service_card(s, ember=(s[2] == "05")) for s in SERVICES)}</div>
   </div>
 </section>
 
@@ -173,7 +173,7 @@ hub_body = f'''
   <div class="wrap">
     <div class="sec-head"><div><span class="mono">Choosing</span>
       <h2>Which one do you<br>actually need?</h2></div></div>
-    <div class="grid g-3">
+    <div class="grid g-2">
       <div class="card" data-reveal><h3>You have a design already</h3>
         <p style="margin-top:10px">Webflow or Framer development. Send the Figma file; you get a production build
           that matches it and a CMS your team can run.</p></div>
@@ -183,6 +183,9 @@ hub_body = f'''
       <div class="card" data-reveal><h3>You have an AI-built prototype</h3>
         <p style="margin-top:10px">AI product builds. The Lovable or v0 output works but looks generic; this is the
           design and production pass that makes it shippable.</p></div>
+      <div class="card" data-reveal><h3>You have manual work eating your team&#8217;s time</h3>
+        <p style="margin-top:10px">AI automation. Workflows and AI agents built on n8n, Zapier or Make that connect
+          your tools and take the repetitive part off someone&#8217;s plate.</p></div>
     </div>
   </div>
 </section>
@@ -194,12 +197,12 @@ hub_body = f'''
   </div>
 </section>
 
-<section style="padding-block:0">{band("Not sure which fits?", "Book the call and describe the problem &#8212; I will tell you which of the four it is, or that it is none of them.")}</section>
+<section style="padding-block:0">{band("Not sure which fits?", "Book the call and describe the problem &#8212; I will tell you which of the five it is, or that it is none of them.")}</section>
 '''
 
 page("services/index.html",
      "Services | Design &amp; Webflow Development | Anowar Hossain",
-     "Product design, Webflow and Framer development, and AI product builds. One operator, fixed quotes, two to three weeks, for teams in the US and Europe.",
+     "Product design, Webflow and Framer development, AI product builds, and AI automation. One operator, fixed quotes, two to three weeks, for teams in the US and Europe.",
      hub_body,
      [faq_schema(hub_faq)],
      current="/services",

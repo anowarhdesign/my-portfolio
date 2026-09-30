@@ -38,7 +38,8 @@ PERSON = {
                    ["United States", "United Kingdom", "Canada", "Australia", "Germany", "Netherlands"]],
     "knowsLanguage": ["en", "bn"],
     "knowsAbout": ["UI/UX Design", "Webflow Development", "Framer Development", "Figma",
-                   "Design Systems", "Landing Page Design", "AI product design"],
+                   "Design Systems", "Landing Page Design", "AI product design",
+                   "AI Automation", "Workflow Automation", "n8n"],
     "sameAs": ["https://www.linkedin.com/in/anowarhdesign/", "https://dribbble.com/anowarhdesign",
                "https://x.com/anowarhdesign",
                "https://upwork.com/freelancers/webflowframeruiuxfigmadesign"],
@@ -559,6 +560,9 @@ SERVICES = [
  ("AI product builds", "/services/ai-product-builds", "04",
   "Lovable, v0 and Claude Code prototypes taken the last 30% to something you can ship.",
   "$750&#8211;$2,000", ["Design pass", "Component system", "Responsive", "Accessibility", "Handover docs"]),
+ ("AI automation", "/services/ai-automation", "05",
+  "Automated workflows and AI agents that take repetitive work off your team&#8217;s plate, built on n8n, Zapier, Make and real APIs.",
+  "$600&#8211;$2,500", ["Workflow mapping", "n8n / Zapier / Make", "AI agent setup", "API integrations", "Testing", "Documentation"]),
 ]
 
 def service_card(s, ember=False):

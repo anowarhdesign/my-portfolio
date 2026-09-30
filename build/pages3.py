@@ -137,6 +137,7 @@ BANDS = [
  ("Marketing site", "6&#8211;12 pages with CMS", "$1,250&#8211;$3,000", "2&#8211;3 weeks"),
  ("Product design", "UX + UI engagement", "$1,500&#8211;$3,500", "2&#8211;4 weeks"),
  ("AI product build", "Prototype to production", "$750&#8211;$2,000", "1&#8211;2.5 weeks"),
+ ("AI automation", "Workflows & AI agents", "$600&#8211;$2,500", "1&#8211;2 weeks"),
  ("Care plan", "Ongoing edits and support", "$150&#8211;$450/mo", "Rolling"),
 ]
 band_rows = "".join(f'''<div class="card price-row" data-reveal>
@@ -460,8 +461,8 @@ page("contact/index.html", "Contact | Book a Discovery Call | Anowar Hossain",
 import datetime
 BUILD_DATE = datetime.date.today().isoformat()
 URLS = ["/", "/services", "/services/product-design", "/services/webflow-development",
-        "/services/framer-development", "/services/ai-product-builds", "/work", "/pricing",
-        "/process", "/about", "/contact"]
+        "/services/framer-development", "/services/ai-product-builds", "/services/ai-automation",
+        "/work", "/pricing", "/process", "/about", "/contact"]
 CASE_URLS = [f"/work/{slugify(c[0])}" for c in CASES]
 sm = ['<?xml version="1.0" encoding="UTF-8"?>',
       '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
@@ -487,6 +488,7 @@ sm.append("</urlset>")
 - [Webflow development]({S}/services/webflow-development): Editor-proof CMS, migration, QA. $1,250-$3,000, 2-3 weeks.
 - [Framer development]({S}/services/framer-development): Landing pages, launch sites, motion. From $450, 3-7 days.
 - [AI product builds]({S}/services/ai-product-builds): Finishing Lovable / v0 / Claude Code prototypes. $750-$2,000, 1-2.5 weeks.
+- [AI automation]({S}/services/ai-automation): Workflows and AI agents on n8n / Zapier / Make. $600-$2,500, 1-2 weeks.
 
 ## Pages
 - [Home]({S}/)

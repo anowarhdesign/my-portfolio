@@ -84,9 +84,9 @@ def _home(uid):
         (pill, "medium"), (hexagon, "light"), (arc, "medium"),
         (dot1, "light"), (dot2, "light"), (dot3, "light")))
 
-# ───────────────────── services: four disciplines, stacked ─────────────────────
-# four separate icons (card, progress ring, flag, check badge) — each its own
-# piece, so they read as four independent disciplines rather than one frozen block.
+# ───────────────────── services: five disciplines, stacked ─────────────────────
+# five separate icons (card, progress ring, flag, check badge, connected nodes) —
+# each its own piece, so they read as independent disciplines rather than one frozen block.
 def _services(uid):
     defs = _defs(uid)
     floor = '<ellipse class="hv-floor" cx="200" cy="560" rx="120" ry="14"/>'
@@ -104,11 +104,18 @@ def _services(uid):
         <circle cx="200" cy="500" r="46" fill="url(#{uid}-sphere)"/>
         <path d="M182 500 l12 12 24 -24" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
       </g>'''
+    # fifth discipline: AI automation, a small connected-nodes icon
+    nodes = f'''<g filter="url(#{uid}-shadow)">
+        <path d="M310 235 L345 268 L310 301" fill="none" stroke="url(#{uid}-ring)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="310" cy="235" r="10" fill="var(--ember-lift)"/>
+        <circle cx="345" cy="268" r="10" fill="url(#{uid}-sphere)"/>
+        <circle cx="310" cy="301" r="10" fill="var(--ember-deep)"/>
+      </g>'''
     dot1 = '<circle cx="100" cy="150" r="3" fill="var(--ember)"/>'
     dot2 = '<circle cx="310" cy="440" r="4" fill="var(--ember)"/>'
     return _wrap(uid, defs, _assemble(
         (floor, "heavy"), (card, "heavy"), (ring_icon, "medium"),
-        (flag, "light"), (check_badge, "medium"),
+        (flag, "light"), (check_badge, "medium"), (nodes, "medium"),
         (dot1, "light"), (dot2, "light")))
 
 # ───────────────── product design: canvas, layout blocks, cursor ─────────────────
@@ -209,6 +216,35 @@ def _ai_builds(uid):
         (floor, "heavy"), (rough, "medium"), (clean, "heavy"),
         (spark1, "light"), (spark2, "light"), (dot, "light")))
 
+# ───────────────── ai automation: a workflow of connected nodes ─────────────────
+def _ai_automation(uid):
+    defs = _defs(uid)
+    floor = '<ellipse class="hv-floor" cx="200" cy="540" rx="130" ry="16"/>'
+    # the path a trigger takes: in at the bottom, through the AI node, out as a
+    # completed action at the top — same winding-path idea as the process page
+    path = '''<path d="M140 480 C140 420 260 420 260 360 C260 300 140 300 140 240 C140 180 260 180 260 130"
+        fill="none" stroke="var(--line-2)" stroke-width="4" stroke-dasharray="2 10" stroke-linecap="round"/>'''
+    trigger = f'''<g filter="url(#{uid}-shadow)">
+        <rect x="118" y="458" width="44" height="44" rx="12" fill="url(#{uid}-glass)" stroke="var(--line-2)"/>
+        <path d="M132 480 l10 -14 4 8 10 -10" fill="none" stroke="var(--ember)" stroke-width="3.5"
+          stroke-linecap="round" stroke-linejoin="round"/>
+      </g>'''
+    ai_node = f'''<g filter="url(#{uid}-shadow)">
+        <circle cx="260" cy="360" r="34" fill="url(#{uid}-sphere)"/>
+        <path d="M260 344 l5 12 12 5 -12 5 -5 12 -5 -12 -12 -5 12 -5 Z" fill="#fff" opacity=".85"/>
+      </g>'''
+    action = f'''<g filter="url(#{uid}-shadow)">
+        <circle cx="260" cy="130" r="30" fill="none" stroke="url(#{uid}-ring)" stroke-width="12"/>
+        <path d="M248 130 l8 8 16 -16" fill="none" stroke="var(--ember-deep)" stroke-width="5"
+          stroke-linecap="round" stroke-linejoin="round"/>
+      </g>'''
+    dot1 = '<circle cx="90" cy="200" r="4" fill="var(--ember)"/>'
+    dot2 = '<circle cx="330" cy="470" r="3" fill="var(--ember)"/>'
+    dot3 = '<circle cx="340" cy="230" r="4" fill="var(--ember-lift)"/>'
+    return _wrap(uid, defs, _assemble(
+        (floor, "heavy"), (path, "medium"), (trigger, "heavy"), (ai_node, "heavy"), (action, "medium"),
+        (dot1, "light"), (dot2, "light"), (dot3, "light")))
+
 # ───────────────── work: fanned stack of project cards ─────────────────
 def _work(uid):
     defs = _defs(uid)
@@ -306,6 +342,7 @@ _BUILDERS = {
     "webflow-development": _webflow,
     "framer-development": _framer,
     "ai-product-builds": _ai_builds,
+    "ai-automation": _ai_automation,
     "work": _work,
     "pricing": _pricing,
     "process": _process,

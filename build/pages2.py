@@ -241,4 +241,40 @@ service_page(
  "AI Product Builds | Finish Your Lovable App | Anowar Hossain",
  "AI product builds")
 
+# ─────────────────── ai automation ───────────────────
+service_page(
+ "ai-automation", "AI automation",
+ "Stop doing by hand<br>", "what a workflow can do.",
+ "AI automation replaces repetitive manual work with automated workflows and AI agents that read, decide and act across the tools you already use. Built on n8n, Zapier, Make and direct API integrations, most projects run $600&#8211;$2,500 and take one to two weeks &#8212; connecting your CRM, inbox, forms and spreadsheets so a task that used to take an hour runs itself.",
+ ["Your team repeats the same manual task across tools every week",
+  "Leads, form submissions or support tickets sit unrouted until someone notices",
+  "You want an AI agent that can answer, draft or triage without a human checking every case",
+  "You already use n8n, Zapier or Make and need someone to build it properly"],
+ ["You need a full custom backend or a new product built from scratch",
+  "You want a chatbot with no defined process behind it",
+  "You expect one automation to replace an entire team"],
+ ["Workflow audit", "Process mapping", "n8n / Zapier / Make build", "AI agent setup",
+  "API integrations", "Error handling & alerts", "Testing", "Documentation & handover"],
+ [("Map", "Every manual step in the process, and where it is actually costing time."),
+  ("Design", "The automation logic: triggers, conditions, AI decisions and fallbacks, agreed before anything gets built."),
+  ("Build", "Connected in n8n, Zapier, Make or code, with error handling so it fails safely, not silently."),
+  ("Hand over", "Documented, tested against edge cases, and yours to run without me.")],
+ "rigor", ["Accord", "Optiify"],
+ "$600&#8211;$2,500",
+ ["Number of tools and systems connected", "Whether AI decision-making is involved, or just fixed-rule logic",
+  "Custom API work vs. native integrations", "Volume and complexity of error handling and monitoring needed"],
+ [("What is AI automation?",
+   "AI automation connects the tools you already use &#8212; your CRM, inbox, forms, spreadsheets, calendar &#8212; into workflows that run themselves, sometimes with an AI model reading and deciding what happens next. Instead of someone manually copying a lead from a form into a CRM and emailing sales, the workflow does it the moment the form is submitted."),
+  ("Do you build with n8n, Zapier or Make?",
+   "Yes, whichever fits the job &#8212; n8n for anything with real logic or self-hosting needs, Zapier and Make for faster builds on simpler stacks. I will tell you which is right rather than defaulting to what I know best."),
+  ("Can you add AI decision-making, not just fixed rules?",
+   "Yes &#8212; workflows that read an email, a ticket or a form response with an AI model and decide how to route it, draft a reply, or flag it for a human, instead of following a fixed if/then rule."),
+  ("How is this different from your AI product builds service?",
+   "AI product builds is design and front-end work on an app &#8212; taking a Lovable or v0 prototype to something customers trust. AI automation is backend: connecting the tools your business already runs on so a manual process happens on its own. Some projects need both."),
+  ("What happens if the automation breaks?",
+   "Every build ships with error handling and alerts, so a failure gets flagged instead of silently dropping data. Documentation and a short handover call mean your team, or the next developer, can read and fix it without me.")],
+ "AI automation and workflow builds on n8n, Zapier and Make - connecting your tools into systems that run themselves. $600-$2,500, one to two weeks.",
+ "AI Automation &amp; Workflow Builds | Anowar Hossain",
+ "AI automation")
+
 print("service pages built")
