@@ -131,6 +131,7 @@ FOOT_TPL = '''<footer class="foot">
         <li><a href="/process">Process</a></li>
         <li><a href="/about">About</a></li>
         <li><a href="/contact">Contact</a></li>
+        <li><a href="https://tally.so/r/MeoJVX" rel="noopener" target="_blank">Start a project</a></li>
       </ul></div>
       <div><h3>Elsewhere</h3><ul>
         <li><a href="https://upwork.com/freelancers/webflowframeruiuxfigmadesign" rel="noopener" target="_blank">Upwork</a></li>
@@ -164,6 +165,7 @@ def band(title, text, cta="Book the discovery call"):
     <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start;margin-top:6px">
       <a class="btn btn-primary" data-magnet data-cursor="Book" href="https://cal.com/anowarhdesign/discovery" target="_blank" rel="noopener">{cta} <span class="arw">&#8594;</span></a>
       <span class="mono" style="text-transform:none;letter-spacing:normal">Or write direct &#8212; {email_chip()}</span>
+      <span class="mono" style="text-transform:none;letter-spacing:normal">Or <a href="https://tally.so/r/MeoJVX" target="_blank" rel="noopener" style="text-decoration:underline">start a project</a> without a call</span>
     </div>
   </div>
   <form class="band-form" data-brief-form novalidate>
