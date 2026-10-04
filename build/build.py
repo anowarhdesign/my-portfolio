@@ -418,8 +418,6 @@ CASES = [
   "#9FC2E0", "A fractional-CMO marketing site built to make ROI legible &#8212; lead-gen positioning and performance data given equal weight to the pitch."),
  ("Astate Concierge", "astateconcierge.com", "UI/UX &#183; Webflow &#183; Home services", "linear-gradient(140deg,#14150F 0%,#33301C 100%)",
   "#B8C49A", "A concierge home-services brand built to feel like a trusted advisor, not a task app &#8212; warm, editorial design for a high-touch membership service."),
- ("Mopsly", "mopsly.com", "UI/UX &#183; Webflow &#183; SEO / AEO", "linear-gradient(140deg,#0B0F1F 0%,#1C2A8A 100%)",
-  "#7FD6F5", "Designed in Figma and built in Webflow for a HubSpot marketing-ops consultancy &#8212; structured for search engines and AI answer engines from the first wireframe."),
 ]
 
 THUMBS = {"Blockstak": "/uploads/thumbs/blockstak.webp", "Optiify": "/uploads/thumbs/optiify.webp",

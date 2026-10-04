@@ -5,6 +5,7 @@ from graphics import hero_visual   # noqa
 S = SITE
 
 DEPLOYS = [
+ ("Mopsly", "mopsly.com", "Webflow &#183; MarTech &#183; SEO / AEO", "2026"),
  ("Assistments", "assistments.org", "Webflow &#183; Edtech &#183; Nonprofit", "2025"),
  ("UberStrategist", "uberstrategist.com", "Webflow &#183; Gaming &#183; PR agency", "2024"),
  ("Stratus Neuro", "stratusneuro.com", "Webflow &#183; Medtech &#183; Healthcare", "2025"),
