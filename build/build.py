@@ -44,8 +44,7 @@ PERSON = {
                    "Claude Code", "JavaScript", "Custom Web Development"],
     "sameAs": ["https://www.linkedin.com/in/anowarhdesign/", "https://dribbble.com/anowarhdesign",
                "https://x.com/anowarhdesign",
-               "https://upwork.com/freelancers/webflowframeruiuxfigmadesign",
-               "https://www.sortlist.com/agency/anowar-hossain"],
+               "https://upwork.com/freelancers/webflowframeruiuxfigmadesign"],
 }
 
 def slugify(name):
@@ -142,7 +141,6 @@ FOOT_TPL = '''<footer class="foot">
         <li><a href="https://www.linkedin.com/in/anowarhdesign/" rel="noopener" target="_blank">LinkedIn</a></li>
         <li><a href="https://dribbble.com/anowarhdesign" rel="noopener" target="_blank">Dribbble</a></li>
         <li><a href="https://x.com/anowarhdesign" rel="noopener" target="_blank">X</a></li>
-        <li><a href="https://www.sortlist.com/agency/anowar-hossain" rel="noopener" target="_blank">Sortlist</a></li>
         <li class="foot-email">__EMAILCHIP__</li>
       </ul></div>
     </div>
