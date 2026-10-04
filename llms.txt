@@ -1,9 +1,10 @@
 # Anowar Hossain
 
-> UI/UX designer and Webflow & Framer developer based in Dhaka, Bangladesh, working with SaaS, AI,
-> healthcare and enterprise teams across the US, UK, Canada, Australia and Europe. Top Rated on Upwork
-> with 100% job success and 2,237 hours logged. One operator: design and development by the same person,
-> quoted as a fixed price.
+> UI/UX designer, Webflow & Framer developer and AI automation expert based in Dhaka, Bangladesh, working
+> with SaaS, AI, healthcare and enterprise teams across the US, UK, Canada, Australia and Europe. Builds on
+> platforms like Webflow and Framer, automates workflows with n8n, Zapier and Make, and ships custom-coded
+> solutions with Claude Code and Cursor when a project needs more. Top Rated on Upwork with 100% job success
+> and 2,237 hours logged. One operator: design and development by the same person, quoted as a fixed price.
 
 ## Services
 - [Product design](https://anowarhdesign.com/services/product-design): UX + UI in Figma, developer-ready. $1,500-$3,500, 2-4 weeks.

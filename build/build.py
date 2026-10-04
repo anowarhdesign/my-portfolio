@@ -31,7 +31,8 @@ PERSON = {
     "@type": "Person", "@id": SITE + "/#person", "name": "Anowar Hossain",
     "alternateName": "Md Anowar Hossain", "url": SITE + "/",
     "image": SITE + "/uploads/avatar.jpg",
-    "jobTitle": "UI/UX Designer & Webflow / Framer Developer",
+    "jobTitle": "UI/UX Designer, Webflow / Framer Developer & AI Automation Expert",
+    "description": "Anowar Hossain is a UI/UX designer, Webflow and Framer developer and AI automation expert based in Dhaka, Bangladesh. He builds AI workflows and agents with n8n, Zapier, Make and custom code, and ships coded solutions with Claude Code and Cursor when a project needs more than a platform.",
     "email": "mailto:hello@anowarhdesign.com",
     "address": {"@type": "PostalAddress", "addressCountry": "BD"},
     "areaServed": [{"@type": "Country", "name": n} for n in
@@ -39,7 +40,8 @@ PERSON = {
     "knowsLanguage": ["en", "bn"],
     "knowsAbout": ["UI/UX Design", "Webflow Development", "Framer Development", "Figma",
                    "Design Systems", "Landing Page Design", "AI product design",
-                   "AI Automation", "Workflow Automation", "n8n"],
+                   "AI Automation", "Workflow Automation", "n8n", "AI Agents",
+                   "Claude Code", "JavaScript", "Custom Web Development"],
     "sameAs": ["https://www.linkedin.com/in/anowarhdesign/", "https://dribbble.com/anowarhdesign",
                "https://x.com/anowarhdesign",
                "https://upwork.com/freelancers/webflowframeruiuxfigmadesign"],
@@ -263,7 +265,7 @@ def page(path, title, desc, body, schema, current="", trail=None):
 <meta property="og:image" content="{SITE}/uploads/og-cover.jpg?v={OG_VER}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Anowar Hossain — UI/UX design and Webflow / Framer development">
+<meta property="og:image:alt" content="Anowar Hossain — UI/UX design, Webflow / Framer development and AI automation">
 <meta property="og:site_name" content="Anowar Hossain">
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">

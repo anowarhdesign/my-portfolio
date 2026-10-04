@@ -310,10 +310,11 @@ about_body = f'''
     <div class="hero-copy">
       <span class="eyebrow" data-reveal>About</span>
       <h1 data-reveal>A person,<span class="serif">not a vendor.</span></h1>
-      <p class="answer" data-reveal>I am Anowar Hossain, a UI/UX designer and Webflow &amp; Framer developer based
-        in Dhaka, Bangladesh. For six years I have designed and built digital products for startups and enterprise
-        teams across the US, UK, Canada, Australia and Europe &#8212; Top Rated on Upwork with 100% job success
-        and 2,237 hours logged. I do the work myself: no agency layer, no outsourcing.</p>
+      <p class="answer" data-reveal>I am Anowar Hossain, a UI/UX designer, Webflow &amp; Framer developer and AI
+        automation expert based in Dhaka, Bangladesh. For six years I have designed and built digital products for
+        startups and enterprise teams across the US, UK, Canada, Australia and Europe &#8212; on platforms like
+        Webflow and Framer, and in custom code with Claude Code and Cursor when a project needs more. Top Rated on
+        Upwork with 100% job success and 2,237 hours logged. I do the work myself: no agency layer, no outsourcing.</p>
       <div class="cta-row" data-reveal>
         <a class="btn btn-primary" href="https://cal.com/anowarhdesign/discovery" target="_blank" rel="noopener">Book a call</a>
         <a class="btn btn-ghost" href="https://www.linkedin.com/in/anowarhdesign/" target="_blank" rel="noopener">Due diligence &#8594; LinkedIn</a>
@@ -390,8 +391,8 @@ about_body = f'''
 
 <section style="padding-block:0">{band("Let&#8217;s talk about your project.", "Thirty minutes, no pitch, and a straight answer about whether I am the right person for it.")}</section>
 '''
-page("about/index.html", "About Anowar Hossain | UI/UX Designer &amp; Webflow Developer",
-     "Anowar Hossain is a UI/UX designer and Webflow & Framer developer in Dhaka, working with US and European teams. Top Rated on Upwork, 2,237 hours logged.",
+page("about/index.html", "About Anowar Hossain | UI/UX, Webflow &amp; AI Automation",
+     "Anowar Hossain is a UI/UX designer, Webflow & Framer developer and AI automation expert in Dhaka, working with US and European teams. Top Rated on Upwork.",
      about_body,
      [{"@type": "AboutPage", "@id": S + "/about#page", "mainEntity": {"@id": S + "/#person"}},
       *review_schema(["design"])],
@@ -478,10 +479,11 @@ sm.append("</urlset>")
 
 (ROOT / "llms.txt").write_text(f"""# Anowar Hossain
 
-> UI/UX designer and Webflow & Framer developer based in Dhaka, Bangladesh, working with SaaS, AI,
-> healthcare and enterprise teams across the US, UK, Canada, Australia and Europe. Top Rated on Upwork
-> with 100% job success and 2,237 hours logged. One operator: design and development by the same person,
-> quoted as a fixed price.
+> UI/UX designer, Webflow & Framer developer and AI automation expert based in Dhaka, Bangladesh, working
+> with SaaS, AI, healthcare and enterprise teams across the US, UK, Canada, Australia and Europe. Builds on
+> platforms like Webflow and Framer, automates workflows with n8n, Zapier and Make, and ships custom-coded
+> solutions with Claude Code and Cursor when a project needs more. Top Rated on Upwork with 100% job success
+> and 2,237 hours logged. One operator: design and development by the same person, quoted as a fixed price.
 
 ## Services
 - [Product design]({S}/services/product-design): UX + UI in Figma, developer-ready. $1,500-$3,500, 2-4 weeks.

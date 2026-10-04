@@ -13,7 +13,7 @@ def svc_schema(name, desc, price):
 # ─────────────────────────── HOME ───────────────────────────
 home_faq = [
  ("Who is Anowar Hossain?",
-  "Anowar Hossain is a UI/UX designer and Webflow &amp; Framer developer based in Dhaka, Bangladesh, working with SaaS, AI, healthcare and enterprise teams across the US, UK and Europe. He is Top Rated on Upwork with 100% job success and 2,237 hours logged, and he designs and builds every project himself &#8212; no agency layer, no outsourcing."),
+  "Anowar Hossain is a UI/UX designer, Webflow &amp; Framer developer and AI automation expert based in Dhaka, Bangladesh, working with SaaS, AI, healthcare and enterprise teams across the US, UK and Europe. He builds on platforms like Webflow and Framer, automates workflows with n8n, Zapier and Make, and ships custom-coded solutions with Claude Code and Cursor when a project needs more than a platform. He is Top Rated on Upwork with 100% job success and 2,237 hours logged, and he designs and builds every project himself &#8212; no agency layer, no outsourcing."),
  ("Can one person really design and build a whole site?",
   "Yes, and that is the point. A single operator holds the goals from the first call to launch, so nothing is lost between a strategist, a designer and a dev shop. It means faster decisions, one person accountable for the result, and a build where the design intent actually survives."),
  ("What does a project cost?",
@@ -26,8 +26,8 @@ home_body = f'''
     <div class="hero-copy">
       {BADGE}
       <h1 data-reveal>Design that<br>earns trust.<span class="serif">Built to keep it.</span></h1>
-      <p class="lead" data-reveal>UI/UX design and Webflow &amp; Framer development for SaaS, AI and enterprise
-        teams &#8212; one operator, no handoffs, fixed quotes. Working with companies across the US, UK and Europe.</p>
+      <p class="lead" data-reveal>UI/UX design, Webflow &amp; Framer development and AI automation for SaaS, AI and
+        enterprise teams &#8212; one operator, no handoffs, fixed quotes. Working with companies across the US, UK and Europe.</p>
       <div class="cta-row" data-reveal>
         <a class="btn btn-primary" href="https://cal.com/anowarhdesign/discovery" target="_blank" rel="noopener">Book the discovery call</a>
         <a class="btn btn-ghost" href="/work">See the work</a>
@@ -119,11 +119,11 @@ home_body = f'''
 '''
 
 page("index.html",
-     "Anowar Hossain | UI/UX Designer &amp; Webflow Developer",
-     "UI/UX designer and Webflow &amp; Framer developer for SaaS, AI and enterprise teams in the US and Europe. Top Rated on Upwork. Fixed quotes, one operator.",
+     "Anowar Hossain | UI/UX, Webflow &amp; AI Automation Expert",
+     "UI/UX designer, Webflow &amp; Framer developer and AI automation expert for SaaS and enterprise teams in the US and Europe. Top Rated on Upwork.",
      home_body,
      [{"@type": "ProfessionalService", "@id": S + "/#business", "name": "Anowar Hossain",
-       "description": "UI/UX design and Webflow & Framer development for SaaS, AI and enterprise teams.",
+       "description": "UI/UX design, Webflow & Framer development and AI automation for SaaS, AI and enterprise teams.",
        "url": S + "/", "founder": {"@id": S + "/#person"},
        "priceRange": "$450-$6,000",
        "areaServed": ["US", "GB", "CA", "AU", "DE", "NL"]},
