@@ -85,7 +85,7 @@ html.st-os-open .nav,html.st-os-open .nav-mini,html.st-os-open .dock,html.st-os-
 .os-icons button:hover,.os-icons button:focus-visible{background:rgba(244,241,235,.14);outline:0}
 .os-icons svg{width:44px;height:44px;padding:10px;border-radius:13px;background:rgba(14,13,12,.62);backdrop-filter:blur(8px);border:1px solid rgba(244,241,235,.14)}
 .os-wins{position:relative;flex:1;min-height:0}
-.os-dock{flex:none;align-self:center;display:flex;align-items:center;gap:5px;margin:0 8px 10px;padding:7px;border-radius:19px;background:rgba(12,12,14,.6);backdrop-filter:blur(18px);border:1px solid rgba(244,241,235,.12);z-index:5000;max-width:calc(100vw - 16px);overflow-x:auto}
+.os-dock{flex:none;align-self:center;display:flex;align-items:center;gap:5px;margin:0 8px 10px;padding:7px;border-radius:19px;background:rgba(12,12,14,.6);backdrop-filter:blur(18px);border:1px solid rgba(244,241,235,.12);z-index:5000;max-width:calc(100vw - 16px);flex-wrap:wrap;justify-content:center;overflow:visible}
 .os-dock hr{width:1px;height:28px;border:0;background:rgba(244,241,235,.2);margin:0 4px;flex:none}
 .os-dock button{position:relative;flex:none;width:44px;height:44px;border-radius:13px;border:0;background:rgba(244,241,235,.08);color:var(--paper);cursor:pointer;display:grid;place-items:center;transition:transform .18s cubic-bezier(.3,1.6,.5,1),background .2s}
 .os-dock button:hover{transform:translateY(-6px) scale(1.12);background:var(--ember)}
@@ -188,6 +188,7 @@ html.st-os-open .nav,html.st-os-open .nav-mini,html.st-os-open .dock,html.st-os-
 @media (max-width:760px){
   .st-intro{right:20px;max-width:none}.st-intro p{display:none}
   .st-card{right:12px;left:12px;width:auto;top:auto;bottom:12px;transform:translateY(16px);max-height:62vh}.st-card.on{transform:none}
+  .os-dock hr{display:none}.os-dock{row-gap:6px}
   .os-icons{display:none}.os-app,.os-bar button span{display:none}.os-bar button{padding:0 8px}
   .os-win{left:4px!important;top:4px!important;width:calc(100% - 8px)!important;height:calc(100% - 8px)!important}
   .os-rows{columns:1}.os-walls{grid-template-columns:repeat(2,1fr)}.os-rs{display:none}
@@ -213,3 +214,4 @@ html.st-os-open .grain{visibility:hidden}
 
 @media (min-width:761px) and (max-width:1180px){.st-intro{max-width:none;gap:10px;bottom:26px}.st-intro p{display:none}}
 .st-card .st-chips+p{margin-top:12px}
+.os-body,.st-card{scrollbar-width:thin;scrollbar-color:rgba(14,13,12,.28) transparent}.os-term{scrollbar-width:thin;scrollbar-color:rgba(244,241,235,.25) transparent}
