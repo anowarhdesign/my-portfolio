@@ -91,6 +91,25 @@ class B:
         bmesh.ops.create_cone(t, cap_ends=cap, cap_tris=False, segments=seg, radius1=r, radius2=r if r2 is None else r2, depth=h)
         return self._emit(t, loc, rot, smooth=True)
 
+    def lathe(self, profile, loc=(0, 0, 0), seg=32):
+        """Revolve a (radius, height) profile around Z. A radius of 0 closes the surface."""
+        t = bmesh.new(); rings = []
+        for r, z in profile:
+            if r <= 1e-6:
+                rings.append([t.verts.new((0, 0, z))])
+            else:
+                rings.append([t.verts.new((r * math.cos(k / seg * 2 * math.pi), r * math.sin(k / seg * 2 * math.pi), z)) for k in range(seg)])
+        for a, b in zip(rings, rings[1:]):
+            for k in range(seg):
+                k2 = (k + 1) % seg
+                if len(a) == 1 and len(b) == 1: continue
+                if len(a) == 1: f = t.faces.new([a[0], b[k], b[k2]])
+                elif len(b) == 1: f = t.faces.new([a[k], a[k2], b[0]])
+                else: f = t.faces.new([a[k], a[k2], b[k2], b[k]])
+                f.smooth = True
+        bmesh.ops.recalc_face_normals(t, faces=t.faces[:])
+        return self._emit(t, loc)
+
     def sphere(self, r, loc=(0, 0, 0), scale=(1, 1, 1), rot=(0, 0, 0), seg=20):
         t = bmesh.new()
         bmesh.ops.create_uvsphere(t, u_segments=seg, v_segments=seg // 2, radius=r)
@@ -113,15 +132,20 @@ class B:
         pts = [Vector(p) for p in pts]
         n = len(pts)
         rings = []
-        up = Vector((0, 0, 1))
+        up = Vector((0, 0, 1)); prev = None
         for i, p in enumerate(pts):
             a = pts[(i - 1) % n] if (closed or i > 0) else p
             b = pts[(i + 1) % n] if (closed or i < n - 1) else p
             d = (b - a).normalized() if (b - a).length > 1e-9 else Vector((0, 0, 1))
-            side = d.cross(up)
-            if side.length < 1e-4:
-                side = d.cross(Vector((1, 0, 0)))
-            side.normalize()
+            if prev is None:
+                side = d.cross(up)
+                if side.length < 0.2:
+                    side = d.cross(Vector((1, 0, 0)))
+            else:                       # carry the frame along the curve so the tube never pinches or twists
+                side = prev - d * prev.dot(d)
+                if side.length < 1e-5:
+                    side = d.cross(up)
+            side.normalize(); prev = side.copy()
             nrm = side.cross(d).normalized()
             rings.append([t.verts.new(p + (side * math.cos(k / seg * 2 * math.pi) + nrm * math.sin(k / seg * 2 * math.pi)) * r) for k in range(seg)])
         last = n if closed else n - 1
@@ -253,6 +277,7 @@ M_BOOK = mat("book", "#5652E0", 0.6, tex="book.jpg")
 M_PAGES = mat("pages", "#EFEBDD", 0.9)
 M_GLASSY = mat("glassy", "#0B0B0D", 0.12, refl=0.6)
 M_GRAPH = mat("graphite", "#55575C", 0.5, refl=0.1)
+M_MX = mat("mx_graphite", "#3A3C42", 0.5, refl=0.10)
 M_TABLET = mat("tablet", "#3A3B41", 0.6, refl=0.10)
 M_EMBER = mat("ember", "#F14E1C", 0.5, refl=0.1)
 M_BLUE = mat("blue", "#2F4F7C", 0.8)
@@ -412,10 +437,54 @@ kc.box((0.13, 0.0175, 0.008), (KX - 0.02, KY - 0.0545, DZ + 0.030), bevel=0.0018
 for i, x in enumerate([-0.19, -0.16, -0.13, 0.07, 0.10, 0.13, 0.16, 0.19]):
     kc.box((0.026, 0.0175, 0.008), (KX + x, KY - 0.0545, DZ + 0.030), bevel=0.0018, seg=1)
 add(kc.done("keyboard__keys", M_KEY, 1)); add(ke.done("keyboard__accent", M_KEYE, 1))
-mg = B().cyl(0.04, 0.09, (-0.57, -0.47, DZ + 0.045), seg=28)
-mg.tube([(-0.57 + 0.04 + 0.03 * math.sin(a), -0.47, DZ + 0.045 + 0.028 * math.cos(a)) for a in [i / 10 * math.pi for i in range(11)]], 0.006, 8)
-add(mg.done("mug", M_EMBER, 1))
-add(B().cyl(0.035, 0.004, (-0.57, -0.47, DZ + 0.088), seg=28).done("mug__coffee", mat("coffee", "#1C0F08", 0.2, refl=0.3), 1))
+# MX Master 3 style mouse, right of the keyboard: tall hump toward the back, thumb rest flaring out on the left,
+# steel scroll wheel on top and a thumb wheel on the side
+def mx_mouse(loc, rz):
+    L = 0.125
+    us = [0.0, 0.06, 0.16, 0.30, 0.45, 0.58, 0.70, 0.82, 0.92, 1.0]
+    hs = [0.015, 0.021, 0.028, 0.037, 0.046, 0.051, 0.050, 0.044, 0.032, 0.016]
+    ws = [0.027, 0.030, 0.032, 0.033, 0.034, 0.035, 0.034, 0.032, 0.027, 0.017]
+    def cr(p0, p1, p2, p3, t):
+        return tuple(0.5 * ((2 * p1[i]) + (-p0[i] + p2[i]) * t + (2 * p0[i] - 5 * p1[i] + 4 * p2[i] - p3[i]) * t * t + (-p0[i] + 3 * p1[i] - 3 * p2[i] + p3[i]) * t ** 3) for i in range(2))
+    t = bmesh.new(); rows = []
+    for u, h, w in zip(us, hs, ws):
+        wing = 0.017 * math.exp(-((u - 0.62) / 0.24) ** 2)
+        # right wall, crest left of centre, high left shoulder, scoop, thumb rest
+        c = [(w, 0.0), (w, 0.30 * h), (0.74 * w, 0.76 * h), (0.12 * w, 0.97 * h), (-0.42 * w, h), (-0.84 * w, 0.82 * h),
+             (-0.97 * w - 0.10 * wing, 0.46 * h), (-w - 0.62 * wing, 0.17 * h), (-w - wing, 0.08 * h), (-w - 0.97 * wing, 0.0)]
+        pts = [c[0]]
+        for i in range(len(c) - 1):
+            p0 = c[max(i - 1, 0)]; p3 = c[min(i + 2, len(c) - 1)]
+            for k in (1, 2, 3):
+                pts.append(cr(p0, c[i], c[i + 1], p3, k / 3))
+        rows.append([t.verts.new((x, L * (0.5 - u), max(z, 0.0))) for x, z in pts])
+    N = len(rows[0])
+    for a, b in zip(rows, rows[1:]):
+        for k in range(N - 1):
+            f = t.faces.new([a[k], a[k + 1], b[k + 1], b[k]]); f.smooth = True
+    t.faces.new(rows[0]); t.faces.new(rows[-1][::-1])
+    t.faces.new([r[0] for r in rows] + [r[-1] for r in rows][::-1])
+    bmesh.ops.recalc_face_normals(t, faces=t.faces[:])
+    body = B(); body._emit(t)
+    add(body.done("deskmouse__body", M_MX, 1, loc, (0, 0, rz), sharp=50))
+    wh = B().cyl(0.0115, 0.010, (-0.004, L * 0.31, 0.0225), rot=(0, R(90), 0), seg=22)       # scroll wheel
+    wh.cyl(0.0058, 0.015, (-0.0365, L * 0.0, 0.0225), rot=(R(90), 0, 0), seg=14)             # thumb wheel
+    add(wh.done("deskmouse__wheels", M_SILVER, 1, loc, (0, 0, rz)))
+    tr = B().box((0.0012, L * 0.34, 0.004), (-0.004, L * 0.34, 0.0235))                       # split between the two buttons
+    tr.box((0.012, 0.007, 0.003), (-0.006, L * 0.16, 0.0345), bevel=0.001)                    # mode button behind the wheel
+    add(tr.done("deskmouse__trim", M_BLK, 1, loc, (0, 0, rz)))
+mx_mouse((0.152, -0.555, DZ + 0.004), R(7))
+MGX, MGY = -0.57, -0.47
+# a hollow mug: outer wall, rounded rim, inner wall; the coffee sits well below the rim so nothing is coplanar
+mg = B().lathe([(0.0, 0.0), (0.036, 0.0), (0.040, 0.004), (0.040, 0.086), (0.0392, 0.0895), (0.0378, 0.0905), (0.0364, 0.0895), (0.0358, 0.086), (0.0358, 0.060)], (MGX, MGY, DZ), seg=36)
+# D-shaped handle: leaves the wall near the top, bows out, returns near the bottom; both ends are buried in the wall
+hpts = []
+for i in range(19):
+    a = i / 18 * math.pi
+    hpts.append((MGX + 0.036 + 0.036 * math.sin(a) ** 0.7, MGY, DZ + 0.047 + 0.027 * math.cos(a)))
+mg.tube(hpts, 0.0062, 12)
+add(mg.done("mug", M_EMBER, 1, sharp=60))
+add(B().lathe([(0.0, 0.074), (0.0358, 0.074)], (MGX, MGY, DZ), seg=36).done("mug__coffee", mat("coffee", "#1C0F08", 0.2, refl=0.3), 1))
 BX, BY = -0.70, -0.60
 add(B().cyl(0.037, 0.135, (BX, BY, DZ + 0.0675), seg=28).done("bottle__sleeve", M_BLUE, 1))
 add(B().cyl(0.035, 0.075, (BX, BY, DZ + 0.135 + 0.0375), seg=28, r2=0.030).done("bottle__glass", M_BOTTLE, 1))
@@ -424,7 +493,7 @@ add(B().cyl(0.026, 0.03, (BX, BY, DZ + 0.225), seg=24).done("bottle__lid", M_BAM
 # snake plant, left of the monitors
 SX, SY = -0.715, -0.17
 add(B().cyl(0.075, 0.10, (SX, SY, DZ + 0.05), seg=28, r2=0.085).done("snake__pot", M_POT, 1))
-add(B().cyl(0.078, 0.004, (SX, SY, DZ + 0.097), seg=28).done("snake__soil", M_SOIL, 1))
+add(B().cyl(0.078, 0.004, (SX, SY, DZ + 0.1005), seg=28).done("snake__soil", M_SOIL, 1))
 rnd = np.random.default_rng(3)
 sp = B()
 for i in range(13):
@@ -473,8 +542,6 @@ add(B().box((0.012, 0.03, 0.02), (px(-0.31), PY - 0.015, 1.652)).box((0.012, 0.0
 add(B().box((0.072, 0.009, 0.15), (px(0.0), PY - 0.012, 1.745), bevel=0.004).done("phone__body", M_GLASSY, 1))
 add(B().box((0.086, 0.03, 0.035), (px(0.0), PY - 0.015, 1.672), bevel=0.003).done("phone__holder", M_BLK, 1))
 # mouse, cable coil, watch
-add(B().sphere(0.05, (px(0.145), PY - 0.03, 1.925), scale=(0.66, 0.45, 1.15), seg=22).done("mouse__body", M_GRAPH, 1))
-add(B().box((0.06, 0.03, 0.012), (px(0.145), PY - 0.015, 1.868)).done("mouse__hook", M_BLK, 1))
 add(B().tube([(px(0.03 + 0.03 * math.cos(a) * (1 + 0.08 * math.sin(3 * a))), PY - 0.012 - 0.004 * math.cos(5 * a), 1.93 + 0.022 * math.sin(a)) for a in [i / 40 * 4 * math.pi for i in range(40)]], 0.0035, 6).done("cable", M_BLK2, 1))
 wt = B()
 wt.box((0.044, 0.014, 0.046), (px(0.185), PY - 0.012, 1.725), bevel=0.004)
@@ -626,7 +693,11 @@ def add_camera(name, loc, target, lens_fov_v=36, pano=False):
 # ───────────────────────── stages ─────────────────────────
 def stage_preview():
     set_state("ALL")
-    scene.camera = add_camera("cam", (0.0, -2.55, 1.32), (0.0, 0.0, 1.28))
+    if "cam" in OPT:      # cam=x,y,z,tx,ty,tz for a close-up check
+        v = [float(x) for x in OPT["cam"].split(",")]
+        scene.camera = add_camera("cam", v[:3], v[3:6], lens_fov_v=float(OPT.get("fov", 36)))
+    else:
+        scene.camera = add_camera("cam", (0.0, -2.55, 1.32), (0.0, 0.0, 1.28))
     scene.render.resolution_x, scene.render.resolution_y = 1280, 720
     scene.view_settings.view_transform = "AgX"
     scene.view_settings.exposure = float(OPT.get("exp", 0.0))

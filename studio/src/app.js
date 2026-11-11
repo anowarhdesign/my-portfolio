@@ -115,7 +115,7 @@ try {
 renderer.outputColorSpace = THREE.LinearSRGBColorSpace;   // the shaders encode
 renderer.setClearColor(0x0b0a0c, 1);
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(35, 16 / 9, 0.02, 30);
+const camera = new THREE.PerspectiveCamera(35, 16 / 9, 0.08, 20);
 const U = {                                                // shared uniforms
   uTime: { value: 0 }, uFade: { value: 0 }, uW: { value: new THREE.Color(1, 1, 1) }, uP: { value: new THREE.Color(1, 1, 1) }, uEnvGain: { value: 1 }, uCon: { value: 0.45 }, uMon: { value: new THREE.Color(0, 0, 0) }, uMonOn: { value: 0 },
   uCam: { value: new THREE.Vector3() }, uEnv: { value: null }, uScrA: { value: null }, uScrB: { value: null },
@@ -270,7 +270,7 @@ const HOT = [
   { key: 'cases', what: 'The film camera', label: 'Case studies', match: ['camera__'] },
   { key: 'ai', what: 'The PC tower', label: 'AI automation', match: ['pc__', 'glow_pc'] },
   { key: 'pricing', what: 'The coffee mug', label: 'Pricing', match: ['mug'] },
-  { key: 'stack', what: 'The keyboard', label: 'Toolkit', match: ['keyboard__'] },
+  { key: 'stack', what: 'The keyboard and mouse', label: 'Toolkit', match: ['keyboard__', 'deskmouse__'] },
   { key: 'hours', what: 'The hanging plant', label: 'Working hours', match: ['hang__', 'sway_hang'] },
 ];
 const hotOf = name => HOT.find(h => h.match.some(p => name.startsWith(p)));

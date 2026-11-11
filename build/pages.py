@@ -42,7 +42,6 @@ home_body = f'''
 
 <section class="studio-strip">
   <div class="wrap">
-    {BADGE}
     {LOGOWALL}
   </div>
 </section>
