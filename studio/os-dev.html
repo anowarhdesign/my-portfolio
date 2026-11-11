@@ -1,0 +1,11 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>OS dev</title><meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/studio/studio.css"><style>html,body{margin:0;background:#000}</style></head>
+<body><div id="studio" class="st-ready"></div><div class="os" hidden></div>
+<script type="module">
+import { createOS } from '/studio/src/os.js';
+const data = await fetch('/studio/data.json').then(r => r.json());
+const os = createOS({ root: document.querySelector('.os'), data, asset: p => '/studio/' + p, onExit() {}, onWallpaper() {} });
+window.__os = os; os.open({ instant: true, app: new URLSearchParams(location.search).get('app') });
+document.getElementById('studio').classList.add('st-ready');
+</script></body></html>

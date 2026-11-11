@@ -21,20 +21,29 @@ home_faq = [
 ]
 
 home_body = f'''
-<section class="hero">
-  <div class="wrap hero-in">
-    <div class="hero-copy">
-      {BADGE}
-      <h1 data-reveal>Design that<br>earns trust.<span class="serif">Built to keep it.</span></h1>
-      <p class="lead" data-reveal>UI/UX design, Webflow &amp; Framer development and AI automation for SaaS, AI and
-        enterprise teams &#8212; one operator, no handoffs, fixed quotes. Working with companies across the US, UK and Europe.</p>
-      <div class="cta-row" data-reveal>
-        <a class="btn btn-primary" href="https://cal.com/anowarhdesign/discovery" target="_blank" rel="noopener">Book the discovery call</a>
-        <a class="btn btn-ghost" href="/work">See the work</a>
-      </div>
-      {LOGOWALL}
+<section id="studio" class="studio" aria-label="Anowar&#8217;s studio" style="--poster:url(/studio/baked/poster.jpg?v={STUDIO_VER})">
+  <canvas class="st-gl" role="img" aria-label="A 3D view of Anowar&#8217;s desk at dusk: two monitors, a pegboard, plants and a window. Click the left monitor to go inside the computer."></canvas>
+  <div class="st-vig" aria-hidden="true"></div>
+  <div class="st-intro">
+    <h1>Design that earns trust.<span class="serif">Built to keep it.</span></h1>
+    <p>UI/UX design, Webflow &amp; Framer development and AI automation for SaaS, AI and enterprise teams &#8212;
+      one operator, no handoffs, fixed quotes. Working with companies across the US, UK and Europe.</p>
+    <div class="st-cta">
+      <button type="button" class="p" data-st="enter">Step inside the computer</button>
+      <a href="https://cal.com/anowarhdesign/discovery" target="_blank" rel="noopener">Book the discovery call</a>
+      <a href="/work">See the work</a>
     </div>
-    <aside class="hero-aside">{hero_visual("home")}</aside>
+    <p class="st-hint">This is my desk. Click anything on it.</p>
+  </div>
+  <div class="st-tip" hidden></div>
+  <aside class="st-card" hidden aria-live="polite"></aside>
+  <div class="st-load" aria-hidden="true">Lighting the studio</div>
+</section>
+
+<section class="studio-strip">
+  <div class="wrap">
+    {BADGE}
+    {LOGOWALL}
   </div>
 </section>
 
@@ -131,7 +140,13 @@ page("index.html",
        "name": "Anowar Hossain", "publisher": {"@id": S + "/#person"}},
       faq_schema(home_faq),
       *review_schema(["webflow", "rigor", "listen"])],
-     current="/")
+     current="/", html_class="has-studio",
+     head_extra=f'''<link rel="stylesheet" href="/studio/studio.css?v={STUDIO_VER}">
+<script type="importmap">{{"imports":{{"three":"/studio/vendor/three.module.js"}}}}</script>
+''',
+     body_extra=f'''<div class="os" hidden aria-label="Anowar OS"></div>
+<script type="module" src="/studio/src/app.js?v={STUDIO_VER}"></script>
+''')
 
 # ─────────────────────────── SERVICES HUB ───────────────────────────
 hub_faq = [

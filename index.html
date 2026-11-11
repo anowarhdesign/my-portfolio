@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="has-studio">
 <head>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-GWYNCCRNRV"></script>
@@ -211,6 +211,8 @@
   ]
 }
 </script>
+<link rel="stylesheet" href="/studio/studio.css?v=5d462455c9">
+<script type="importmap">{"imports":{"three":"/studio/vendor/three.module.js"}}</script>
 </head>
 <body>
 <a class="skip" href="#top">Skip to content</a>
@@ -328,23 +330,34 @@
 </svg><span>WAR</span></a></div>
 <main id="top">
 
-<section class="hero">
-  <div class="wrap hero-in">
-    <div class="hero-copy">
-      <div class="badge" data-reveal>
+<section id="studio" class="studio" aria-label="Anowar&#8217;s studio" style="--poster:url(/studio/baked/poster.jpg?v=5d462455c9)">
+  <canvas class="st-gl" role="img" aria-label="A 3D view of Anowar&#8217;s desk at dusk: two monitors, a pegboard, plants and a window. Click the left monitor to go inside the computer."></canvas>
+  <div class="st-vig" aria-hidden="true"></div>
+  <div class="st-intro">
+    <h1 class="lines"><span class="line"><span>Design that earns trust.</span></span><span class="line line-serif"><span><span class="serif">Built to keep it.</span></span></span></h1>
+    <p>UI/UX design, Webflow &amp; Framer development and AI automation for SaaS, AI and enterprise teams &#8212;
+      one operator, no handoffs, fixed quotes. Working with companies across the US, UK and Europe.</p>
+    <div class="st-cta">
+      <button type="button" class="p" data-st="enter">Step inside the computer</button>
+      <a href="https://cal.com/anowarhdesign/discovery" target="_blank" rel="noopener">Book the discovery call</a>
+      <a href="/work">See the work</a>
+    </div>
+    <p class="st-hint">This is my desk. Click anything on it.</p>
+  </div>
+  <div class="st-tip" hidden></div>
+  <aside class="st-card" hidden aria-live="polite"></aside>
+  <div class="st-load" aria-hidden="true">Lighting the studio</div>
+</section>
+
+<section class="studio-strip">
+  <div class="wrap">
+    <div class="badge" data-reveal>
   <img class="uw" src="/uploads/upwork-mark.png" width="22" height="22" alt="" aria-hidden="true">
   <span style="font-weight:500">Top Rated on Upwork</span>
   <span class="div" aria-hidden="true"></span>
   <span style="color:var(--ash)">100% job success &#183; 2,237 hours &#183; 399+ projects</span>
 </div>
-      <h1 class="lines" data-reveal><span class="line"><span>Design that</span></span><span class="line"><span>earns trust.</span></span><span class="line line-serif"><span><span class="serif">Built to keep it.</span></span></span></h1>
-      <p class="lead" data-reveal>UI/UX design, Webflow &amp; Framer development and AI automation for SaaS, AI and
-        enterprise teams &#8212; one operator, no handoffs, fixed quotes. Working with companies across the US, UK and Europe.</p>
-      <div class="cta-row" data-reveal>
-        <a class="btn btn-primary" href="https://cal.com/anowarhdesign/discovery" target="_blank" rel="noopener">Book the discovery call</a>
-        <a class="btn btn-ghost" href="/work">See the work</a>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:10px" data-reveal>
+    <div style="display:flex;flex-direction:column;gap:10px" data-reveal>
   <span class="mono">Shipped for teams at</span>
   <div class="marquee"><div class="marquee-track"><span class="logowall-item" title="Blockstak"><svg width="184" height="27" viewBox="0 0 184 27" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M7.33984 21.3766V5.69336H16.686V11.9694H19.803V21.3766H7.33984ZM13.5691 11.9694V8.83361H10.4521V11.9694H13.5691ZM16.686 18.2408V15.1051H10.4568V18.2408H16.686Z" fill="currentColor"/>
@@ -508,39 +521,6 @@
 </svg>
 </span><span class="logowall-item" title="Ethereum Community Foundation"><img src="/uploads/logos/ecf.png" width="305" height="48" alt="" loading="lazy"></span></div></div>
 </div>
-    </div>
-    <aside class="hero-aside"><div class="hero-visual" aria-hidden="true" data-reveal>
-  <svg viewBox="0 0 400 600" class="hv-svg" preserveAspectRatio="xMidYMid slice">
-    <defs>
-      <linearGradient id="hv-home-ring" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stop-color="var(--ember-lift)"/>
-        <stop offset="1" stop-color="var(--ember-deep)"/>
-      </linearGradient>
-      <radialGradient id="hv-home-sphere" cx="35%" cy="30%" r="75%">
-        <stop offset="0" stop-color="#FFF6EE"/>
-        <stop offset=".45" stop-color="var(--ember-lift)"/>
-        <stop offset="1" stop-color="var(--ember-deep)"/>
-      </radialGradient>
-      <linearGradient id="hv-home-glass" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stop-color="var(--card)"/>
-        <stop offset=".5" stop-color="var(--paper-2)"/>
-        <stop offset="1" stop-color="var(--card)"/>
-      </linearGradient>
-      <linearGradient id="hv-home-soft" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="var(--ember-soft)"/>
-        <stop offset="1" stop-color="rgba(241,78,28,.22)"/>
-      </linearGradient>
-      
-      <filter id="hv-home-shadow" x="-60%" y="-60%" width="220%" height="220%">
-        <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#0E0D0C" flood-opacity=".18"/>
-      </filter>
-    </defs>
-    <g class="hv-float"><g class="hv-piece hv-w-heavy"><ellipse class="hv-floor" cx="200" cy="430" rx="140" ry="18"/></g><g class="hv-piece hv-w-heavy"><circle cx="150" cy="220" r="58" fill="none" stroke="url(#hv-home-ring)" stroke-width="23" filter="url(#hv-home-shadow)"/></g><g class="hv-piece hv-w-heavy"><circle cx="288" cy="180" r="48" fill="url(#hv-home-sphere)" filter="url(#hv-home-shadow)"/></g><g class="hv-piece hv-w-medium"><rect x="205" y="240" width="42" height="126" rx="21" fill="url(#hv-home-glass)"
-        stroke="var(--line-2)" transform="rotate(-18 226 303)" filter="url(#hv-home-shadow)"/></g><g class="hv-piece hv-w-light"><polygon fill="url(#hv-home-soft)" stroke="var(--ember)" stroke-width="1.2"
-        transform="translate(100 360) rotate(10)" points="32,0 60,16 60,48 32,64 4,48 4,16" filter="url(#hv-home-shadow)"/></g><g class="hv-piece hv-w-medium"><path d="M 260 370 A 44 44 0 1 1 256 414" fill="none" stroke="var(--ember-deep)"
-        stroke-width="13" stroke-linecap="round" filter="url(#hv-home-shadow)"/></g><g class="hv-piece hv-w-light"><circle cx="90" cy="120" r="4" fill="var(--ember)"/></g><g class="hv-piece hv-w-light"><circle cx="335" cy="100" r="3" fill="var(--ember)"/></g><g class="hv-piece hv-w-light"><circle cx="350" cy="300" r="5" fill="var(--ember)"/></g></g>
-  </svg>
-</div></aside>
   </div>
 </section>
 
@@ -805,5 +785,7 @@
 <script>window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };</script>
 <script defer src="/_vercel/speed-insights/script.js"></script>
 <script defer src="/assets/site.js?v=2b11d8511e"></script>
+<div class="os" hidden aria-label="Anowar OS"></div>
+<script type="module" src="/studio/src/app.js?v=5d462455c9"></script>
 </body>
 </html>

@@ -514,3 +514,40 @@ sm.append("</urlset>")
 """, encoding="utf-8")
 
 print("work, pricing, process, about, contact, sitemap, llms.txt built")
+
+# ─────────────────────────── studio data ───────────────────────────
+# Everything the 3D studio homepage shows (object cards and the mini-OS apps) comes from the
+# same lists the HTML pages are built from, so the two can never disagree.
+import json as _json
+from pages import home_faq as _home_faq, hub_faq as _hub_faq
+_studio = {
+    "email": EMAIL, "call": "https://cal.com/anowarhdesign/discovery", "brief": "https://tally.so/r/MeoJVX",
+    "services": [{"name": n, "url": u, "num": num, "blurb": b, "price": p, "chips": c} for n, u, num, b, p, c in SERVICES],
+    "cases": [{"name": n, "host": h, "tag": t, "blurb": b, "url": f"/work/{slugify(n)}", "thumb": THUMBS.get(n, "")} for n, h, t, _g, _c, b in CASES],
+    "deploys": [{"name": n, "host": h, "tag": t, "thumb": THUMBS.get(n, "")} for n, h, t, *_r in DEPLOY_ROWS if n not in {c[0] for c in CASES}],
+    "bands": [{"name": n, "sub": s, "price": p, "time": t} for n, s, p, t in BANDS],
+    "steps": [{"name": n, "text": t} for n, t in STEPS8],
+    "stack": STACK,
+    "quotes": [{"text": q, "by": a} for q, a in QUOTES.values()],
+    "checks": BAND_CHECKS,
+    "faq": [{"q": q, "a": a} for q, a in (_home_faq + _hub_faq + pricing_faq + process_faq)],
+    "about": ["I am Anowar Hossain, a UI/UX designer, Webflow &amp; Framer developer and AI automation expert.",
+              "For six years I have designed and built digital products for startups and enterprise teams across the US, UK, Canada, Australia and Europe &#8212; on platforms like Webflow and Framer, and in custom code with Claude Code and Cursor when a project needs more.",
+              "Top Rated on Upwork with 100% job success and 2,237 hours logged. I do the work myself: no agency layer, no outsourcing."],
+    "facts": ["Top Rated on Upwork", "100% job success", "2,237 hours logged", "399+ projects completed", "6+ years designing and building",
+              "Webflow Experts Certification", "Google UX Design Professional Certificate"],
+}
+# The studio brief says no city name inside the 3D room or the mini-OS; the HTML pages keep it.
+def _nocity(v):
+    if isinstance(v, str):
+        for a, b in ((" based in Dhaka, Bangladesh,", ","), (" based in Dhaka, Bangladesh", ""),
+                     ("I am in Dhaka, GMT+6.", "I work on GMT+6."), (" in Dhaka,", ",")):
+            v = v.replace(a, b)
+        assert "Dhaka" not in v and "Bangladesh" not in v, v
+        return v
+    if isinstance(v, list): return [_nocity(x) for x in v]
+    if isinstance(v, dict): return {k: _nocity(x) for k, x in v.items()}
+    return v
+_studio = _nocity(_studio)
+(ROOT / "studio" / "data.json").write_text(_json.dumps(_studio, ensure_ascii=False), encoding="utf-8")
+print("studio data written")

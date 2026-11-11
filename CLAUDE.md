@@ -141,3 +141,32 @@ QA passes with zero failures. FCP 320–410ms locally, 1KB JS per page.
 - An unused Ethereum Community Foundation screenshot sits in `uploads/Screenshot_9.png` — if that's
   Anowar's work it belongs in the project list.
 - `uploads/pasted-1784209874396-0.png` is unidentified.
+
+## The studio homepage (`studio/`)
+
+The home hero is a three.js room modelled on Anowar's real desk at dusk. Lighting is baked in
+Blender Cycles and drawn with unlit shaders; the left monitor opens a DOM mini-OS.
+
+| Path | What's in it |
+| --- | --- |
+| `studio/blender/scene.py` | Builds the whole room in code. `blender -b -P scene.py -- preview \| bake only=0\|1 res=2048 spp=128 \| env \| export` |
+| `studio/blender/denoise.py` | OIDN pass over the raw bakes (`raw/lm*_*.npy`) |
+| `studio/tools/post.py` | Encodes the bakes to `baked/lm{0,1}_{W,P,B}.webp` (W = window, P = lamps, B = monitors) |
+| `studio/tools/make_textures.py` | Procedural source textures (`tex/`) and OS wallpapers (`baked/wall_*.jpg`) |
+| `studio/tools/shot.py` | Headless Chromium on the real GPU: screenshots, input, frame rate. Blocks analytics |
+| `studio/src/app.js` | The room: shaders, screens, hotspots and cards, camera, fly-in |
+| `studio/src/os.js`, `apps.js` | Window manager and the thirteen programs |
+| `studio/data.json` | Written by `build/pages3.py` from the same lists the HTML pages use. Never hand-edit |
+| `studio/vendor/` | three.js r186, local. **No CDN** — the page may only reach Google Fonts and analytics |
+
+Rules that are easy to break:
+- Object names in `scene.py` drive the page (`screen_main`, `glow_*`, `sway_*`, hotspot prefixes in
+  `HOT` in `app.js`). Rename in both places.
+- Any geometry change needs both lightmap groups rebaked, then denoise, then `post.py` — the
+  lightmap UVs are re-unwrapped on every bake, so an old lightmap with a new `studio.glb` is garbage.
+- Everything under `/studio/baked/` is cached `immutable`; that is only safe because every URL
+  carries `?v={STUDIO_VER}` (hash of the studio files, `build.py`). Never reference one without it.
+- `?t=<seconds>` freezes time, `?view=os[&app=<id>]` opens the OS, `?view=card-<key>` opens a card.
+- No city name, address or person inside the room or the OS (`_nocity()` in `pages3.py` scrubs
+  `data.json`). Sound stays off until "Enable sound". Sentence-case copy, no emoji icons.
+- `studio/raw/` is scratch (bakes, screenshots) and is git-ignored.

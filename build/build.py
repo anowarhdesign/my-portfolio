@@ -23,6 +23,16 @@ JS_VER = _asset_ver("site.js")
 # a same-URL replacement can go on serving the old image indefinitely unless
 # the URL itself changes.
 OG_VER = hashlib.md5((ROOT / "uploads" / "og-cover.jpg").read_bytes()).hexdigest()[:10]
+# one hash over everything the 3D studio loads, so the script, the stylesheet and the baked files
+# always change URL together (same reasoning as CSS_VER above)
+def _studio_ver():
+    h = hashlib.md5()
+    for sub, pats in (("src", ["*.js"]), ("", ["studio.css"]), ("baked", ["*.glb", "*.webp", "*.jpg", "*.json"])):
+        for pat in pats:
+            for f in sorted((ROOT / "studio" / sub).glob(pat)):
+                h.update(f.name.encode()); h.update(f.read_bytes())
+    return h.hexdigest()[:10]
+STUDIO_VER = _studio_ver()
 
 NAV = [("Services", "/services"), ("Work", "/work"), ("Pricing", "/pricing"),
        ("Process", "/process"), ("About", "/about")]
@@ -231,7 +241,7 @@ def polish(body):
     body = _re.sub(r'<div class="n">([\d,]+)(%|\+)?</div>', _count, body)
     return body
 
-def page(path, title, desc, body, schema, current="", trail=None):
+def page(path, title, desc, body, schema, current="", trail=None, head_extra="", body_extra="", html_class=""):
     body = polish(body)
     url = SITE + ("/" if path == "index.html" else "/" + path.replace("/index.html", ""))
     graph = [PERSON] + schema
@@ -239,7 +249,7 @@ def page(path, title, desc, body, schema, current="", trail=None):
         graph.append(breadcrumbs(trail))
     jsonld = json.dumps({"@context": "https://schema.org", "@graph": graph}, indent=2)
     html = f'''<!DOCTYPE html>
-<html lang="en">
+<html lang="en"{(' class="' + html_class + '"') if html_class else ""}>
 <head>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-GWYNCCRNRV"></script>
@@ -284,7 +294,7 @@ def page(path, title, desc, body, schema, current="", trail=None):
 <script type="application/ld+json">
 {jsonld}
 </script>
-</head>
+{head_extra}</head>
 <body>
 <a class="skip" href="#top">Skip to content</a>
 <div class="grain" aria-hidden="true"></div>
@@ -307,7 +317,7 @@ def page(path, title, desc, body, schema, current="", trail=None):
 <script>window.si = window.si || function () {{ (window.siq = window.siq || []).push(arguments); }};</script>
 <script defer src="/_vercel/speed-insights/script.js"></script>
 <script defer src="/assets/site.js?v={JS_VER}"></script>
-</body>
+{body_extra}</body>
 </html>
 '''
     dest = ROOT / path
