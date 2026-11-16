@@ -69,6 +69,9 @@ _seen = {c[0] for c in CASES}
 DEPLOY_ROWS = ([(c[0], c[1], c[2], c[3], c[4], "") for c in CASES] +
                [(n, h, tg, GRADS[i % len(GRADS)], "#FFB48F", "")
                 for i, (n, h, tg, y) in enumerate(DEPLOYS) if n not in _seen])
+# Anowar's own product leads the list (2026-11-17) without becoming an NDA-style case study page.
+PINNED = ["Wowbly"]
+DEPLOY_ROWS.sort(key=lambda r: PINNED.index(r[0]) if r[0] in PINNED else len(PINNED))
 
 work_body = f'''
 <section class="hero">
