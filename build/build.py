@@ -434,6 +434,7 @@ THUMBS = {"Blockstak": "/uploads/thumbs/blockstak.webp", "Optiify": "/uploads/th
           "EAX Media": "/uploads/thumbs/eaxmedia.webp",
           "Astate Concierge": "/uploads/thumbs/astateconcierge.webp",
           "Mopsly": "/uploads/thumbs/mopsly.webp",
+          "Wowbly": "/uploads/thumbs/wowbly.webp",
           "SalesPeak AI": "/uploads/thumbs/salespeak.webp", "0xBow": "/uploads/thumbs/0xbow.webp",
           "Eric Kanigan": "/uploads/thumbs/erickanigan.webp", "WaterH": "/uploads/thumbs/waterh.webp",
           "CADDi": "/uploads/thumbs/caddi.webp", "Assistments": "/uploads/thumbs/assistments.webp",
