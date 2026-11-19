@@ -7,6 +7,9 @@
   var reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   var fine = matchMedia("(pointer: fine)").matches;
   var doc = document.documentElement;
+  // Text this file shows at runtime. English is the source; translated pages carry window.__i18n
+  // (built from every tr() call in this file, so keep each argument one plain double-quoted string).
+  function tr(s) { var d = window.__i18n; return (d && d[s]) || s; }
 
   /* ─── reveal on scroll ─── */
   var revealables = document.querySelectorAll("[data-reveal], .lines");
@@ -36,7 +39,8 @@
           var p = Math.min(1, (now - t0) / dur);
           var eased = 1 - Math.pow(1 - p, 4);
           var v = Math.round(target * eased);
-          el.textContent = v.toLocaleString("en-US") + suffix;
+          // data-sep: the thousands separator of this page's language (the build writes it)
+          el.textContent = v.toLocaleString("en-US").replace(/,/g, el.dataset.sep || ",") + suffix;
           if (p < 1) requestAnimationFrame(step);
         })(t0);
       });
@@ -285,9 +289,9 @@
   // by editing the form, so those fall through to the generic "email me
   // directly" note instead of a misleading "try again"
   var BF_FIELD_ERRORS = {
-    "Missing required fields": "Please add your email and a few details about the project.",
-    "Invalid email address": "That email address doesn’t look right — please double-check it.",
-    "Field too long": "One of the fields is too long — please shorten it and try again."
+    "Missing required fields": tr("Please add your email and a few details about the project."),
+    "Invalid email address": tr("That email address doesn’t look right — please double-check it."),
+    "Field too long": tr("One of the fields is too long — please shorten it and try again.")
   };
   var BF_EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -318,7 +322,7 @@
       var budget = chip ? chip.textContent.trim() : "";
 
       if (!email.trim() || !details.trim()) {
-        showNote("Please add your email and a few details about the project.", true);
+        showNote(BF_FIELD_ERRORS["Missing required fields"], true);
         return;
       }
       if (!BF_EMAIL_RE.test(email.trim())) {
@@ -326,7 +330,7 @@
         return;
       }
 
-      if (submitBtn) { submitBtn.setAttribute("disabled", "disabled"); submitBtn.textContent = "Sending…"; }
+      if (submitBtn) { submitBtn.setAttribute("disabled", "disabled"); submitBtn.textContent = tr("Sending…"); }
       showNote(noteDefault, false);
 
       fetch("/api/contact", {
@@ -334,7 +338,7 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: name, email: email, whatsapp: whatsapp, budget: budget, details: details,
-          company: company, loadedAt: loadedAt
+          company: company, loadedAt: loadedAt, lang: doc.lang || "en"
         })
       }).then(function (res) {
         return res.json().catch(function () { return {}; }).then(function (data) {
@@ -344,14 +348,14 @@
         if (!result.ok) {
           var serverMsg = result.data && result.data.error;
           var friendly = result.status === 400 && BF_FIELD_ERRORS[serverMsg];
-          showNote(friendly || "Couldn’t send — email hello@anowarhdesign.com directly instead.", true);
+          showNote(friendly || tr("Couldn’t send — email hello@anowarhdesign.com directly instead."), true);
           return;
         }
-        showNote("Sent — I’ll reply within 24 hours.", false);
+        showNote(tr("Sent — I’ll reply within 24 hours."), false);
         form.reset();
         form.querySelectorAll("[data-chip]").forEach(function (c) { c.setAttribute("aria-pressed", "false"); });
       }).catch(function () {
-        showNote("Couldn’t send — email hello@anowarhdesign.com directly instead.", true);
+        showNote(tr("Couldn’t send — email hello@anowarhdesign.com directly instead."), true);
       }).finally(function () {
         if (submitBtn) { submitBtn.removeAttribute("disabled"); submitBtn.innerHTML = submitDefault; }
       });
@@ -364,11 +368,11 @@
       var text = btn.dataset.copy;
       var done = function () {
         btn.classList.add("copied");
-        btn.setAttribute("aria-label", "Copied");
+        btn.setAttribute("aria-label", tr("Copied"));
         clearTimeout(btn._t);
         btn._t = setTimeout(function () {
           btn.classList.remove("copied");
-          btn.setAttribute("aria-label", "Copy email address");
+          btn.setAttribute("aria-label", tr("Copy email address"));
         }, 1600);
       };
       var legacyCopy = function () {
@@ -393,8 +397,47 @@
     toggle.addEventListener("click", function () {
       var open = links.classList.toggle("open");
       toggle.setAttribute("aria-expanded", open ? "true" : "false");
-      toggle.textContent = open ? "Close" : "Menu";
+      toggle.textContent = open ? tr("Close") : tr("Menu");
     });
+  }
+
+  /* ─── language ───
+     The switcher is plain links (it works without this file). This adds: close on outside click
+     or Escape, remember an explicit choice, and one quiet hint when the browser prefers a language
+     this page also exists in. Never a redirect — a visitor (or a crawler) always gets the URL
+     they asked for. */
+  var langBox = document.querySelector("details.lang");
+  var LANG_KEY = "lang";
+  var store = { get: function () { try { return localStorage.getItem(LANG_KEY); } catch (e) { return null; } },
+                set: function (v) { try { localStorage.setItem(LANG_KEY, v); } catch (e) {} } };
+  document.querySelectorAll("a[data-lang]").forEach(function (a) {
+    a.addEventListener("click", function () { store.set(a.dataset.lang); });
+  });
+  if (langBox) {
+    document.addEventListener("click", function (ev) { if (langBox.open && !langBox.contains(ev.target)) langBox.open = false; });
+    addEventListener("scroll", function () { if (langBox.open) langBox.open = false; }, { passive: true });
+    document.addEventListener("keydown", function (ev) {
+      if (ev.key === "Escape" && langBox.open) { langBox.open = false; langBox.querySelector("summary").focus(); }
+    });
+    var here = (doc.lang || "en").toLowerCase();
+    var want = null, prefs = navigator.languages || [navigator.language || ""];
+    for (var li = 0; li < prefs.length && !want; li++) {
+      var code = String(prefs[li]).toLowerCase().split("-")[0];
+      if (langBox.querySelector('a[data-lang="' + code + '"]')) want = code;
+    }
+    if (want && want !== here && !store.get()) {
+      var target = langBox.querySelector('a[data-lang="' + want + '"]');
+      var tip = document.createElement("div");
+      tip.className = "lang-tip"; tip.lang = want; tip.setAttribute("role", "status");
+      var msg = document.createElement("span"); msg.textContent = target.dataset.msg;
+      var go = document.createElement("a"); go.href = target.getAttribute("href"); go.textContent = target.dataset.go;
+      go.addEventListener("click", function () { store.set(want); });
+      var x = document.createElement("button"); x.type = "button"; x.setAttribute("aria-label", target.dataset.x); x.textContent = "×";
+      x.addEventListener("click", function () { store.set(here); tip.classList.remove("on"); setTimeout(function () { tip.remove(); }, 300); });
+      tip.appendChild(msg); tip.appendChild(go); tip.appendChild(x);
+      document.body.appendChild(tip);
+      setTimeout(function () { tip.classList.add("on"); }, 900);
+    }
   }
 
   /* ─── Dhaka clock + year ─── */

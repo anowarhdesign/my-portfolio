@@ -2,3 +2,6 @@ __pycache__/
 *.pyc
 .DS_Store
 studio/raw/
+
+# translation work in progress (chunks handed to translators)
+build/i18n/_work/

@@ -95,6 +95,8 @@ export default async function handler(req, res) {
   const details = String(body.details || "").trim();
   const company = String(body.company || "").trim(); // honeypot
   const loadedAt = Number(body.loadedAt);
+  // which language version of the site the form was sent from (the visitor may write in it)
+  const lang = /^(en|de|es|fr|nl)$/.test(String(body.lang || "")) ? String(body.lang) : "en";
 
   if (company) {
     // looks like a bot — pretend success, do nothing
@@ -142,12 +144,13 @@ export default async function handler(req, res) {
         subject: name ? `Project enquiry from ${name}` : "Project enquiry",
         text: `Name: ${name || "Not provided"}\nEmail: ${email}\n` +
           (whatsapp ? `WhatsApp: ${whatsapp}\n` : "") +
-          `Rough budget: ${budget}\n\n${details}`,
+          `Rough budget: ${budget}\nSite language: ${lang}\n\n${details}`,
         html:
           `<p><strong>Name:</strong> ${esc(name || "Not provided")}</p>` +
           `<p><strong>Email:</strong> ${esc(email)}</p>` +
           (whatsapp ? `<p><strong>WhatsApp:</strong> ${esc(whatsapp)}</p>` : "") +
           `<p><strong>Rough budget:</strong> ${esc(budget)}</p>` +
+          `<p><strong>Site language:</strong> ${lang}</p>` +
           `<p><strong>What they're building:</strong></p><p>${esc(details).replace(/\n/g, "<br>")}</p>`,
       }),
     });

@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 """Static page builder for anowarhdesign.com — shared shell + per-page content."""
-import hashlib, json, os, pathlib
+import hashlib, json, os, pathlib, re
+import i18n
 from avatar import wordmark, AVATAR_CSS
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-SITE = "https://anowarhdesign.com"
+# www is the host Vercel actually serves (the bare domain 308-redirects to it), so canonical, hreflang,
+# sitemap and schema URLs must use it: search engines discount alternates that point at a redirect.
+SITE = "https://www.anowarhdesign.com"
 
 # assets/site.css and assets/site.js keep the same URL every deploy (they are
 # hand-written, not content-hashed build output), so a cache-busting query
@@ -103,8 +106,9 @@ def nav(current):
     return f'''<header class="nav">
   <div class="nav-in">
     {wordmark()}
-    <nav class="navlinks" aria-label="Primary">{links}</nav>
+    <nav class="navlinks" aria-label="Primary">{links}<!--LANGMOB--></nav>
     <div style="display:flex;gap:10px;align-items:center">
+      <!--LANGSW-->
       <button class="navtoggle" type="button" aria-expanded="false" aria-label="Open menu">Menu</button>
       <a class="btn btn-ink btn-sm" href="https://cal.com/anowarhdesign/discovery" target="_blank" rel="noopener">Book a call</a>
     </div>
@@ -115,7 +119,7 @@ def nav(current):
 EMAIL = "hello@anowarhdesign.com"
 
 def email_chip():
-    return (f'<span class="email-chip"><a href="mailto:{EMAIL}">{EMAIL}</a>'
+    return (f'<span class="email-chip"><a href="mailto:{EMAIL}" translate="no">{EMAIL}</a>'
             f'<button type="button" class="copy-btn" data-copy="{EMAIL}" aria-label="Copy email address">'
             f'<svg class="ic-copy" viewBox="0 0 16 16" aria-hidden="true">'
             f'<rect x="5.5" y="5.5" width="8" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/>'
@@ -154,6 +158,7 @@ FOOT_TPL = '''<footer class="foot">
         <li class="foot-email">__EMAILCHIP__</li>
       </ul></div>
     </div>
+    <!--LANGFOOT-->
     <div class="foot-base mono">
       <span>&#169; <span id="cpyear">2026</span> Anowar Hossain</span>
       <span>Dhaka &#183; GMT+6 &#8212; <span id="clock">--:--</span> local</span>
@@ -173,7 +178,7 @@ def band(title, text, cta="Book the discovery call"):
     <ul class="band-checks">{checks}</ul>
     <div class="band-who">
       <img src="/uploads/portrait-380.webp" width="44" height="44" alt="Anowar Hossain" loading="lazy">
-      <div><strong>Anowar Hossain</strong><span>UI/UX Designer &amp; Developer</span></div>
+      <div><strong translate="no">Anowar Hossain</strong><span>UI/UX Designer &amp; Developer</span></div>
     </div>
     <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start;margin-top:6px">
       <a class="btn btn-primary" data-magnet data-cursor="Book" href="https://cal.com/anowarhdesign/discovery" target="_blank" rel="noopener">{cta} <span class="arw">&#8594;</span></a>
@@ -212,8 +217,9 @@ def band(title, text, cta="Book the discovery call"):
 </div>'''
 
 
-def polish(body):
-    """Post-process page markup: section indices, line-mask headlines, counters."""
+def polish(body, sep=","):
+    """Post-process page markup: section indices, line-mask headlines, counters.
+    sep is the thousands separator this language's figures were written with."""
     import re as _re
     # section header eyebrows get the index rule
     body = _re.sub(r'(<div class="sec-head">\s*<div>\s*)<span class="mono">',
@@ -236,20 +242,89 @@ def polish(body):
     # stat numbers animate up
     def _count(m):
         raw, suf = m.group(1), m.group(2) or ""
-        return (f'<div class="n" data-count="{raw.replace(",", "")}" data-suffix="{suf}">'
+        other = "" if sep == "," else f' data-sep="{sep}"'
+        return (f'<div class="n" data-count="{raw.replace(sep, "")}" data-suffix="{suf}"{other}>'
                 f'{raw}{suf}</div>')
-    body = _re.sub(r'<div class="n">([\d,]+)(%|\+)?</div>', _count, body)
+    body = _re.sub(r'<div class="n">([\d' + _re.escape(sep) + r']+)(%|\+)?</div>', _count, body)
     return body
 
+# ── languages ──
+# Strings site.js shows at runtime: every tr("…") call in the file is picked up here, translated
+# through the same catalogue as the markup and handed to the page as window.__i18n.
+JS_STRINGS = sorted(set(re.findall(r'\btr\("((?:[^"\\]|\\.)*)"\)', (ROOT / "assets" / "site.js").read_text(encoding="utf-8"))))
+LANG_WORD = {"en": "Language", "de": "Sprache", "es": "Idioma", "fr": "Langue", "nl": "Taal"}
+GLOBE = ('<svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.2">'
+         '<circle cx="8" cy="8" r="6.4"/><path d="M1.6 8h12.8M8 1.6c2.3 2 2.3 10.8 0 12.8M8 1.6c-2.3 2-2.3 10.8 0 12.8"/></g></svg>')
+
+def _lang_links(pagepath, lang, cls=""):
+    """One link per language to this same page. data-msg/data-go feed the "also available in" hint."""
+    out = []
+    for code, (name, _loc, msg, go, x) in i18n.LANGS.items():
+        cur = ' aria-current="true"' if code == lang else ""
+        out.append(f'<a{cls} href="{i18n.lpath(pagepath, code)}" hreflang="{code}" lang="{code}" data-lang="{code}"'
+                   f' data-msg="{msg}" data-go="{go}" data-x="{x}"{cur}><span>{name}</span><i>{code.upper()}</i></a>')
+    return out
+
+def lang_switch(pagepath, lang):
+    items = "".join(f"<li>{a}</li>" for a in _lang_links(pagepath, lang))
+    return (f'<details class="lang" translate="no"><summary aria-label="{LANG_WORD[lang]}: {i18n.LANGS[lang][0]}">'
+            f'{GLOBE}<span>{lang.upper()}</span></summary><ul>{items}</ul></details>')
+
+def lang_mobile(pagepath, lang):
+    return f'<div class="navlangs" translate="no" role="group" aria-label="{LANG_WORD[lang]}">{"".join(_lang_links(pagepath, lang))}</div>'
+
+def lang_foot(pagepath, lang):
+    return (f'<nav class="foot-langs" translate="no" aria-label="{LANG_WORD[lang]}">{GLOBE}'
+            f'{"".join(_lang_links(pagepath, lang))}</nav>')
+
+DOCK = '''<nav class="dock" aria-label="Quick links">
+  <a href="/services">Services</a><a href="/work">Work</a><a href="/pricing">Pricing</a>
+  <a href="/about">About</a>
+  <a class="cta" href="https://cal.com/anowarhdesign/discovery" target="_blank" rel="noopener">Book a call</a>
+</nav>'''
+
 def page(path, title, desc, body, schema, current="", trail=None, head_extra="", body_extra="", html_class=""):
-    body = polish(body)
-    url = SITE + ("/" if path == "index.html" else "/" + path.replace("/index.html", ""))
+    """Writes the English page, then the same page in every other language under /<lang>/."""
+    url = _render(None, path, title, desc, body, schema, current, trail, head_extra, body_extra, html_class)
+    for lang in i18n.TARGETS:
+        _render(lang, path, title, desc, body, schema, current, trail, head_extra, body_extra, html_class)
+    return url
+
+def _render(lang, path, title, desc, body, schema, current, trail, head_extra, body_extra, html_class):
+    code = lang or "en"
+    T = i18n.Translator(lang, path)
+    pagepath = "/" if path == "index.html" else "/" + path.replace("/index.html", "")
+    link = lambda l: SITE + (i18n.lpath(pagepath, l) if l != "en" or pagepath != "/" else "/")
+    url = link(code)
+    title, desc = T.text(title), T.text(desc)
+    body = polish(T.html(body), i18n.THOUSANDS.get(lang, ","))
     graph = [PERSON] + schema
     if trail:
         graph.append(breadcrumbs(trail))
-    jsonld = json.dumps({"@context": "https://schema.org", "@graph": graph}, indent=2)
+    graph = T.schema(graph)
+    if lang:   # breadcrumbs point at this language's pages
+        for node in graph:
+            if node.get("@type") == "BreadcrumbList":
+                for it in node["itemListElement"]:
+                    it["item"] = SITE + i18n.lpath(it["item"][len(SITE):], lang)
+    jsonld = json.dumps({"@context": "https://schema.org", "@graph": graph}, indent=2, ensure_ascii=not lang)
+    alternates = "".join(f'<link rel="alternate" hreflang="{l}" href="{link(l)}">\n' for l in i18n.LANGS)
+    alternates += f'<link rel="alternate" hreflang="x-default" href="{link("en")}">\n'
+    og_alt = "".join(f'<meta property="og:locale:alternate" content="{i18n.LANGS[l][1]}">\n' for l in i18n.LANGS if l != code)
+    js = {s: T.raw(s) for s in JS_STRINGS}
+    js = {k: v for k, v in js.items() if v}
+    js_i18n = ("<script>window.__i18n=" + json.dumps(js, ensure_ascii=False).replace("</", "<\\/") + "</script>\n") if js else ""
+    top = T.html(f'''<a class="skip" href="#top">Skip to content</a>
+<div class="grain" aria-hidden="true"></div>
+<div class="cursor" aria-hidden="true"><span class="lbl"></span></div>
+<div class="cursor-dot" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"><i></i></div>
+<div id="peek" aria-hidden="true"><img class="shot" alt="" width="900" height="600"><span class="name"></span><div class="inner"><span class="bar"><i></i><i></i><i></i></span><span class="host"></span></div></div>
+{nav(current)}''')
+    bottom = T.html(FOOT + "\n" + DOCK)
+    og_img_alt = T.text("Anowar Hossain — UI/UX design, Webflow / Framer development and AI automation")
     html = f'''<!DOCTYPE html>
-<html lang="en"{(' class="' + html_class + '"') if html_class else ""}>
+<html lang="{code}"{(' class="' + html_class + '"') if html_class else ""}>
 <head>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-GWYNCCRNRV"></script>
@@ -267,7 +342,7 @@ def page(path, title, desc, body, schema, current="", trail=None, head_extra="",
 <meta name="author" content="Anowar Hossain">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="{url}">
-<meta name="theme-color" content="#F4F1EB">
+{alternates}<meta name="theme-color" content="#F4F1EB">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{desc}">
 <meta property="og:type" content="website">
@@ -275,10 +350,10 @@ def page(path, title, desc, body, schema, current="", trail=None, head_extra="",
 <meta property="og:image" content="{SITE}/uploads/og-cover.jpg?v={OG_VER}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Anowar Hossain — UI/UX design, Webflow / Framer development and AI automation">
+<meta property="og:image:alt" content="{og_img_alt}">
 <meta property="og:site_name" content="Anowar Hossain">
-<meta property="og:locale" content="en_US">
-<meta name="twitter:card" content="summary_large_image">
+<meta property="og:locale" content="{i18n.LANGS[code][1]}">
+{og_alt}<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{title}">
 <meta name="twitter:description" content="{desc}">
 <meta name="twitter:image" content="{SITE}/uploads/og-cover.jpg?v={OG_VER}">
@@ -296,31 +371,25 @@ def page(path, title, desc, body, schema, current="", trail=None, head_extra="",
 </script>
 {head_extra}</head>
 <body>
-<a class="skip" href="#top">Skip to content</a>
-<div class="grain" aria-hidden="true"></div>
-<div class="cursor" aria-hidden="true"><span class="lbl"></span></div>
-<div class="cursor-dot" aria-hidden="true"></div>
-<div class="progress" aria-hidden="true"><i></i></div>
-<div id="peek" aria-hidden="true"><img class="shot" alt="" width="900" height="600"><span class="name"></span><div class="inner"><span class="bar"><i></i><i></i><i></i></span><span class="host"></span></div></div>
-{nav(current)}
+{top}
 <main id="top">
 {body}
 </main>
-{FOOT}
-<nav class="dock" aria-label="Quick links">
-  <a href="/services">Services</a><a href="/work">Work</a><a href="/pricing">Pricing</a>
-  <a href="/about">About</a>
-  <a class="cta" href="https://cal.com/anowarhdesign/discovery" target="_blank" rel="noopener">Book a call</a>
-</nav>
+{bottom}
 <script>window.va = window.va || function () {{ (window.vaq = window.vaq || []).push(arguments); }};</script>
 <script defer src="/_vercel/insights/script.js"></script>
 <script>window.si = window.si || function () {{ (window.siq = window.siq || []).push(arguments); }};</script>
 <script defer src="/_vercel/speed-insights/script.js"></script>
-<script defer src="/assets/site.js?v={JS_VER}"></script>
-{body_extra}</body>
+{js_i18n}<script defer src="/assets/site.js?v={JS_VER}"></script>
+{T.html(body_extra)}</body>
 </html>
 '''
-    dest = ROOT / path
+    if lang:
+        html = i18n.localize_links(html, lang)
+    html = (html.replace("<!--LANGSW-->", lang_switch(pagepath, code))
+                .replace("<!--LANGMOB-->", lang_mobile(pagepath, code))
+                .replace("<!--LANGFOOT-->", lang_foot(pagepath, code)))
+    dest = ROOT / (lang or "") / path
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(html, encoding="utf-8")
     return url
@@ -366,7 +435,7 @@ def _logo_item(name, filename, with_label, size):
         w, h = size
         mark = f'<img src="/uploads/logos/{filename}" width="{w}" height="{h}" alt="" loading="lazy">'
     label = f'<span class="lw-name">{name}</span>' if with_label else ""
-    return f'<span class="logowall-item" title="{name}">{mark}{label}</span>'
+    return f'<span class="logowall-item" title="{name}" translate="no">{mark}{label}</span>'
 
 _run = "".join(_logo_item(*l) for l in LOGOS)
 LOGOWALL = f'''<div style="display:flex;flex-direction:column;gap:10px" data-reveal>
@@ -395,7 +464,7 @@ QUOTES = {
 
 def quote(key, extra=""):
     q, att = QUOTES[key]
-    return f'<figure class="quote" data-reveal{extra}><q>{q}</q><figcaption class="att">{att}</figcaption></figure>'
+    return f'<figure class="quote" data-reveal{extra}><q translate="no" lang="en">{q}</q><figcaption class="att">{att}</figcaption></figure>'
 
 CASES = [
  ("Blockstak", "blockstak.ai", "UI/UX &#183; EdTech / AI", "linear-gradient(140deg,#0C1802 0%,#1B3D0C 100%)",
@@ -429,6 +498,9 @@ CASES = [
  ("Astate Concierge", "astateconcierge.com", "UI/UX &#183; Webflow &#183; Home services", "linear-gradient(140deg,#14150F 0%,#33301C 100%)",
   "#B8C49A", "A concierge home-services brand built to feel like a trusted advisor, not a task app &#8212; warm, editorial design for a high-touch membership service."),
 ]
+
+i18n.KEEP.update(c[0] for c in CASES)
+i18n.KEEP.update(l[0] for l in LOGOS)
 
 THUMBS = {"Blockstak": "/uploads/thumbs/blockstak.webp", "Optiify": "/uploads/thumbs/optiify.webp",
           "EAX Media": "/uploads/thumbs/eaxmedia.webp",
@@ -472,12 +544,12 @@ def case_card(c):
              f'<img src="{shot}" alt="{name} website" loading="lazy" width="900" height="600">'
              f'<span class="mono" style="color:{tagcol}">{tag}</span></div>') if shot else (
              f'<div class="thumb" style="background:{grad}">'
-             f'<span class="ghost" aria-hidden="true">{name}</span>'
+             f'<span class="ghost" aria-hidden="true" translate="no">{name}</span>'
              f'<span class="mono" style="color:{tagcol}">{tag}</span></div>')
     return f'''<a class="card card-hover case" href="/work/{slug}"
   data-reveal data-cursor="View">
   {thumb}
-  <div class="body"><h3>{name}</h3><p style="font-size:14.5px;color:var(--ash)">{blurb}</p>
+  <div class="body"><h3 translate="no">{name}</h3><p style="font-size:14.5px;color:var(--ash)">{blurb}</p>
     <span class="go">See the case study <span class="arw">&#8594;</span></span></div>
 </a>'''
 
@@ -498,7 +570,7 @@ def case_study_body(c, deploy_rows=None):
     shot = THUMBS.get(name)
     thumb = (f'<div class="cs-shot" style="background:{grad}">'
              f'<img src="{shot}" alt="{name} website" width="900" height="600" loading="lazy"></div>') if shot else (
-             f'<div class="cs-shot" style="background:{grad}"><span class="ghost" aria-hidden="true">{name}</span></div>')
+             f'<div class="cs-shot" style="background:{grad}"><span class="ghost" aria-hidden="true" translate="no">{name}</span></div>')
     # tagcol is a light, dark-background-only accent (used in the card thumb's
     # gradient overlay) — reused directly on the paper background here it'd be
     # near-illegible, so this line always uses the same on-paper ember tone
@@ -517,7 +589,7 @@ def case_study_body(c, deploy_rows=None):
   <div class="wrap hero-in">
     <div class="hero-copy">
       <a class="cs-back" href="/work" data-reveal>&#8592; Back to work</a>
-      <h1 data-reveal>{name}</h1>
+      <h1 data-reveal translate="no">{name}</h1>
       <p class="mono" data-reveal style="color:var(--ember-deep);margin-top:4px">{tag}</p>
       <p class="answer" data-reveal>{blurb}</p>
       <div class="cta-row" data-reveal>
@@ -554,7 +626,7 @@ def work_rows(items):
         out.append(f'''<a class="row" href="https://{host}" target="_blank" rel="noopener"
   data-peek="{grad}" data-peek-name="{name}" data-host="{host}"{img} data-cursor="Visit">
   <span class="row-num">{i+1:02d}</span>
-  <span class="row-name">{name}</span>
+  <span class="row-name" translate="no">{name}</span>
   <span class="mono row-tag">{tag}</span>
   <span class="row-arrow" aria-hidden="true">&#8599;</span>
 </a>''')

@@ -10,6 +10,20 @@ const asset = p => BASE + p + (VER ? '?v=' + VER : '');     // baked files chang
 const Q = new URLSearchParams(location.search);
 const FROZEN = Q.has('t') ? parseFloat(Q.get('t')) : null;
 const VIEW = Q.get('view') || '';
+// Language comes from <html lang>. English is the source; other languages load studio/i18n/<lang>.json,
+// a map from the English string to its translation (written by build/pages3.py). T() translates,
+// N() only marks a string so the build finds it, L() points an internal link at this language's pages.
+// The mini-OS itself stays in English.
+const LANG = (document.documentElement.lang || 'en').toLowerCase();
+const LBASE = LANG === 'en' ? '' : '/' + LANG;
+let I18N = {};
+const T = s => I18N[s] || s;
+const N = s => s;
+const L = h => (LBASE && h.startsWith('/') && !/^\/(studio|uploads|assets|api)\b/.test(h)) ? LBASE + (h === '/' ? '' : h) : h;
+const plainCache = new Map();
+const TP = s => { if (!plainCache.has(s)) { const d = document.createElement('div'); d.innerHTML = T(s); plainCache.set(s, d.textContent); } return plainCache.get(s); };
+const loadI18n = () => LANG === 'en' ? Promise.resolve({}) : fetch(asset('i18n/' + LANG + '.json')).then(r => r.ok ? r.json() : {}).catch(() => ({}));
+const localData = d => LBASE ? { ...d, services: d.services.map(x => ({ ...x, url: L(x.url) })), cases: d.cases.map(x => ({ ...x, url: L(x.url) })) } : d;
 const root = document.getElementById('studio');
 const canvas = root.querySelector('canvas.st-gl');
 const tip = root.querySelector('.st-tip');
@@ -101,7 +115,7 @@ function fallback() {
   root.classList.add('st-nogl');
   fetch(asset('data.json')).then(r => r.json()).then(data => {
     const html = document.documentElement;
-    const o = createOS({ root: document.querySelector('.os'), data, asset, onExit: () => html.classList.remove('st-os-open'), onWallpaper() {} });
+    const o = createOS({ root: document.querySelector('.os'), data: localData(data), asset, onExit: () => html.classList.remove('st-os-open'), onWallpaper() {} });
     root.querySelectorAll('[data-st="enter"]').forEach(b => b.addEventListener('click', ev => { ev.preventDefault(); o.open({ instant: true }); html.classList.add('st-os-open'); }));
     addEventListener('keydown', ev => { if (ev.key === 'Escape' && o.isOpen()) o.close(); });
   }).catch(() => {});
@@ -159,6 +173,8 @@ function cover(g, img, x, y, w, h) {
   g.drawImage(img, x + (w - iw) / 2, y + (h - ih) / 2, iw, ih);
 }
 function rr(g, x, y, w, h, r) { g.beginPath(); g.roundRect(x, y, w, h, r); }
+// draw a line of text, shrinking it until it fits (translations run longer than the English)
+function fitText(g, s, x, y, maxW, px, font) { let q = px; do { g.font = font.replace('#', q); q -= 4; } while (g.measureText(s).width > maxW && q > 24); g.fillText(s, x, y); }
 function drawDesktop(g, w, h, t) {
   cover(g, wallImgs[wallpaper], 0, 0, w, h);
   const boot = clamp((t - BOOT_AT - 1.0) / 1.4, 0, 1);
@@ -181,12 +197,13 @@ function drawDesktop(g, w, h, t) {
   // an invitation large enough to read from across the room
   g.fillStyle = 'rgba(6,8,8,.34)'; g.fillRect(0, 38, w, h - 38);
   g.textAlign = 'center';
-  g.fillStyle = '#F4F1EB'; g.font = '700 118px Archivo, Arial, sans-serif'; g.fillText('Step inside.', w / 2, 300);
-  g.fillStyle = '#FF9A6C'; g.font = 'italic 70px "Instrument Serif", Georgia, serif'; g.fillText('The work is in here.', w / 2, 392);
+  g.fillStyle = '#F4F1EB'; fitText(g, TP(N('Step inside.')), w / 2, 300, w - 110, 118, '700 #px Archivo, Arial, sans-serif');
+  g.fillStyle = '#FF9A6C'; fitText(g, TP(N('The work is in here.')), w / 2, 392, w - 110, 70, 'italic #px "Instrument Serif", Georgia, serif');
+  const cta = TP(N('Click the screen')); g.font = '600 32px Archivo, Arial, sans-serif'; const bw = Math.max(340, Math.min(w - 120, g.measureText(cta).width + 96));
   const pu = (t * 0.55) % 1;
-  g.strokeStyle = `rgba(241,78,28,${0.8 * (1 - pu)})`; g.lineWidth = 4; rr(g, w / 2 - 170 - pu * 26, 452 - pu * 16, 340 + pu * 52, 76 + pu * 32, 38 + pu * 16); g.stroke();
-  g.fillStyle = '#F14E1C'; rr(g, w / 2 - 170, 452, 340, 76, 38); g.fill();
-  g.fillStyle = '#fff'; g.font = '600 32px Archivo, Arial, sans-serif'; g.fillText('Click the screen', w / 2, 501);
+  g.strokeStyle = `rgba(241,78,28,${0.8 * (1 - pu)})`; g.lineWidth = 4; rr(g, w / 2 - bw / 2 - pu * 26, 452 - pu * 16, bw + pu * 52, 76 + pu * 32, 38 + pu * 16); g.stroke();
+  g.fillStyle = '#F14E1C'; rr(g, w / 2 - bw / 2, 452, bw, 76, 38); g.fill();
+  g.fillStyle = '#fff'; fitText(g, cta, w / 2, 501, bw - 60, 32, '600 #px Archivo, Arial, sans-serif');
   g.textAlign = 'left';
   // dock
   const n = 9, dw = n * 58 + 20; g.fillStyle = 'rgba(12,12,14,.6)'; rr(g, (w - dw) / 2, h - 76, dw, 60, 18); g.fill();
@@ -202,10 +219,10 @@ function drawWork(g, w, h, t) {
   const gr = g.createLinearGradient(0, h - 190, 0, h); gr.addColorStop(0, 'rgba(8,8,10,0)'); gr.addColorStop(1, 'rgba(8,8,10,.92)');
   g.fillStyle = gr; g.fillRect(0, h - 190, w, 190);
   const cur = thumbs[f > 0.93 ? (i + 1) % n : i];
-  g.fillStyle = '#F14E1C'; g.font = '500 17px "JetBrains Mono", monospace'; g.fillText('Selected work', 34, h - 92);
+  g.fillStyle = '#F14E1C'; g.font = '500 17px "JetBrains Mono", monospace'; g.fillText(TP(N('Selected work')), 34, h - 92);
   g.fillStyle = '#F4F1EB'; g.font = '700 46px Archivo, Arial, sans-serif'; g.fillText(cur.name, 34, h - 42);
   g.fillStyle = 'rgba(244,241,235,.75)'; g.font = '500 17px "JetBrains Mono", monospace'; g.textAlign = 'right';
-  g.fillText(cur.tag.replace(/&#183;/g, '·'), w - 34, h - 46); g.textAlign = 'left';
+  g.fillText(TP(cur.tag), w - 34, h - 46); g.textAlign = 'left';
   g.fillStyle = 'rgba(244,241,235,.25)'; g.fillRect(34, h - 22, w - 68, 3);
   g.fillStyle = '#F14E1C'; g.fillRect(34, h - 22, (w - 68) * f, 3);
 }
@@ -258,20 +275,20 @@ function glow(pos, w, h, color, gain) {
 
 // hotspots: mesh-name prefixes -> what a click does
 const HOT = [
-  { key: 'os', what: 'The main monitor', label: 'Step inside the computer', match: ['screen_main', 'main__'] },
-  { key: 'work', what: 'The second monitor', label: 'Selected work', match: ['screen_side', 'side__'] },
-  { key: 'services', what: 'The laptop', label: 'Services', match: ['laptop__', 'screen_laptop'] },
-  { key: 'record', what: 'The plaque on the wall', label: 'Track record', match: ['plaque'] },
-  { key: 'about', what: 'The prints on the shelf', label: 'About Anowar', match: ['print_', 'avatar__', 'headline__'] },
-  { key: 'process', what: 'The book on the pegboard', label: 'How a project runs', match: ['book__'] },
-  { key: 'contact', what: 'The phone', label: 'Get in touch', match: ['phone__'] },
-  { key: 'design', what: 'The drawing tablet', label: 'Product design', match: ['tablet__', 'stylus'] },
-  { key: 'reviews', what: 'The headphones', label: 'What clients say', match: ['hp1__', 'hp2__', 'glow_hp'] },
-  { key: 'cases', what: 'The film camera', label: 'Case studies', match: ['camera__'] },
-  { key: 'ai', what: 'The PC tower', label: 'AI automation', match: ['pc__', 'glow_pc'] },
-  { key: 'pricing', what: 'The coffee mug', label: 'Pricing', match: ['mug'] },
-  { key: 'stack', what: 'The keyboard and mouse', label: 'Toolkit', match: ['keyboard__', 'deskmouse__'] },
-  { key: 'hours', what: 'The hanging plant', label: 'Working hours', match: ['hang__', 'sway_hang'] },
+  { key: 'os', what: N('The main monitor'), label: N('Step inside the computer'), match: ['screen_main', 'main__'] },
+  { key: 'work', what: N('The second monitor'), label: N('Selected work'), match: ['screen_side', 'side__'] },
+  { key: 'services', what: N('The laptop'), label: N('Services'), match: ['laptop__', 'screen_laptop'] },
+  { key: 'record', what: N('The plaque on the wall'), label: N('Track record'), match: ['plaque'] },
+  { key: 'about', what: N('The prints on the shelf'), label: N('About Anowar'), match: ['print_', 'avatar__', 'headline__'] },
+  { key: 'process', what: N('The book on the pegboard'), label: N('How a project runs'), match: ['book__'] },
+  { key: 'contact', what: N('The phone'), label: N('Get in touch'), match: ['phone__'] },
+  { key: 'design', what: N('The drawing tablet'), label: N('Product design'), match: ['tablet__', 'stylus'] },
+  { key: 'reviews', what: N('The headphones'), label: N('What clients say'), match: ['hp1__', 'hp2__', 'glow_hp'] },
+  { key: 'cases', what: N('The film camera'), label: N('Case studies'), match: ['camera__'] },
+  { key: 'ai', what: N('The PC tower'), label: N('AI automation'), match: ['pc__', 'glow_pc'] },
+  { key: 'pricing', what: N('The coffee mug'), label: N('Pricing'), match: ['mug'] },
+  { key: 'stack', what: N('The keyboard and mouse'), label: N('Toolkit'), match: ['keyboard__', 'deskmouse__'] },
+  { key: 'hours', what: N('The hanging plant'), label: N('Working hours'), match: ['hang__', 'sway_hang'] },
 ];
 const hotOf = name => HOT.find(h => h.match.some(p => name.startsWith(p)));
 const hotState = Object.fromEntries(HOT.map(h => [h.key, { hi: 0, target: 0, mats: new Set(), box: new THREE.Box3() }]));
@@ -283,13 +300,14 @@ const loadImg = url => new Promise(res => { const i = new Image(); i.onload = ()
 const screens = {};
 
 async function load() {
-  const [data, gltf, w0, p0, b0, w1, p1, b1, env] = await Promise.all([
+  const [data, i18n, gltf, w0, p0, b0, w1, p1, b1, env] = await Promise.all([
     fetch(asset('data.json')).then(r => r.json()),
+    loadI18n(),
     new GLTFLoader().loadAsync(asset('baked/studio.glb')),
     ...['lm0_W', 'lm0_P', 'lm0_B', 'lm1_W', 'lm1_P', 'lm1_B'].map(n => loadTex(asset('baked/' + n + '.webp'))),
     new Promise(res => tl.load(asset('baked/env.jpg'), t => { t.colorSpace = THREE.SRGBColorSpace; t.wrapS = THREE.RepeatWrapping; res(t); })),
   ]);
-  DATA = data; Object.assign(lm, { '0W': w0, '0P': p0, '0B': b0, '1W': w1, '1P': p1, '1B': b1 }); U.uEnv.value = env;
+  DATA = data; I18N = i18n; Object.assign(lm, { '0W': w0, '0P': p0, '0B': b0, '1W': w1, '1P': p1, '1B': b1 }); U.uEnv.value = env;
   Object.keys(WALLPAPERS).forEach(k => loadImg(asset(WALLPAPERS[k].file)).then(i => { wallImgs[k] = i; lastScr = -1; }));
   data.cases.filter(c => c.thumb).slice(0, 8).forEach(c => loadImg(c.thumb).then(img => img && thumbs.push({ img, name: c.name.replace(/&amp;/g, '&'), tag: c.tag })));
 
@@ -333,7 +351,7 @@ async function load() {
   glow(new THREE.Vector3(-1.46, 1.45, 0.05), 2.0, 2.2, '#8a6cff', 0.10).userData.lamp = false;
   glow(new THREE.Vector3(-0.02, 2.045, 0.13), 1.0, 0.16, '#ffb469', 0.34);
   makeDust(); makeGlass();
-  os = createOS({ root: document.querySelector('.os'), data, asset, onExit: flyOut, onWallpaper: w => { wallpaper = w; lastScr = -1; } });
+  os = createOS({ root: document.querySelector('.os'), data: localData(data), asset, onExit: flyOut, onWallpaper: w => { wallpaper = w; lastScr = -1; } });
   bind(); resize(); requestAnimationFrame(frame);
   root.classList.add('st-ready');
   if (VIEW === 'os') { state.mode = 'os'; state.fly = 1; os.open({ instant: true, app: Q.get('app') }); }
@@ -416,29 +434,29 @@ function flyOut() {
 
 // ───────────────────────── cards ─────────────────────────
 function cardHTML(key) {
-  const d = DATA, link = (href, text, primary) => `<a class="st-btn${primary ? ' st-btn-p' : ''}" href="${href}"${href.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${text}</a>`;
+  const d = DATA, link = (href, text, primary) => `<a class="st-btn${primary ? ' st-btn-p' : ''}" href="${L(href)}"${href.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${text}</a>`;
   const svc = n => d.services.find(s => s.name === n);
-  const svcBlock = s => `<p>${s.blurb}</p><p class="st-mono">${s.price}</p><ul class="st-chips">${s.chips.map(c => `<li>${c}</li>`).join('')}</ul>`;
+  const svcBlock = s => `<p>${T(s.blurb)}</p><p class="st-mono">${T(s.price)}</p><ul class="st-chips">${s.chips.map(c => `<li>${T(c)}</li>`).join('')}</ul>`;
   switch (key) {
-    case 'services': return ['Services', `<ul class="st-list">${d.services.map(s => `<li><a href="${s.url}"><b>${s.name}</b><span>${s.price}</span></a></li>`).join('')}</ul>`, link('/services', 'All services', 1)];
-    case 'record': return ['Track record', `<ul class="st-ticks">${d.facts.map(f => `<li>${f}</li>`).join('')}</ul>`, link('/about', 'About me', 1)];
-    case 'about': return ['About Anowar', d.about.map(p => `<p>${p}</p>`).join(''), link('/about', 'Read more', 1) + link(d.call, 'Book a call')];
-    case 'process': return ['How a project runs', `<ol class="st-steps">${d.steps.map(s => `<li><b>${s.name}</b><span>${s.text}</span></li>`).join('')}</ol>`, link('/process', 'The full process', 1)];
-    case 'contact': return ['Get in touch', `<p>A 30-minute discovery call, then a fixed quote. ${d.checks.join('. ')}.</p><p class="st-mono"><a href="mailto:${d.email}">${d.email}</a></p>`, link(d.call, 'Book the discovery call', 1) + link(d.brief, 'Start a project') + link('/contact', 'Contact page')];
-    case 'design': { const s = svc('Product design'); return [s.name, svcBlock(s), link(s.url, 'See product design', 1)]; }
-    case 'ai': { const s = svc('AI automation'), b = svc('AI product builds'); return ['AI automation', svcBlock(s) + `<p><b>${b.name}.</b> ${b.blurb}</p>`, link(s.url, 'See AI automation', 1) + link(b.url, 'AI product builds')]; }
-    case 'reviews': return ['What clients say', d.quotes.slice(0, 3).map(q => `<blockquote>${q.text}<cite>${q.by}</cite></blockquote>`).join(''), link('/work', 'See the work', 1)];
-    case 'cases': return ['Case studies', `<ul class="st-list">${d.cases.slice(0, 7).map(c => `<li><a href="${c.url}"><b>${c.name}</b><span>${c.tag}</span></a></li>`).join('')}</ul>`, link('/work', 'All work', 1)];
-    case 'pricing': return ['Pricing', `<ul class="st-list">${d.bands.map(b => `<li><a href="/pricing"><b>${b.name}</b><span>${b.price}</span></a></li>`).join('')}</ul><p>Every project is a fixed quote agreed after the discovery call.</p>`, link('/pricing', 'Full pricing', 1)];
-    case 'stack': return ['Toolkit', `<ul class="st-chips">${d.stack.map(c => `<li>${c}</li>`).join('')}</ul>`, link('/about', 'How I work', 1)];
-    case 'hours': return ['Working hours', `<p>I work on GMT+6. Overlap with New York runs roughly 09:00&#8211;13:00 ET, and nearly the full working day overlaps with London and Berlin.</p><p>Written updates and recorded walkthroughs keep progress moving between calls.</p>`, link('/process', 'How we work together', 1)];
+    case 'services': return [T('Services'), `<ul class="st-list">${d.services.map(s => `<li><a href="${L(s.url)}"><b>${T(s.name)}</b><span>${T(s.price)}</span></a></li>`).join('')}</ul>`, link('/services', T('All services'), 1)];
+    case 'record': return [T('Track record'), `<ul class="st-ticks">${d.facts.map(f => `<li>${T(f)}</li>`).join('')}</ul>`, link('/about', T('About me'), 1)];
+    case 'about': return [T('About Anowar'), d.about.map(p => `<p>${T(p)}</p>`).join(''), link('/about', T('Read more'), 1) + link(d.call, T('Book a call'))];
+    case 'process': return [T('How a project runs'), `<ol class="st-steps">${d.steps.map(s => `<li><b>${T(s.name)}</b><span>${T(s.text)}</span></li>`).join('')}</ol>`, link('/process', T('The full process'), 1)];
+    case 'contact': return [T('Get in touch'), `<p>${T('A 30-minute discovery call, then a fixed quote.')} ${d.checks.map(T).join('. ')}.</p><p class="st-mono"><a href="mailto:${d.email}">${d.email}</a></p>`, link(d.call, T('Book the discovery call'), 1) + link(d.brief, T('Start a project')) + link('/contact', T('Contact page'))];
+    case 'design': { const s = svc('Product design'); return [T(s.name), svcBlock(s), link(s.url, T('See product design'), 1)]; }
+    case 'ai': { const s = svc('AI automation'), b = svc('AI product builds'); return [T('AI automation'), svcBlock(s) + `<p><b>${T(b.name)}.</b> ${T(b.blurb)}</p>`, link(s.url, T('See AI automation'), 1) + link(b.url, T('AI product builds'))]; }
+    case 'reviews': return [T('What clients say'), d.quotes.slice(0, 3).map(q => `<blockquote><span lang="en">${q.text}</span><cite>${T(q.by)}</cite></blockquote>`).join(''), link('/work', T('See the work'), 1)];
+    case 'cases': return [T('Case studies'), `<ul class="st-list">${d.cases.slice(0, 7).map(c => `<li><a href="${L(c.url)}"><b>${c.name}</b><span>${T(c.tag)}</span></a></li>`).join('')}</ul>`, link('/work', T('All work'), 1)];
+    case 'pricing': return [T('Pricing'), `<ul class="st-list">${d.bands.map(b => `<li><a href="${L('/pricing')}"><b>${T(b.name)}</b><span>${T(b.price)}</span></a></li>`).join('')}</ul><p>${T('Every project is a fixed quote agreed after the discovery call.')}</p>`, link('/pricing', T('Full pricing'), 1)];
+    case 'stack': return [T('Toolkit'), `<ul class="st-chips">${d.stack.map(c => `<li>${c}</li>`).join('')}</ul>`, link('/about', T('How I work'), 1)];
+    case 'hours': return [T('Working hours'), `<p>${T('I work on GMT+6. Overlap with New York runs roughly 09:00&#8211;13:00 ET, and nearly the full working day overlaps with London and Berlin.')}</p><p>${T('Written updates and recorded walkthroughs keep progress moving between calls.')}</p>`, link('/process', T('How we work together'), 1)];
   }
   return null;
 }
 function openCard(key) {
   const c = cardHTML(key); if (!c) return;
   state.card = key; tip.hidden = true; root.classList.add('st-carded');
-  cardEl.innerHTML = `<button class="st-x" aria-label="Close">&#215;</button><span class="st-mono st-eyebrow">${HOT.find(h => h.key === key).what}</span><h2>${c[0]}</h2><div class="st-body">${c[1]}</div><div class="st-actions">${c[2]}</div>`;
+  cardEl.innerHTML = `<button class="st-x" aria-label="${T('Close')}">&#215;</button><span class="st-mono st-eyebrow">${T(HOT.find(h => h.key === key).what)}</span><h2>${c[0]}</h2><div class="st-body">${c[1]}</div><div class="st-actions">${c[2]}</div>`;
   cardEl.hidden = false; requestAnimationFrame(() => cardEl.classList.add('on'));
   cardEl.querySelector('.st-x').onclick = closeCard;
   const b = hotState[key].box, ctr = b.getCenter(new THREE.Vector3());
@@ -458,7 +476,7 @@ function bind() {
     const r = root.getBoundingClientRect(); state.mx = clamp(((ev.clientX - r.left) / r.width) * 2 - 1, -1, 1); state.my = clamp(((ev.clientY - r.top) / r.height) * 2 - 1, -1, 1);
     if (state.mode !== 'room' || ev.target !== canvas) { setHover(null); return; }
     const k = pick(ev); setHover(k);
-    if (k) { tip.textContent = HOT.find(h => h.key === k).label; tip.style.transform = `translate(${ev.clientX - r.left + 16}px, ${ev.clientY - r.top + 18}px)`; }
+    if (k) { tip.textContent = TP(HOT.find(h => h.key === k).label); tip.style.transform = `translate(${ev.clientX - r.left + 16}px, ${ev.clientY - r.top + 18}px)`; }
   });
   root.addEventListener('pointerleave', () => { state.mx = 0; state.my = 0; setHover(null); });
   canvas.addEventListener('pointerdown', ev => { down = { x: ev.clientX, y: ev.clientY }; });

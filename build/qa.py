@@ -26,8 +26,8 @@ for p in PATHS:
     h1s = re.findall(r'<h1[^>]*>', s)
     if len(h1s) != 1: add('FAIL', p, f'{len(h1s)} H1s')
     can = re.search(r'canonical" href="([^"]+)"', s).group(1)
-    if not can.startswith('https://anowarhdesign.com'): add('FAIL', p, f'bad canonical {can}')
-    if can.rstrip('/') != ('https://anowarhdesign.com' + p.rstrip('/')).rstrip('/'):
+    if not can.startswith('https://www.anowarhdesign.com'): add('FAIL', p, f'bad canonical {can}')
+    if can.rstrip('/') != ('https://www.anowarhdesign.com' + p.rstrip('/')).rstrip('/'):
         add('FAIL', p, f'canonical mismatch: {can}')
     # schema
     ld = json.loads(re.search(r'<script type="application/ld\+json">\s*(\{.*?\})\s*</script>', s, re.S).group(1))
@@ -51,9 +51,63 @@ for d, ps in descs.items():
 sm = (ROOT / 'sitemap.xml').read_text()
 locs = re.findall(r'<loc>(.*?)</loc>', sm)
 for p in PATHS:
-    u = 'https://anowarhdesign.com' + (p.rstrip('/') or '/')
+    u = 'https://www.anowarhdesign.com' + (p.rstrip('/') or '/')
     if u not in locs: add('FAIL', p, 'missing from sitemap.xml')
-if len(locs) != len(PATHS): add('WARN', 'sitemap', f'{len(locs)} urls vs {len(PATHS)} pages')
+
+# ── languages: every page exists in every language, and they all point at each other ──
+import sys
+sys.path.insert(0, str(ROOT / 'build'))
+import i18n
+SITE = 'https://www.anowarhdesign.com'
+SKIP_DIRS = set(i18n.TARGETS) | {'studio', '.claude', 'uploads', 'assets', 'build', 'api'}
+EN_PAGES = sorted('/' + str(f.parent.relative_to(ROOT)).replace('\\', '/').strip('.') for f in ROOT.rglob('index.html')
+                  if f.relative_to(ROOT).parts[0] not in SKIP_DIRS)
+EN_PAGES = [('/' if q == '/' else q.rstrip('/')) for q in EN_PAGES]
+def _file(path, lang):
+    return ROOT / ('' if lang == 'en' else lang) / path.strip('/') / 'index.html'
+def _url(path, lang):
+    return SITE + (path if lang == 'en' else i18n.lpath(path, lang))
+LANG_PAGES = []          # (lang, path) of every translated page, for the live pass below
+for path in EN_PAGES:
+    want = {l: _url(path, l) for l in i18n.LANGS}
+    want['x-default'] = want['en']
+    en_src = _file(path, 'en').read_text(encoding='utf-8')
+    en_title = re.search(r'<title>(.*?)</title>', en_src, re.S).group(1)
+    for lang in i18n.LANGS:
+        f, tag = _file(path, lang), f'{lang}{path}'
+        if not f.exists():
+            add('FAIL', tag, 'page not built'); continue
+        s = f.read_text(encoding='utf-8')
+        if f'<html lang="{lang}"' not in s: add('FAIL', tag, 'wrong <html lang>')
+        can = re.search(r'canonical" href="([^"]+)"', s).group(1)
+        if can != want[lang]: add('FAIL', tag, f'canonical {can} != {want[lang]}')
+        alts = dict(re.findall(r'<link rel="alternate" hreflang="([^"]+)" href="([^"]+)">', s))
+        if alts != want: add('FAIL', tag, 'hreflang set is not the full reciprocal set')
+        if want[lang] not in locs: add('FAIL', tag, 'missing from sitemap.xml')
+        if '<!--LANG' in s: add('FAIL', tag, 'unfilled language-switcher slot')
+        try: json.loads(re.search(r'<script type="application/ld\+json">\s*(\{.*?\})\s*</script>', s, re.S).group(1))
+        except Exception as ex: add('FAIL', tag, f'JSON-LD does not parse: {ex}')
+        if lang == 'en': continue
+        LANG_PAGES.append((lang, path))
+        title = re.search(r'<title>(.*?)</title>', s, re.S).group(1)
+        desc = re.search(r'name="description" content="([^"]*)"', s).group(1)
+        if title == en_title and '|' in title: add('WARN', tag, 'title is still the English one')
+        if len(title) > 65: add('WARN', tag, f'title {len(title)} chars')
+        if len(desc) > 170: add('WARN', tag, f'description {len(desc)} chars')
+        if len(re.findall(r'<h1[^>]*>', s)) != 1: add('FAIL', tag, 'not exactly one H1')
+        # every internal page link must stay inside this language (the switcher is the one exception)
+        body = re.sub(r'<(details class="lang"|div class="navlangs"|nav class="foot-langs").*?</(details|div|nav)>', '', s, flags=re.S)
+        for h in set(re.findall(r'<a[^>]*\shref="(/[^"#?]*)', body)):
+            if i18n.is_page(h) and not (h == '/' + lang or h.startswith('/' + lang + '/')):
+                add('FAIL', tag, f'link leaves the language: {h}')
+if len(locs) != len(EN_PAGES) * len(i18n.LANGS):
+    add('WARN', 'sitemap', f'{len(locs)} urls vs {len(EN_PAGES)} pages x {len(i18n.LANGS)} languages')
+_miss = json.loads((ROOT / 'build' / 'i18n' / '_missing.json').read_text(encoding='utf-8')) if (ROOT / 'build' / 'i18n' / '_missing.json').exists() else {}
+for lang, m in _miss.items():
+    if m: add('FAIL', lang, f'{len(m)} units have no translation (build/i18n/_missing.json), e.g. {list(m)[0][:60]!r}')
+for lang in i18n.TARGETS:
+    f = ROOT / 'studio' / 'i18n' / f'{lang}.json'
+    if not f.exists() or len(json.loads(f.read_text(encoding='utf-8'))) < 40: add('FAIL', lang, 'studio/i18n file missing or nearly empty')
 rb = (ROOT / 'robots.txt').read_text()
 for bot in ['GPTBot', 'ClaudeBot', 'PerplexityBot', 'Google-Extended']:
     if bot not in rb: add('WARN', 'robots.txt', f'{bot} not named')
@@ -119,6 +173,27 @@ with sync_playwright() as pw:
     tiny = mob.evaluate("""[...document.querySelectorAll('p,li,span')].filter(e=>{
         const s=getComputedStyle(e); return parseFloat(s.fontSize)<12 && e.textContent.trim().length>12;}).length""")
     if tiny: add('WARN', 'mobile', f'{tiny} text nodes under 12px')
+    # translated pages: longer words must not break the layout, at phone and desktop widths
+    FIT = """(()=>{const out=[];
+      if (document.documentElement.scrollWidth > innerWidth + 1) out.push('horizontal overflow');
+      document.querySelectorAll('h1 .line, .btn, .navlinks a, .dock a, .lang summary, .step h3, .card h3, .stat .l, .row-tag').forEach(e=>{
+        const r=e.getBoundingClientRect(); if(!r.width) return;
+        if (e.scrollWidth > e.clientWidth + 2) out.push('clipped: '+e.textContent.trim().slice(0,40));
+        else if (r.right > innerWidth + 1 || r.left < -1) out.push('off-screen: '+e.textContent.trim().slice(0,40));});
+      return [...new Set(out)].slice(0,4);})()"""
+    for size in ((390, 844), (1100, 800), (1440, 950)):
+        lp = br.new_page(viewport={'width': size[0], 'height': size[1]})
+        lp.route('**/*', lambda r: r.abort() if any(k in r.request.url for k in ('googletagmanager', '_vercel', 'google-analytics')) else r.continue_())
+        lp.on('pageerror', lambda e: add('FAIL', 'runtime (translated page)', str(e)[:90]))
+        for lang, path in LANG_PAGES:
+            if path.startswith('/work/') and path not in ('/work/blockstak', '/work/eric-kanigan'):
+                continue          # the case-study pages share one template; two stand in for the rest
+            u = B + i18n.lpath(path, lang) + '/'
+            r = lp.goto(u, wait_until='load'); lp.wait_for_timeout(350)
+            if r.status != 200: add('FAIL', lang + path, f'HTTP {r.status}')
+            for prob in lp.evaluate(FIT): add('FAIL', f'{lang}{path} @{size[0]}px', prob)
+            if lp.evaluate('document.documentElement.lang') != lang: add('FAIL', lang + path, 'html lang')
+        lp.close()
     br.close()
 
 print("\n".join(issues) if issues else "No failures.")

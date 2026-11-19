@@ -77,5 +77,5 @@ def wordmark(href="/", extra_class="", inert=False):
     # since the real, focusable link is always the main nav's wordmark.
     tabindex = ' tabindex="-1"' if inert else ""
     return (f'<a class="wordmark {extra_class}" href="{href}" aria-label="Anowar Hossain — home"{tabindex}>'
-            f'<span>AN</span>{AVATAR_SVG}<span>WAR</span>'
+            f'<span translate="no">AN</span>{AVATAR_SVG}<span translate="no">WAR</span>'
             '</a>')

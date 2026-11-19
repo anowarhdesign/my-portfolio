@@ -470,15 +470,21 @@ URLS = ["/", "/services", "/services/product-design", "/services/webflow-develop
         "/services/framer-development", "/services/ai-product-builds", "/services/ai-automation",
         "/work", "/pricing", "/process", "/about", "/contact"]
 CASE_URLS = [f"/work/{slugify(c[0])}" for c in CASES]
+# every page is listed once per language, each entry naming all its language versions (hreflang)
 sm = ['<?xml version="1.0" encoding="UTF-8"?>',
-      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">']
+def _sm_loc(u, lang):
+    return S + (u if lang == "en" else i18n.lpath(u, lang))
+def _sm_add(u, pri):
+    alts = "".join(f'<xhtml:link rel="alternate" hreflang="{l}" href="{_sm_loc(u, l)}"/>' for l in i18n.LANGS)
+    alts += f'<xhtml:link rel="alternate" hreflang="x-default" href="{_sm_loc(u, "en")}"/>'
+    for l in i18n.LANGS:
+        sm.append(f"  <url><loc>{_sm_loc(u, l)}</loc><lastmod>{BUILD_DATE}</lastmod>"
+                  f"<changefreq>monthly</changefreq><priority>{pri}</priority>{alts}</url>")
 for u in URLS:
-    pri = "1.0" if u == "/" else ("0.9" if u.startswith("/services") else "0.7")
-    sm.append(f"  <url><loc>{S}{u}</loc><lastmod>{BUILD_DATE}</lastmod>"
-              f"<changefreq>monthly</changefreq><priority>{pri}</priority></url>")
+    _sm_add(u, "1.0" if u == "/" else ("0.9" if u.startswith("/services") else "0.7"))
 for u in CASE_URLS:
-    sm.append(f"  <url><loc>{S}{u}</loc><lastmod>{BUILD_DATE}</lastmod>"
-              f"<changefreq>monthly</changefreq><priority>0.6</priority></url>")
+    _sm_add(u, "0.6")
 sm.append("</urlset>")
 (ROOT / "sitemap.xml").write_text("\n".join(sm) + "\n", encoding="utf-8")
 
@@ -505,6 +511,10 @@ sm.append("</urlset>")
 - [Process]({S}/process)
 - [About]({S}/about)
 - [Contact]({S}/contact)
+
+## Languages
+- English is the original. The same pages exist in German ({S}/de), Spanish ({S}/es), French ({S}/fr)
+  and Dutch ({S}/nl), at the same paths under that prefix.
 
 ## Facts
 - Based in Dhaka, Bangladesh (GMT+6); overlaps New York mornings (09:00-13:00 ET) and full European business hours.
@@ -554,4 +564,35 @@ def _nocity(v):
     return v
 _studio = _nocity(_studio)
 (ROOT / "studio" / "data.json").write_text(_json.dumps(_studio, ensure_ascii=False), encoding="utf-8")
+
+# ── the room's own text in the other languages ──
+# studio/i18n/<lang>.json maps an English string to its translation: every T('…') / N('…') literal in
+# app.js plus the data.json strings the object cards show. The mini-OS stays in English.
+import re as _re2
+_lits = sorted(set(_re2.findall(r"\b[TN]\('((?:[^'\\]|\\.)*)'\)", (ROOT / "studio" / "src" / "app.js").read_text(encoding="utf-8"))))
+def _room_strings():
+    yield from _lits
+    for x in _studio["services"]:
+        yield x["name"]; yield x["blurb"]; yield x["price"]; yield from x["chips"]
+    yield from _studio["facts"]; yield from _studio["about"]; yield from _studio["checks"]
+    for x in _studio["steps"]:
+        yield x["name"]; yield x["text"]
+    for x in _studio["cases"]:
+        yield x["tag"]
+    for x in _studio["bands"]:
+        yield x["name"]; yield x["price"]
+    for x in _studio["quotes"]:
+        yield x["by"]
+(ROOT / "studio" / "i18n").mkdir(exist_ok=True)
+for _lang in [None] + i18n.TARGETS:
+    _T = i18n.Translator(_lang, "(studio)")
+    _out = {}
+    for _s in dict.fromkeys(_room_strings()):
+        _t = _T.fragment(_s)          # None when the string reads the same in this language
+        if _t:
+            _out[_s] = _t
+    if _lang:
+        _blob = _json.dumps(_out, ensure_ascii=False)
+        assert not _re2.search(r"Dhaka|Dakka|Daca|Dacca|Bangla", _blob), f"city name in the room text ({_lang})"
+        (ROOT / "studio" / "i18n" / f"{_lang}.json").write_text(_blob, encoding="utf-8")
 print("studio data written")

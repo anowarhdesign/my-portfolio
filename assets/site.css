@@ -604,3 +604,78 @@ section{padding-block:clamp(64px,9.5vw,136px);position:relative}
 .wordmark .blink{width:6px;height:6px;border-radius:50%;background:var(--ember);margin-left:7px;
   animation:pulse 2.4s infinite;flex:0 0 auto}
 .foot .wordmark{font-size:20px}
+
+/* ── language switcher ──
+   Desktop: a pill in the nav that opens a short list. Phones: the same links as chips at the
+   bottom of the open menu. Every page also lists them in the footer. Plain links throughout
+   (a <details>, no script needed); site.js only adds outside-click/Escape and the hint below. */
+.lang{position:relative}
+.lang summary{list-style:none;display:inline-flex;align-items:center;gap:7px;cursor:pointer;
+  border:1px solid var(--line-2);border-radius:var(--r-pill);padding:11px 14px 11px 12px;
+  font-size:13px;font-weight:500;letter-spacing:.05em;color:var(--ash);
+  transition:color .25s,border-color .25s,background .25s}
+.lang summary::-webkit-details-marker{display:none}
+.lang summary::after{content:"";width:6px;height:6px;margin:-3px 0 0 1px;border-right:1.4px solid currentColor;
+  border-bottom:1.4px solid currentColor;transform:rotate(45deg);transition:transform .3s var(--ease)}
+.lang[open] summary::after{transform:rotate(225deg);margin-top:3px}
+.lang summary:hover,.lang[open] summary{color:var(--ink);border-color:var(--ink)}
+.lang ul{position:absolute;right:0;top:calc(100% + 10px);min-width:200px;margin:0;padding:6px;list-style:none;
+  background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);z-index:5;
+  animation:langin .32s var(--ease)}
+@keyframes langin{from{opacity:0;transform:translateY(-6px) scale(.98)}}
+.lang a{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:10px 12px;
+  border-radius:14px;font-size:14.5px;color:var(--ash);transition:background .2s,color .2s}
+.lang a:hover{background:rgba(14,13,12,.05);color:var(--ink)}
+.lang a i,.navlangs a i,.foot-langs a i{font:500 11px "JetBrains Mono",monospace;font-style:normal;letter-spacing:.08em;color:var(--ash-2)}
+.lang a[aria-current]{color:var(--ink);font-weight:600}
+.lang a[aria-current] i{color:var(--ember-deep)}
+.navlangs{display:none}
+.foot-langs{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin-top:44px;color:var(--ash-2)}
+.foot-langs svg{margin-right:6px}
+.foot-langs a{padding:7px 12px;border-radius:var(--r-pill);font-size:14px;color:var(--ash);transition:color .25s,background .25s}
+.foot-langs a i{display:none}
+.foot-langs a:hover{color:var(--ink);background:rgba(14,13,12,.05)}
+.foot-langs a[aria-current]{color:var(--ink);background:rgba(14,13,12,.07);font-weight:500}
+.foot-langs + .foot-base{margin-top:20px}
+/* "this page is also available in …": shown once, under the switcher, never a redirect */
+.lang-tip{position:fixed;top:76px;right:max(var(--gutter),calc((100vw - var(--maxw)) / 2 + var(--gutter)));z-index:89;
+  display:flex;align-items:center;gap:12px;max-width:min(560px,calc(100vw - 2 * var(--gutter)));
+  padding:8px 8px 8px 18px;background:var(--ink);color:var(--bone);border-radius:22px;font-size:14px;line-height:1.35;
+  box-shadow:var(--shadow);opacity:0;transform:translateY(-8px);pointer-events:none;
+  transition:opacity .35s var(--ease),transform .5s var(--ease)}
+.lang-tip.on{opacity:1;transform:none;pointer-events:auto}
+.lang-tip a{flex:0 0 auto;background:var(--ember);color:#fff;padding:9px 15px;border-radius:var(--r-pill);font-weight:500;white-space:nowrap}
+.lang-tip a:hover{background:var(--ember-lift)}
+.lang-tip button{flex:0 0 auto;width:32px;height:32px;border:0;border-radius:50%;background:rgba(244,241,235,.12);
+  color:var(--bone);font-size:18px;line-height:1;cursor:pointer}
+.lang-tip button:hover{background:rgba(244,241,235,.22)}
+html.st-fly .lang-tip,html.st-os-open .lang-tip{opacity:0;pointer-events:none}
+@media (max-width:760px){
+  .lang{display:none}
+  .navlinks.open .navlangs{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;padding:14px 4px 4px;border-top:1px solid var(--line)}
+  .navlinks .navlangs a{padding:8px 13px;border:1px solid var(--line-2);font-size:13.5px;color:var(--ash)}
+  .navlinks .navlangs a::after{display:none}
+  .navlangs a i{display:none}
+  .navlinks .navlangs a[aria-current]{background:var(--ink);border-color:var(--ink);color:var(--bone)}
+  .lang-tip{top:70px;left:var(--gutter);right:var(--gutter);max-width:none;flex-wrap:wrap;border-radius:20px;padding:12px 12px 12px 16px}
+  .lang-tip span{flex:1 1 100%}
+  .lang-tip a{margin-right:auto}
+}
+/* phone nav: translated labels ("Réserver un appel", "Reservar llamada") must stay on one line */
+@media (max-width:760px){
+  .nav .btn-sm{white-space:nowrap;padding:12px 16px}
+  .nav-in>div{gap:8px!important;flex:0 0 auto}
+}
+@media (max-width:400px){
+  .nav .btn-sm{padding:11px 13px;font-size:13px}
+  .navtoggle{padding:10px 13px;font-size:13px}
+  .nav .wordmark{font-size:20px}
+}
+
+/* ── translated pages: longer words ──
+   German, Dutch, Spanish and French words run longer than the English the type scale was tuned
+   for. Hero headlines size themselves to their column (a 13-letter word still fits on one line),
+   and headings inside narrow cards may hyphenate instead of spilling out. English is untouched. */
+html:not([lang="en"]) .hero-copy{container-type:inline-size}
+html:not([lang="en"]) .hero h1{font-size:min(var(--fs-display),max(38px,14.5cqi));overflow-wrap:break-word}
+html:not([lang="en"]) :is(.card h3,.step h3,.stat .l,.band h2){-webkit-hyphens:auto;hyphens:auto;overflow-wrap:break-word}

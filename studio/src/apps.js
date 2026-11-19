@@ -1,6 +1,9 @@
 // Programs for Anowar OS. Each one is { title, w, h, mount(body, os, win) -> cleanup? }.
 const ext = href => href.startsWith('http') ? ' target="_blank" rel="noopener"' : '';
-const btn = (href, text, primary) => `<a class="os-btn${primary ? ' p' : ''}" href="${href}"${ext(href)}>${text}</a>`;
+// the programs are English only, but page links keep the visitor on their language's pages
+const LB = (l => l && l !== 'en' ? '/' + l : '')((document.documentElement.lang || '').toLowerCase());
+const loc = h => (LB && h.startsWith('/')) ? LB + (h === '/' ? '' : h) : h;
+const btn = (href, text, primary) => `<a class="os-btn${primary ? ' p' : ''}" href="${loc(href)}"${ext(href)}>${text}</a>`;
 const txt = s => { const d = document.createElement('div'); d.innerHTML = s; return d.textContent; };
 
 // ───────────────────────── content programs ─────────────────────────

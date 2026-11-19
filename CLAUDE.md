@@ -41,7 +41,7 @@ doesn't get useful signal to adapt its timing.
 etc. are all output. Edit the generators in `build/`, then rebuild:
 
 ```bash
-build/build_all.sh                       # regenerates all 11 pages + sitemap.xml + llms.txt
+build/build_all.sh                       # regenerates every page in every language + sitemap.xml + llms.txt
 python3 -m http.server 8000              # from the repo root, to preview
 python3 build/qa.py                      # full QA sweep (needs a server on :8121)
 ```
@@ -58,6 +58,9 @@ python3 build/qa.py                      # full QA sweep (needs a server on :812
 | `pages.py` | Home + services hub |
 | `pages2.py` | The four service pages, from one `service_page()` template |
 | `pages3.py` | Work, pricing, process, about, contact, plus `sitemap.xml` and `llms.txt` |
+| `i18n.py` | The translation pass: turns the English markup into `/de/`, `/es/`, `/fr/`, `/nl/` pages (see "Languages") |
+| `i18n_tool.py` | Export untranslated copy, validate and merge translations, report status |
+| `i18n/<lang>.json` | One catalogue per language: English source text -> translation |
 | `qa.py` | Crawls every page: titles, descriptions, canonicals, H1 count, schema, broken links, image alt/dimensions, heading order, landmarks, mobile overflow, load metrics |
 
 Assets in `assets/site.css` and `assets/site.js` are hand-written and edited directly. `page()` in
@@ -119,7 +122,8 @@ fresh confirmation — the number is only as good as the last person who checked
 
 ## State
 
-Eleven pages: home, services hub, four service pages, work, pricing, process, about, contact.
+Twenty-seven pages (home, services hub, five service pages, work, pricing, process, about, contact,
+fifteen case studies), each in five languages.
 QA passes with zero failures. FCP 320–410ms locally, 1KB JS per page.
 
 ### Next, in priority order
@@ -141,6 +145,56 @@ QA passes with zero failures. FCP 320–410ms locally, 1KB JS per page.
 - An unused Ethereum Community Foundation screenshot sits in `uploads/Screenshot_9.png` — if that's
   Anowar's work it belongs in the project list.
 - `uploads/pasted-1784209874396-0.png` is unidentified.
+
+## Languages (added 2026-11-19)
+
+English is the source and lives at the root. German, Spanish, French and Dutch are generated from it
+into `/de/`, `/es/`, `/fr/`, `/nl/` with the same paths (`/de/pricing`). **Never hand-edit those folders,
+and never write copy straight into a language folder** — they are build output like every other page.
+
+How it works: `page()` in `build.py` renders English, then runs the same markup through
+`i18n.Translator` once per language. The translator cuts the page into *units* (the copy inside the
+lowest element holding a sentence), replaces inline tags with numbered placeholders
+(`Or <1>start a project</1> without a call`) and looks the unit up in `build/i18n/<lang>.json`. It also
+translates `alt` / `aria-label` / `placeholder` / `title` / `data-cursor`, the title and description,
+JSON-LD text, the strings `site.js` shows (every `tr("…")` call) and the room's text (every `T('…')` /
+`N('…')` in `studio/src/app.js`, written to `studio/i18n/<lang>.json`). Internal links are rewritten to
+stay inside the language; each page carries the full reciprocal `hreflang` set plus `x-default`, and
+`sitemap.xml` lists every language version.
+
+Changing copy:
+1. Edit the English in the generator as before and rebuild. Any unit without a translation falls back
+   to English on the translated pages and is listed in `build/i18n/_missing.json` (QA fails on it).
+2. `python build/i18n_tool.py export de` writes what is missing to `build/i18n/_work/src.NN.json`;
+   translate into `de.NN.json` (`{"<id>": "translation"}`), then `i18n_tool.py merge de` and rebuild.
+   `i18n_tool.py status` shows where every language stands; `prune <lang>` drops unused entries.
+3. The checker enforces: same placeholders, **same numbers in the same format** as the English
+   (`$1,500–$3,500`, `2,237`) and no entities — so a translation can never change a figure. The build
+   then swaps the separators mechanically per language (`locnum()` in `i18n.py`: `2.237` in de/nl/es,
+   `2 237` in fr, `2,5` for decimals), including the count-up stats (`data-sep`).
+
+Rules:
+- Mark anything that must not be translated with `translate="no"`: client names, the wordmark, the
+  email address, and above all the Upwork quotes (`<q translate="no" lang="en">`) — content rule 3
+  (verbatim reviews) holds in every language, so they stay in English with a translated attribution.
+- Tone: German formal `Sie`, Spanish `tú` (neutral, no `vosotros`), French `vous`, Dutch `je`.
+- Slugs stay English in every language, so the switcher always maps a page to its twin.
+- `SITE` in `build.py` is `https://www.anowarhdesign.com` because that is the host Vercel serves (the
+  bare domain 308-redirects to it). Canonical, hreflang and sitemap URLs must be the final URL or
+  search engines discount them. If the primary domain is ever flipped in Vercel, flip `SITE` too.
+- Long words: translated hero headlines size to their column and card headings hyphenate (the
+  "translated pages: longer words" block at the end of `site.css`). QA loads every translated page at
+  390, 1100 and 1440px and fails on clipped or overflowing text.
+- No automatic redirect by browser language (bad for crawlers and for people abroad). `site.js` shows
+  one dismissible hint when the browser prefers another available language and remembers the choice
+  in `localStorage` (`lang`).
+- The switcher is three sets of plain links per page (nav `<details class="lang">`, chips in the phone
+  menu, a footer row), filled in after link rewriting via the `<!--LANG…-->` slots in `nav()` / `FOOT`.
+- The mini-OS inside the monitor is English only; its page links still point at the visitor's language.
+- To add a language: add it to `LANGS` in `i18n.py` (and `LANG_WORD` in `build.py`, the allow-list in
+  `api/contact.js`), export, translate, merge, rebuild, run QA.
+- The translations were written by Claude, not a native speaker; a native proofread of the homepage
+  and service pages is still worth doing before leaning on them.
 
 ## The studio homepage (`studio/`)
 
@@ -166,6 +220,8 @@ Rules that are easy to break:
   lightmap UVs are re-unwrapped on every bake, so an old lightmap with a new `studio.glb` is garbage.
 - Everything under `/studio/baked/` is cached `immutable`; that is only safe because every URL
   carries `?v={STUDIO_VER}` (hash of the studio files, `build.py`). Never reference one without it.
+- The room's hero text and object cards are translated (see "Languages"); wrap any new visible string
+  in `T('…')`, or `N('…')` when it is only declared there, or it stays English everywhere.
 - `?t=<seconds>` freezes time, `?view=os[&app=<id>]` opens the OS, `?view=card-<key>` opens a card.
 - No city name, address or person inside the room or the OS (`_nocity()` in `pages3.py` scrubs
   `data.json`). Sound stays off until "Enable sound". Sentence-case copy, no emoji icons.

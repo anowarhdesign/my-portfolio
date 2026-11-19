@@ -1,5 +1,5 @@
 """Headless check on the real GPU: load, send input, screenshot, measure frame rate.
-usage: python shot.py '<json list of {name, url?, q?, size?, wait?, steps?}>'
+usage: python shot.py '<json list of {name, url?, q?, size?, wait?, locale?, steps?}>'
 steps: ["move",x,y] ["click",x,y] ["dbl",x,y] ["drag",x1,y1,x2,y2] ["key","Escape"] ["type","text"] ["wheel",dy] ["wait",ms] ["eval","js"] ["shot","suffix"] ["fps",seconds]"""
 import json, pathlib, sys
 from playwright.sync_api import sync_playwright
@@ -14,7 +14,7 @@ with sync_playwright() as p:
     b = p.chromium.launch(headless=True, args=["--use-angle=d3d11", "--enable-gpu", "--ignore-gpu-blocklist", "--enable-webgl"] + (["--disable-frame-rate-limit"] if "--uncapped" in sys.argv else []))
     for job in jobs:
         w, h = job.get("size", [1920, 1080])
-        ctx = b.new_context(viewport={"width": w, "height": h}, device_scale_factor=job.get("dpr", 1), has_touch=job.get("touch", False))
+        ctx = b.new_context(viewport={"width": w, "height": h}, device_scale_factor=job.get("dpr", 1), has_touch=job.get("touch", False), locale=job.get("locale", "en-US"))
         pg = ctx.new_page()
         # never send test traffic to the live analytics property
         ctx.route(lambda u: any(k in u for k in ("googletagmanager.com", "google-analytics.com", "analytics.google.com", "doubleclick.net", "/_vercel/", "google.com")), lambda r: r.abort())

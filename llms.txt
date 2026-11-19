@@ -7,20 +7,24 @@
 > and 2,237 hours logged. One operator: design and development by the same person, quoted as a fixed price.
 
 ## Services
-- [Product design](https://anowarhdesign.com/services/product-design): UX + UI in Figma, developer-ready. $1,500-$3,500, 2-4 weeks.
-- [Webflow development](https://anowarhdesign.com/services/webflow-development): Editor-proof CMS, migration, QA. $1,250-$3,000, 2-3 weeks.
-- [Framer development](https://anowarhdesign.com/services/framer-development): Landing pages, launch sites, motion. From $450, 3-7 days.
-- [AI product builds](https://anowarhdesign.com/services/ai-product-builds): Finishing Lovable / v0 / Claude Code prototypes. $750-$2,000, 1-2.5 weeks.
-- [AI automation](https://anowarhdesign.com/services/ai-automation): Workflows and AI agents on n8n / Zapier / Make. $600-$2,500, 1-2 weeks.
+- [Product design](https://www.anowarhdesign.com/services/product-design): UX + UI in Figma, developer-ready. $1,500-$3,500, 2-4 weeks.
+- [Webflow development](https://www.anowarhdesign.com/services/webflow-development): Editor-proof CMS, migration, QA. $1,250-$3,000, 2-3 weeks.
+- [Framer development](https://www.anowarhdesign.com/services/framer-development): Landing pages, launch sites, motion. From $450, 3-7 days.
+- [AI product builds](https://www.anowarhdesign.com/services/ai-product-builds): Finishing Lovable / v0 / Claude Code prototypes. $750-$2,000, 1-2.5 weeks.
+- [AI automation](https://www.anowarhdesign.com/services/ai-automation): Workflows and AI agents on n8n / Zapier / Make. $600-$2,500, 1-2 weeks.
 
 ## Pages
-- [Home](https://anowarhdesign.com/)
-- [Services](https://anowarhdesign.com/services)
-- [Work](https://anowarhdesign.com/work)
-- [Pricing](https://anowarhdesign.com/pricing)
-- [Process](https://anowarhdesign.com/process)
-- [About](https://anowarhdesign.com/about)
-- [Contact](https://anowarhdesign.com/contact)
+- [Home](https://www.anowarhdesign.com/)
+- [Services](https://www.anowarhdesign.com/services)
+- [Work](https://www.anowarhdesign.com/work)
+- [Pricing](https://www.anowarhdesign.com/pricing)
+- [Process](https://www.anowarhdesign.com/process)
+- [About](https://www.anowarhdesign.com/about)
+- [Contact](https://www.anowarhdesign.com/contact)
+
+## Languages
+- English is the original. The same pages exist in German (https://www.anowarhdesign.com/de), Spanish (https://www.anowarhdesign.com/es), French (https://www.anowarhdesign.com/fr)
+  and Dutch (https://www.anowarhdesign.com/nl), at the same paths under that prefix.
 
 ## Facts
 - Based in Dhaka, Bangladesh (GMT+6); overlaps New York mornings (09:00-13:00 ET) and full European business hours.

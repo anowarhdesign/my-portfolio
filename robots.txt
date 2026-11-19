@@ -28,4 +28,4 @@ Allow: /
 User-agent: CCBot
 Allow: /
 
-Sitemap: https://anowarhdesign.com/sitemap.xml
+Sitemap: https://www.anowarhdesign.com/sitemap.xml

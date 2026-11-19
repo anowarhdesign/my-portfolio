@@ -215,3 +215,9 @@ html.st-os-open .grain{visibility:hidden}
 @media (min-width:761px) and (max-width:1180px){.st-intro{max-width:none;gap:10px;bottom:26px}.st-intro p{display:none}}
 .st-card .st-chips+p{margin-top:12px}
 .os-body,.st-card{scrollbar-width:thin;scrollbar-color:rgba(14,13,12,.28) transparent}.os-term{scrollbar-width:thin;scrollbar-color:rgba(244,241,235,.25) transparent}
+/* language pill over the room, before the nav turns solid */
+.has-studio .nav:not(.stuck) .lang:not([open]) summary{color:rgba(244,241,235,.82);border-color:rgba(244,241,235,.35)}
+.has-studio .nav:not(.stuck) .lang summary:hover{color:#fff;border-color:#fff}
+.has-studio .nav:not(.stuck) .lang[open] summary{color:#fff;border-color:#fff}
+/* translated headlines wrap to three lines; give the serif line room under descenders and accents */
+html:not([lang="en"]) .st-intro h1 .serif{margin-top:.12em}
