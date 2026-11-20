@@ -679,3 +679,13 @@ html.st-fly .lang-tip,html.st-os-open .lang-tip{opacity:0;pointer-events:none}
 html:not([lang="en"]) .hero-copy{container-type:inline-size}
 html:not([lang="en"]) .hero h1{font-size:min(var(--fs-display),max(38px,14.5cqi));overflow-wrap:break-word}
 html:not([lang="en"]) :is(.card h3,.step h3,.stat .l,.band h2){-webkit-hyphens:auto;hyphens:auto;overflow-wrap:break-word}
+
+/* ── long-form text (privacy policy) ── */
+.legal-head{max-width:880px}
+.prose{max-width:74ch;font-size:17px;line-height:1.7;color:var(--ash)}
+.prose h2{font-size:clamp(22px,2.4vw,28px);line-height:1.15;color:var(--ink);margin:44px 0 12px;scroll-margin-top:100px}
+.prose h2:first-child{margin-top:0}
+.prose p+p{margin-top:14px}
+.prose ul{margin:0;padding-left:1.15em;display:flex;flex-direction:column;gap:12px}
+.prose strong{color:var(--ink);font-weight:600}
+.prose a{color:var(--ember-deep);text-decoration:underline;text-underline-offset:3px}

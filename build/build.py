@@ -148,6 +148,7 @@ FOOT_TPL = '''<footer class="foot">
         <li><a href="/process">Process</a></li>
         <li><a href="/about">About</a></li>
         <li><a href="/contact">Contact</a></li>
+        <li><a href="/privacy">Privacy</a></li>
         <li><a href="https://tally.so/r/MeoJVX" rel="noopener" target="_blank">Start a project</a></li>
       </ul></div>
       <div><h3>Elsewhere</h3><ul>

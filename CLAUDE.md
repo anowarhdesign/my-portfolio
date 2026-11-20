@@ -122,8 +122,8 @@ fresh confirmation — the number is only as good as the last person who checked
 
 ## State
 
-Twenty-seven pages (home, services hub, five service pages, work, pricing, process, about, contact,
-fifteen case studies), each in five languages.
+Twenty-eight pages (home, services hub, five service pages, work, pricing, process, about, contact,
+privacy, fifteen case studies), each in five languages.
 QA passes with zero failures. FCP 320–410ms locally, 1KB JS per page.
 
 ### Next, in priority order
@@ -195,6 +195,26 @@ Rules:
   `api/contact.js`), export, translate, merge, rebuild, run QA.
 - The translations were written by Claude, not a native speaker; a native proofread of the homepage
   and service pages is still worth doing before leaning on them.
+
+## Privacy policy and Google Play (added 2026-11-20)
+
+`/privacy` (in `pages3.py`, linked from the footer, all five languages) exists because the site is the
+developer website on Anowar's Google Play Console account, and because the site runs analytics and a
+contact form. Google Play's User Data policy needs a public HTML page titled "privacy policy" that
+names the developer, gives a privacy contact, and states what is collected, who receives it, how it
+is secured, and how long it is kept and how to get it deleted (`/privacy#delete`).
+
+- **It must stay true.** It lists the real scripts and providers (Google Analytics, Vercel Web
+  Analytics + Speed Insights, Google Fonts, Resend, Cal.com, Tally, `localStorage`). Add, remove or
+  swap any of them and the policy changes in the same commit, with a new "Last updated" date.
+- It covers the website only. Each Android app needs its own policy page naming the app and its
+  real data practices (nothing exists yet; do not write one until the app's behaviour is known).
+- Not on the site because nothing needs them yet: `app-ads.txt` at the root (only when an app shows
+  ads; needs the AdMob publisher ID), `/.well-known/assetlinks.json` (only for Android App Links;
+  needs the package name and signing-key SHA-256), and a per-app account-deletion page (only for
+  apps with accounts).
+- Open: Google Analytics sets cookies without a consent prompt. The policy says so honestly, but
+  with EU-language versions live a consent banner (or cookieless analytics) is the proper fix.
 
 ## The studio homepage (`studio/`)
 

@@ -7,7 +7,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 B = 'http://localhost:8121'
 PATHS = ['/', '/services/', '/services/product-design/', '/services/webflow-development/',
          '/services/framer-development/', '/services/ai-product-builds/', '/services/ai-automation/',
-         '/work/', '/pricing/', '/process/', '/about/', '/contact/']
+         '/work/', '/pricing/', '/process/', '/about/', '/contact/', '/privacy/']
 issues, notes = [], []
 
 def add(level, page, msg):

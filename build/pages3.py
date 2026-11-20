@@ -463,12 +463,106 @@ page("contact/index.html", "Contact | Book a Discovery Call | Anowar Hossain",
      contact_body, [{"@type": "ContactPage", "@id": S + "/contact#page", "mainEntity": {"@id": S + "/#person"}}],
      current="", trail=[("Home", "/"), ("Contact", "/contact")])
 
+# ─────────────────────────── PRIVACY ───────────────────────────
+# Required by Google Play for the developer website / app listings (User Data policy: a public,
+# non-geofenced HTML page titled "privacy policy" with a privacy contact, the data collected, who
+# receives it, secure handling, retention and deletion) and by the site's own use of analytics and
+# a contact form. Every statement here describes what the site really does: if a script, form field
+# or provider is added or removed, change this page in the same commit.
+_mail = f'<a href="mailto:{EMAIL}" translate="no">{EMAIL}</a>'
+privacy_body = f'''
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-copy legal-head">
+      <span class="eyebrow" data-reveal>Privacy</span>
+      <h1 data-reveal>Privacy policy.</h1>
+      <p class="answer" data-reveal>This policy explains what personal data anowarhdesign.com collects, why, who
+        receives it and how to have it deleted. In short: the site records usage statistics, and if you send the
+        contact form, your message reaches my inbox so I can reply. Nothing is sold and there is no advertising.</p>
+      <p class="mono" data-reveal>Last updated 20 November 2026</p>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="prose">
+      <h2>Who is responsible</h2>
+      <p>This website is run by Anowar Hossain, an independent designer and developer based in Dhaka, Bangladesh.
+        For any privacy question or request, write to {_mail}.</p>
+
+      <h2>What is collected</h2>
+      <ul>
+        <li><strong>Contact form.</strong> Your name, email address, WhatsApp number if you give one, budget range,
+          project details and the language of the page you wrote from. It is sent to my inbox by email through Resend.</li>
+        <li><strong>Usage statistics.</strong> Google Analytics records the pages viewed, the referring site, device and
+          browser type and an approximate location derived from your IP address, and sets cookies to tell visits apart.
+          Vercel Web Analytics and Speed Insights count page views and loading speed without cookies.</li>
+        <li><strong>Technical data.</strong> Like every website, the hosting provider (Vercel) processes your IP address
+          and browser details to deliver the pages. The contact form holds your IP address in memory for up to
+          15 minutes to block abuse; it is not stored.</li>
+        <li><strong>Fonts.</strong> Typefaces load from Google Fonts, so your browser contacts Google&#8217;s servers.</li>
+        <li><strong>Browser storage.</strong> Your language choice and, in the desktop demo on the homepage, your
+          wallpaper are saved in your own browser. They are not sent to me.</li>
+        <li><strong>Booking and project forms.</strong> The booking link opens Cal.com and the project form opens Tally.
+          What you enter there is handled under their privacy policies and passed on to me.</li>
+      </ul>
+
+      <h2>What it is used for</h2>
+      <p>Enquiries are used to reply to you, prepare a quote and run the project if we work together. Statistics are
+        used to see which pages are read and to fix slow or broken ones. I do not sell personal data, show advertising
+        or build profiles of visitors.</p>
+
+      <h2>Who receives it</h2>
+      <p>Only the services needed to run the site: Vercel (hosting), Google (Analytics and Fonts), Resend (email
+        delivery), Cal.com (bookings) and Tally (project form). Some of them process data in the United States or in
+        other countries outside your own.</p>
+
+      <h2>How long it is kept</h2>
+      <p>Enquiry emails are kept for as long as the conversation or project lasts and afterwards for my business
+        records, until you ask me to delete them. Usage statistics are kept for the retention period set in
+        Google Analytics and Vercel and are then deleted automatically.</p>
+
+      <h2 id="delete">Deleting your data</h2>
+      <p>To have your data deleted, corrected or sent to you, email {_mail} from the address you used and say what
+        you want done. I act on requests within 30 days and confirm when it is done.</p>
+
+      <h2>Security</h2>
+      <p>The site is served only over an encrypted connection (HTTPS), enquiries go to a mailbox only I use, and the
+        providers above apply their own security measures. No system is perfectly secure, so please do not send
+        passwords or payment details through the form.</p>
+
+      <h2>Your choices</h2>
+      <p>You can block cookies in your browser or install
+        <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google&#8217;s Analytics opt-out add-on</a>;
+        the site works the same without them. If you live in the EU, the UK or another region with data protection
+        law, you also have the right to object to processing and to complain to your local data protection authority.</p>
+
+      <h2>Children</h2>
+      <p>This site is for businesses and is not directed at children under 13. I do not knowingly collect their data.</p>
+
+      <h2>Android apps</h2>
+      <p>Apps I publish on Google Play under the developer name Anowar Hossain each have their own privacy policy,
+        which names the app and lists exactly what it collects. It is linked from the app&#8217;s Google Play listing
+        and inside the app.</p>
+
+      <h2>Changes</h2>
+      <p>If this policy changes, the new version is published on this page with a new date. If the translated
+        versions of this page differ from the English one, the English version applies.</p>
+    </div>
+  </div>
+</section>
+'''
+page("privacy/index.html", "Privacy Policy | Anowar Hossain",
+     "Privacy policy for anowarhdesign.com: what the contact form and analytics collect, who receives it, how long it is kept and how to have your data deleted.",
+     privacy_body, [], current="", trail=[("Home", "/"), ("Privacy policy", "/privacy")])
+
 # ─────────────────────────── sitemap + llms.txt ───────────────────────────
 import datetime
 BUILD_DATE = datetime.date.today().isoformat()
 URLS = ["/", "/services", "/services/product-design", "/services/webflow-development",
         "/services/framer-development", "/services/ai-product-builds", "/services/ai-automation",
-        "/work", "/pricing", "/process", "/about", "/contact"]
+        "/work", "/pricing", "/process", "/about", "/contact", "/privacy"]
 CASE_URLS = [f"/work/{slugify(c[0])}" for c in CASES]
 # every page is listed once per language, each entry naming all its language versions (hreflang)
 sm = ['<?xml version="1.0" encoding="UTF-8"?>',
@@ -527,7 +621,7 @@ sm.append("</urlset>")
 - [Book a discovery call](https://cal.com/anowarhdesign/discovery)
 """, encoding="utf-8")
 
-print("work, pricing, process, about, contact, sitemap, llms.txt built")
+print("work, pricing, process, about, contact, privacy, sitemap, llms.txt built")
 
 # ─────────────────────────── studio data ───────────────────────────
 # Everything the 3D studio homepage shows (object cards and the mini-OS apps) comes from the
